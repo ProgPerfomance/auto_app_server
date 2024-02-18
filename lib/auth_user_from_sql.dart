@@ -10,7 +10,7 @@ Future<int> authUserFromSQL({
       port: 3306,
       userName: 'root',
       password: '1234567890',
-      databaseName: 'auto');
+      databaseName: 'autoapp');
   await sql.connect();
   print(sql.connected);
   final email = await sql.execute("SELECT * FROM users where email = '$email_or_phone'", {}, );
@@ -23,7 +23,7 @@ Future<int> authUserFromSQL({
    }
    else {
      await sql.close();
-     return 0;
+     return 1;
    }
   } catch(e) {
     try {
@@ -36,13 +36,13 @@ Future<int> authUserFromSQL({
       }
       else {
         await sql.close();
-        return 0;
+        return 1;
 
       }
     } catch (e) {
       print(e);
       await sql.close();
-    return 0;
+    return 1;
     }
   }
 

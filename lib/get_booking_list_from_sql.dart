@@ -1,0 +1,150 @@
+import 'package:mysql_client/mysql_client.dart';
+
+Future<List> getUserBookingList(String id) async {
+  List booking = [];
+  var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp');
+  await sql.connect();
+  final response = await sql.execute(
+    "SELECT * FROM booking where uid = $id",
+    {},
+  );
+
+  for (final row in response.rows) {
+    var data = row.assoc();
+    final service = await sql.execute(
+      "SELECT * FROM servises where id = ${data['sid']}",
+      {},
+    );
+    booking.add(
+      {
+        'id': data['id'],
+        'sid': data['sid'],
+        'cid': data['cid'],
+        'uid': data['uid'],
+        'service_name': service.rows.first.assoc()['name'],
+        'owner_name': data['owner_name'],
+        'owner_email': data['owner_email'],
+        'owner_phone': data['owner_phone'],
+        'pickup': data['pickup'],
+        'delivery': data['delivery'],
+        'timestamp': data['timestamp'],
+        'date_time': data['date_time'],
+        'status': data['status'],
+      },
+    );
+  }
+  await sql.close();
+  return booking;
+}
+
+
+
+Future<List> getUserBookingListMaster(String id) async {
+  List booking = [];
+  var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp');
+  await sql.connect();
+  final response = await sql.execute(
+    "SELECT * FROM booking where sid = $id",
+    {},
+  );
+
+  for (final row in response.rows) {
+    var data = row.assoc();
+    final car = await sql.execute(
+      "SELECT * FROM usercars where id = ${data['cid']}",
+      {},
+    );
+    booking.add(
+      {
+        'car_name': car.rows.first.assoc()['name'],
+        'description': data['description'],
+        'reason': data['reason'],
+        'id': data['id'],
+        'sid': data['sid'],
+        'cid': data['cid'],
+        'uid': data['uid'],
+        'owner_name': data['owner_name'],
+        'owner_email': data['owner_email'],
+        'owner_phone': data['owner_phone'],
+        'pickup': data['pickup'],
+        'delivery': data['delivery'],
+        'timestamp': data['timestamp'],
+        'date_time': data['date_time'],
+        'status': data['status'],
+      },
+    );
+  }
+  await sql.close();
+  return booking;
+}
+
+Future<List> updateBookingStatus(String id, String status) async {
+  List booking = [];
+  var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp');
+  await sql.connect();
+  final response = await sql.execute(
+    "update booking set status = '$status' where id = $id",
+    {},
+  );
+  await sql.close();
+  return booking;
+}
+
+Future<List> getNewBookingListMaster(String id) async {
+  List booking = [];
+  var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp');
+  await sql.connect();
+  final response = await sql.execute(
+    "SELECT * FROM booking where sid = $id and status = 'Pending'",
+    {},
+  );
+
+  for (final row in response.rows) {
+    var data = row.assoc();
+    final car = await sql.execute(
+      "SELECT * FROM usercars where id = ${data['cid']}",
+      {},
+    );
+    booking.add(
+      {
+        'id': data['id'],
+        'sid': data['sid'],
+        'cid': data['cid'],
+        'uid': data['uid'],
+        'description': data['description'],
+        'reason': data['reason'],
+        'car_name': car.rows.first.assoc()['name'],
+        'owner_name': data['owner_name'],
+        'owner_email': data['owner_email'],
+        'owner_phone': data['owner_phone'],
+        'pickup': data['pickup'],
+        'delivery': data['delivery'],
+        'timestamp': data['timestamp'],
+        'date_time': data['date_time'],
+        'status': data['status'],
+      },
+    );
+  }
+  await sql.close();
+  return booking;
+}
