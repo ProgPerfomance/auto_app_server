@@ -8,6 +8,7 @@ import 'package:auto_app_server/get_booking_list_from_sql.dart';
 import 'package:auto_app_server/get_car_list.dart';
 import 'package:auto_app_server/get_user_cars_form_sql.dart';
 import 'package:auto_app_server/like_car_from_sql.dart';
+import 'package:auto_app_server/sell_car/sell_car_request.dart';
 import 'package:auto_app_server/user_sql.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf/shelf.dart';
@@ -71,6 +72,20 @@ void main(List<String> arguments) async {
     var data = await jsonDecode(json);
     List rep = await getCarList(data['id']);
     return Response.ok(jsonEncode(rep));
+  });
+  router.post('/sellcarrequest', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    await sellCarRequest(
+        any_car_accidents: data['any_car_accidents'],
+        uid: data['uid'],
+        cid: data['cid'],
+        gcc: data['gcc'],
+        owner_email: data['owner_email'],
+        owner_name: data['owner_name'],
+        owner_phone: data['owner_phone'],
+        servise_history: data['servise_history']);
+    return Response.ok('ok');
   });
   router.post('/likecar', (Request request) async {
     var json = await request.readAsString();
