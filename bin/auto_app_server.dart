@@ -14,9 +14,20 @@ import 'package:auto_app_server/user_sql.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
-
+import 'package:shelf_web_socket/shelf_web_socket.dart';
 void main(List<String> arguments) async {
   Router router = Router();
+  server.transform(WebSocketTransformer()).listen((webSocket) {
+    webSocket.listen((message) {
+      var data = jsonDecode(message);
+      print(data['message']),
+      print('Received message: $message');
+      webSocket.add('Server: Message received - $message');
+    }, onDone: () {
+      print('WebSocket connection closed');
+    });
+  });
+  final server = await HttpServer.bind('63.251.122.116', 2308);
   router.post('/reguser', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
@@ -187,5 +198,4 @@ void main(List<String> arguments) async {
     deleteUserCarFromSql(id: data['id']);
     return Response.ok('');
   });
-  var server = await serve(router, '63.251.122.116', 2308);
 }
