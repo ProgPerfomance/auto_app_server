@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:auto_app_server/auth_user_from_sql.dart';
 import 'package:auto_app_server/create_adverb_from_sql.dart';
 import 'package:auto_app_server/create_booking_from_sql.dart';
@@ -11,23 +12,16 @@ import 'package:auto_app_server/like_car_from_sql.dart';
 import 'package:auto_app_server/sell_car/sell_car_list.dart';
 import 'package:auto_app_server/sell_car/sell_car_request.dart';
 import 'package:auto_app_server/user_sql.dart';
-import 'package:shelf/shelf_io.dart';
+import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
-import 'package:shelf_web_socket/shelf_web_socket.dart';
+
 void main(List<String> arguments) async {
   Router router = Router();
-  server.transform(WebSocketTransformer()).listen((webSocket) {
-    webSocket.listen((message) {
-      var data = jsonDecode(message);
-      print(data['message']),
-      print('Received message: $message');
-      webSocket.add('Server: Message received - $message');
-    }, onDone: () {
-      print('WebSocket connection closed');
-    });
-  });
-  final server = await HttpServer.bind('63.251.122.116', 2308);
+
+
+
+
   router.post('/reguser', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
@@ -197,5 +191,24 @@ void main(List<String> arguments) async {
     var data = await jsonDecode(json);
     deleteUserCarFromSql(id: data['id']);
     return Response.ok('');
+  });
+  var handler = Pipeline()
+      .addMiddleware(logRequests())
+      .addHandler(router);
+
+  // Start the server
+  var server = await HttpServer.bind('63.251.122.116', 2308);
+  print('Serving at http://${server.address.host}:${server.port}');
+
+  // WebSocket handling
+  server.transform(WebSocketTransformer()).listen((webSocket) {
+    webSocket.listen((message) {
+      var data = jsonDecode(message);
+      print(data['message']);
+      print('Received message: $message');
+      webSocket.add('Server: Message received - $message');
+    }, onDone: () {
+      print('WebSocket connection closed');
+    });
   });
 }
