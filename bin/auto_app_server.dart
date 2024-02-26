@@ -34,10 +34,8 @@ void main(List<String> arguments) async {
     return Response.ok(jsonEncode(resp));
   });
   router.post('/getsellrequests', (Request request) async {
-    var json = await request.readAsString();
-    var data = await jsonDecode(json);
     var resp = await getSellCarList();//
-    return Response.ok(jsonEncode(jsonEncode(resp)));
+    return Response.ok(jsonEncode(resp));
   });
   router.post('/auth', (Request request) async {
     var json = await request.readAsString();

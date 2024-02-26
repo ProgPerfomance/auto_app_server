@@ -9,7 +9,7 @@ Future<List> getSellCarList() async {
       databaseName: 'autoapp');
   await sql.connect();
   final response = await sql.execute(
-    "SELECT * FROM sell_requests where status = 0",
+    "SELECT * FROM sell_requests",
     {},
   );
 
