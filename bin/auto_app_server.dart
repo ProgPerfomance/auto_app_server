@@ -203,19 +203,35 @@ void main(List<String> arguments) async {
     return Response.ok('');
   });
   var handler = Pipeline().addMiddleware(logRequests()).addHandler(router);
-
+Map users = {};
   // Start the server
   var server = await HttpServer.bind('63.251.122.116', 2308);
   print('Serving at http://${server.address.host}:${server.port}');
-
+  List<Message> messages = [];
   server.transform(WebSocketTransformer()).listen((webSocket) {
+    var uid;
     webSocket.listen((message) {
       var data = jsonDecode(message);
-      print(data['message']);//
+      uid = data['uid'];
+      if(data['requestType'] == 'init') {
+        users.addAll({'${data['uid']}': '${data['cid']}'});
+      }
+      else {
+        messages.add(Message(uid: data['uid'], message: data['message'], cid: data['cid']));
+      }
       print('Received message: $message');
-      webSocket.add('Server: Message received - $message');
+      webSocket.add('Server: Message received - $messages');
     }, onDone: () {
       print('WebSocket connection closed');
+      print(uid);
+      users.remove(uid);
     });
   });
+}
+
+class Message {
+  String uid;
+  String cid;
+  String message;
+  Message({required this.uid, required this.message, required this.cid});
 }
