@@ -12,20 +12,24 @@ import 'package:auto_app_server/like_car_from_sql.dart';
 import 'package:auto_app_server/sell_car/sell_car_list.dart';
 import 'package:auto_app_server/sell_car/sell_car_request.dart';
 import 'package:auto_app_server/user_sql.dart';
-import 'package:shelf/shelf_io.dart' as shelf_io;
+import 'package:mysql_client/mysql_client.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
 void main(List<String> arguments) async {
   Router router = Router();
-
-
-
-
+  var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp');
+  await sql.connect();
   router.post('/reguser', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     createUserFromSQL(
+      sql: sql,
         name: data['name'],
         phone: data['phone'],
         email: data['email'],
@@ -35,11 +39,11 @@ void main(List<String> arguments) async {
   router.post('/getcarinfo', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    var resp = await getCarInfo(data['id']);
+    var resp = await getCarInfo(data['id'], sql);
     return Response.ok(jsonEncode(resp));
   });
   router.post('/getsellrequests', (Request request) async {
-    var resp = await getSellCarList();//
+    var resp = await getSellCarList(sql);//
     return Response.ok(jsonEncode(resp));
   });
   router.post('/auth', (Request request) async {
@@ -47,7 +51,7 @@ void main(List<String> arguments) async {
     var data = await jsonDecode(json);
     print(data['email_or_phone']);
     print(data['password_hash']);
-    var uid = await authUserFromSQL(
+    var uid = await authUserFromSQL(sql: sql,
         email_or_phone: data['email_or_phone'],
         password_hash: data['password_hash']);
     print(uid);
@@ -58,6 +62,7 @@ void main(List<String> arguments) async {
     var data = await jsonDecode(json);
 
     createAdverbFromSql(
+      sql: sql,
         year: 'year',
         name: data['name'],
         brand: data['brand'],
@@ -80,13 +85,14 @@ void main(List<String> arguments) async {
   router.post('/getcars', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    List rep = await getCarList(data['id']);
+    List rep = await getCarList(data['id'], sql);
     return Response.ok(jsonEncode(rep));
   });
   router.post('/sellcarrequest', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await sellCarRequest(
+      sql: sql,
         any_car_accidents: data['any_car_accidents'],
         uid: data['uid'],
         cid: data['cid'],
@@ -100,19 +106,20 @@ void main(List<String> arguments) async {
   router.post('/likecar', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    likeCarFromSql(uid: data['uid'], cid: data['cid']);
+    likeCarFromSql(uid: data['uid'], cid: data['cid'],sql: sql);
     return Response.ok('');
   });
   router.post('/dislikecar', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    dislikeCarFromSql(id: data['id']);
+    dislikeCarFromSql(id: data['id'],sql: sql);
     return Response.ok('');
   });
   router.post('/createusercar', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     createUserCarFromSQL(
+      sql: sql,
         uid: data['uid'],
         name: data['name'],
         brand: data['brand'],
@@ -124,37 +131,37 @@ void main(List<String> arguments) async {
   router.post('/getusercars', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    var rep = await getUserCarList(data['uid']);
+    var rep = await getUserCarList(data['uid'],sql);
     return Response.ok(jsonEncode(rep));
   });
   router.post('/getuserbooking', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    var rep = await getUserBookingList(data['uid']);
+    var rep = await getUserBookingList(data['uid'],sql);
     return Response.ok(jsonEncode(rep));
   });
   router.post('/getmasterbooking', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    var rep = await getUserBookingListMaster(data['cid']);
+    var rep = await getUserBookingListMaster(data['cid'], sql);
     return Response.ok(jsonEncode(rep));
   });
   router.post('/getnewmasterbooking', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    var rep = await getNewBookingListMaster(data['cid']);
+    var rep = await getNewBookingListMaster(data['cid'], sql);
     return Response.ok(jsonEncode(rep));
   });
   router.post('/getuserinfo', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    var rep = await getUserInfo(data['uid']);
+    var rep = await getUserInfo(data['uid'],sql);
     return Response.ok(jsonEncode(rep));
   });
   router.post('/updatebooking', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    updateBookingStatus(data['id'], data['status']);
+    updateBookingStatus(data['id'], data['status'],sql);
     return Response.ok('updated');
   });
 
@@ -162,6 +169,7 @@ void main(List<String> arguments) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     updateUserCarFromSQL(
+      sql: sql,
         id: data['id'],
         name: data['name'],
         brand: data['brand'],
@@ -174,6 +182,7 @@ void main(List<String> arguments) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     createBookingFromSQL(
+      sql: sql,
         sid: data['sid'],
         cid: data['cid'],
         uid: data['uid'],
@@ -189,7 +198,7 @@ void main(List<String> arguments) async {
   router.post('/deleteusercar', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    deleteUserCarFromSql(id: data['id']);
+    deleteUserCarFromSql(id: data['id'],sql: sql);
     return Response.ok('');
   });
   var handler = Pipeline()

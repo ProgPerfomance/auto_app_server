@@ -2,6 +2,7 @@ import 'package:mysql_client/mysql_client.dart';
 
 
 Future<int> createUserCarFromSQL({
+  required sql,
  required uid,
   required name,
   required brand,
@@ -9,15 +10,6 @@ Future<int> createUserCarFromSQL({
   required year,
   required car_reg,
 }) async {
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
-  print(sql.connected);
-  // make query (notice third parameter, iterable=true)
   var resul = await sql.execute(
     "SELECT * FROM usercars",
     {},
@@ -40,16 +32,8 @@ Future<void> updateUserCarFromSQL({
   required model,
   required year,
   required car_reg,
+  required  MySQLConnection sql,
 }) async {
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
-  print(sql.connected);
-  // make query (notice third parameter, iterable=true)
   var resul = await sql.execute(
     "SELECT * FROM usercars where id= $id",
     {},

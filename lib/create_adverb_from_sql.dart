@@ -1,7 +1,9 @@
 import 'package:mysql_client/mysql_client.dart';
 
 void createAdverbFromSql(
-    {required name,
+    {
+      required sql,
+      required name,
     required brand,
     required model,
     required price_usd,
@@ -17,14 +19,6 @@ void createAdverbFromSql(
       required year,
     required guarantee,
     required service_contact}) async {
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
-  print(sql.connected);
   // make query (notice third parameter, iterable=true)
   var resul = await sql.execute(
     "SELECT * FROM carlist",

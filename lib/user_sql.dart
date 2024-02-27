@@ -1,14 +1,8 @@
 import 'package:mysql_client/mysql_client.dart';
 
-Future<Map> getUserInfo(String id) async {
+Future<Map> getUserInfo(String id, MySQLConnection sql) async {
 
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
+
   final response = await sql.execute(
     "SELECT * FROM users where id = $id",
     {},

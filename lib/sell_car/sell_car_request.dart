@@ -11,16 +11,10 @@ required  var owner_phone,
  required var any_car_accidents,
 required  var gcc,
  required var servise_history,
+  required MySQLConnection sql,
 }
 ) async {
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
-  print(sql.connected);
+
   // make query (notice third parameter, iterable=true)
   var resul = await sql.execute(
     "SELECT * FROM sell_requests",

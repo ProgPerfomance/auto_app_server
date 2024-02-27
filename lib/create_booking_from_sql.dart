@@ -2,17 +2,9 @@
 import 'package:mysql_client/mysql_client.dart';
 
 Future<int> createBookingFromSQL({
-  required sid, required cid, required uid, required owner_name, required owner_email, required owner_phone, required pickup, required delivery, required timestamp, required date_time,
+  required sql, required sid, required cid, required uid, required owner_name, required owner_email, required owner_phone, required pickup, required delivery, required timestamp, required date_time,
 }) async {
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
-  print(sql.connected);
-  // make query (notice third parameter, iterable=true)
+
   var resul = await sql.execute(
     "SELECT * FROM booking",
     {},

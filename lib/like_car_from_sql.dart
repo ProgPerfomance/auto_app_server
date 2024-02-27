@@ -3,16 +3,8 @@ import 'package:mysql_client/mysql_client.dart';
 void likeCarFromSql({
   required uid,
   required cid,
+  required sql,
     }) async {
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
-  print(sql.connected);
-  // make query (notice third parameter, iterable=true)
   var resul = await sql.execute(
     "SELECT * FROM likes",
     {},
@@ -28,15 +20,9 @@ void likeCarFromSql({
 
 void dislikeCarFromSql({
  required id,
+  required MySQLConnection sql,
 }) async {
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
-  print(sql.connected);
+
   var result = await sql.execute(
       "delete from likes where id =$id;");
   await sql.close();

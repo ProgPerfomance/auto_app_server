@@ -1,14 +1,9 @@
 import 'package:mysql_client/mysql_client.dart';
 
-Future<List> getUserBookingList(String id) async {
+Future<List> getUserBookingList(String id, MySQLConnection sql) async {
+
   List booking = [];
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
+
   final response = await sql.execute(
     "SELECT * FROM booking where uid = $id",
     {},
@@ -44,15 +39,9 @@ Future<List> getUserBookingList(String id) async {
 
 
 
-Future<List> getUserBookingListMaster(String id) async {
+Future<List> getUserBookingListMaster(String id, MySQLConnection sql) async {
   List booking = [];
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
+
   final response = await sql.execute(
     "SELECT * FROM booking where sid = $id",
     {},
@@ -88,15 +77,9 @@ Future<List> getUserBookingListMaster(String id) async {
   return booking;
 }
 
-Future<List> updateBookingStatus(String id, String status) async {
+Future<List> updateBookingStatus(String id, String status, MySQLConnection sql) async {
   List booking = [];
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
+
   final response = await sql.execute(
     "update booking set status = '$status' where id = $id",
     {},
@@ -105,15 +88,8 @@ Future<List> updateBookingStatus(String id, String status) async {
   return booking;
 }
 
-Future<List> getNewBookingListMaster(String id) async {
+Future<List> getNewBookingListMaster(String id, MySQLConnection sql) async {
   List booking = [];
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
   final response = await sql.execute(
     "SELECT * FROM booking where sid = $id and status = 'Pending'",
     {},

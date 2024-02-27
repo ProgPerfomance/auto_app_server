@@ -1,15 +1,8 @@
 import 'dart:io';
 
 import 'package:mysql_client/mysql_client.dart';
-Future<List> getUserCarList(String id) async {
+Future<List> getUserCarList(String id, MySQLConnection sql) async {
   List cars = [];
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
   final response = await sql.execute(
     "SELECT * FROM usercars where uid = $id",
     {},
@@ -36,15 +29,9 @@ Future<List> getUserCarList(String id) async {
 
 void deleteUserCarFromSql({
   required id,
+  required MySQLConnection sql,
 }) async {
-  var sql = await MySQLConnection.createConnection(
-      host: 'localhost',
-      port: 3306,
-      userName: 'root',
-      password: '1234567890',
-      databaseName: 'autoapp');
-  await sql.connect();
-  print(sql.connected);
+
   var result = await sql.execute(
       "delete from usercars where id =$id;");
   await sql.close();
