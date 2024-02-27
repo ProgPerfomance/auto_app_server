@@ -219,8 +219,10 @@ Map users = {};
       else {
         messages.add(Message(uid: data['uid'], message: data['message'], cid: data['cid']));
       }
-      print('Received message: $message');
-      webSocket.add('Server: Message received - $messages');
+      if(uid == messages.last.uid) {
+        print('Received message: $message');
+        webSocket.add('Server: Message received - $messages');
+      }
     }, onDone: () {
       print('WebSocket connection closed');
       print(uid);
