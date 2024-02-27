@@ -234,4 +234,9 @@ class Message {
   String cid;
   String message;
   Message({required this.uid, required this.message, required this.cid});
+  @override
+  String toString() {
+    // TODO: implement toString
+    return '$uid, $message, $cid';
+  }
 }
