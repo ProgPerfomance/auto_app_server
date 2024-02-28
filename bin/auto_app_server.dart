@@ -14,6 +14,7 @@ import 'package:auto_app_server/sell_car/sell_car_request.dart';
 import 'package:auto_app_server/user_sql.dart';
 import 'package:mysql_client/mysql_client.dart';
 import 'package:shelf/shelf.dart';
+import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf_web_socket/shelf_web_socket.dart';
 final Map<String, List<Map<String, dynamic>>> chatMessages = {};
@@ -205,8 +206,7 @@ void main(List<String> arguments) async {
     return Response.ok('');
   });
 
-  var server = await HttpServer.bind('63.251.122.116', 2308);
-  print('Serving at http://${server.address.host}:${server.port}');
+  var server = await serve(router, '63.251.122.116', 2308);
 
 }
 
