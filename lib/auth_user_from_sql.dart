@@ -15,6 +15,7 @@ Future<Map> authUserFromSQL({
     if (password_hash == email.rows.first.assoc()['password_hast']) {
       await sql.close();
       return {
+        'success': true,
         'uid':   int.parse(email.rows.first.assoc()['id'].toString()),
         'name': email.rows.first.assoc()['name'],
         'phone': email.rows.first.assoc()['phone'],
@@ -37,6 +38,7 @@ Future<Map> authUserFromSQL({
       if (password_hash == phone.rows.first.assoc()['password_hast']) {
         await sql.close();
         return {
+          'success': true,
           'uid':   int.parse(phone.rows.first.assoc()['id'].toString()),
           'name': phone.rows.first.assoc()['name'],
           'phone': phone.rows.first.assoc()['phone'],
