@@ -204,29 +204,37 @@ void main(List<String> arguments) async {
     return Response.ok('');
   });
   Map<String, List<WebSocket>> chatConnections = {};
-  router.get('/ws/<chatId>', (Request request, String chatId) {
-    // Upgrade the HTTP request to a WebSocket connection
-    return webSocketHandler((webSocket) {
-      // Store the WebSocket connection based on the chat ID
-      chatConnections.putIfAbsent(chatId, () => []).add(webSocket);
+  router.mount('/ws/', webSocketHandler((webSocket) async {
+    // Чтение сообщений от клиентов и отправка сообщений всем подключенным клиентам
+    await for (var message in webSocket) {
+      // Преобразование сообщения в формат JSON
+      var data = json.decode(message);
 
-      // Listen for messages from this WebSocket
-      webSocket.listen((message) {
-        // Broadcast the message to all WebSocket connections in this chat
-        chatConnections[chatId]?.forEach((socket) {
-          if (socket != webSocket) {
-            socket.add(message);
-          }
-        });
-      }, onDone: () {
-        // When the WebSocket is closed, remove it from the connections list
-        chatConnections[chatId]?.remove(webSocket);
-      });
-    })(request);
-  });
+      // Отправка сообщения всем клиентам в том же чате
+      // (в данном примере предполагается, что data содержит идентификатор чата)
+      await sendMessageToChatMembers(data['chatId'], message);
+    }
+  }));
+
 
   var server = await HttpServer.bind('63.251.122.116', 2308);
   print('Serving at http://${server.address.host}:${server.port}');
+  await server.forEach((httpRequest) async {
+    // Создание объекта Request из HttpRequest
+    var request = Request(httpRequest.method, Uri.parse(httpRequest.uri.toString()),
+        body: await httpRequest.cast<List<int>>().transform(utf8.decoder).join());
+
+    // Передача запроса на обработку роутеру
+    var response = await router(request);
+
+    // Отправка ответа клиенту
+    httpRequest.response
+      ..write(await response.readAsString())
+      ..close();
+  });
+}
+Future<void> sendMessageToChatMembers(String chatId, dynamic message) async {
+  // TODO: Реализация отправки сообщения всем участникам чата
 }
 
 class Message {
