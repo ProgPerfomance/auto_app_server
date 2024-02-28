@@ -205,7 +205,7 @@ void main(List<String> arguments) async {
     return Response.ok('');
   });
   Map<String, List<WebSocket>> chatConnections = {};
-  router.mount('/ws/', webSocketHandler((webSocket) async {
+  router.mount('/ws', webSocketHandler((webSocket) async {
     final chatId = webSocket.url.queryParameters['chatId'];
     if (chatId != null) {
       if (!chatConnections.containsKey(chatId)) {
@@ -234,8 +234,9 @@ void main(List<String> arguments) async {
   print('Serving at http://${server.address.host}:${server.port}');
   await server.forEach((httpRequest) async {
     // Создание объекта Request из HttpRequest
-    var request = Request(httpRequest.method, Uri.parse(httpRequest.uri.toString()),
+    var request = Request(httpRequest.method, httpRequest.requestedUri,
         body: await httpRequest.cast<List<int>>().transform(utf8.decoder).join());
+
 
     // Передача запроса на обработку роутеру
     var response = await router(request);
