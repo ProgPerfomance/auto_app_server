@@ -53,7 +53,6 @@ import 'package:mysql_client/mysql_client.dart';
       },
     );
   }
-  await sql.close();
   return cars;
 }
 
@@ -81,7 +80,6 @@ Future<Map> getCarInfo(String id, MySQLConnection sql) async {
 
   }
   print('req');
-  await sql.close();
   return car;
 }
 

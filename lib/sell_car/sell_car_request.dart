@@ -26,6 +26,5 @@ required  var gcc,
 
   var result = await sql.execute(
       "insert into sell_requests (id, uid, cid, owner_name, owner_email, owner_phone, any_car_accidents, gcc, servise_history) values (${id_int+1}, $uid, $cid, '$owner_name', '$owner_email', '$owner_phone', $any_car_accidents, $gcc, $servise_history);");
-  await sql.close();
   //   "insert into usertable (id, name, password_hash, city, email, country, age, freelancer, last_login, date_of_burn, avatar, skills, education, experience, about_me, client_visiting, servises, rating, reviews, email_succes) values (${id_int + 1}, '$name', '$password_hash', '$city', '$email', '$country', $age, $freelancer, '$last_login', '$date_of_burn', '$avatar', '$skills', '$education', '$experience', '$about_me', '$client_visiting', '$servises', $rating, '$reviews', $email_succes);");
 }

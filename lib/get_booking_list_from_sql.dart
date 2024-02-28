@@ -33,7 +33,6 @@ Future<List> getUserBookingList(String id, MySQLConnection sql) async {
       },
     );
   }
-  await sql.close();
   return booking;
 }
 
@@ -73,7 +72,6 @@ Future<List> getUserBookingListMaster(String id, MySQLConnection sql) async {
       },
     );
   }
-  await sql.close();
   return booking;
 }
 
@@ -84,7 +82,6 @@ Future<List> updateBookingStatus(String id, String status, MySQLConnection sql) 
     "update booking set status = '$status' where id = $id",
     {},
   );
-  await sql.close();
   return booking;
 }
 
@@ -121,6 +118,5 @@ Future<List> getNewBookingListMaster(String id, MySQLConnection sql) async {
       },
     );
   }
-  await sql.close();
   return booking;
 }

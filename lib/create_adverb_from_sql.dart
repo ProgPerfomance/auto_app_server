@@ -30,5 +30,5 @@ void createAdverbFromSql(
 
   var result = await sql.execute(
       "insert into users (id, name, brand, model,price_usd,price_aed,color,killometers,regional_specs,transmission,steering_whell,motor_trim,body,state,guarantee,service_contact, year) values (${id_int + 1}, '$name', '$brand', '$model', $price_usd, $price_aed, '$color', $killometers, '$regional_specs', '$transmission', $steering_whell, '$motor_trim', '$body', '$state', '$guarantee', '$service_contact, $year');");
-  await sql.close();
+
 }

@@ -22,7 +22,6 @@ Future<List> getUserCarList(String id, MySQLConnection sql) async {
       },
     );
   }
-  await sql.close();
   return cars;
 }
 
@@ -34,5 +33,4 @@ void deleteUserCarFromSql({
 
   var result = await sql.execute(
       "delete from usercars where id =$id;");
-  await sql.close();
 }

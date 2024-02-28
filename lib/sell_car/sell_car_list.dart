@@ -29,7 +29,6 @@ Future<List> getSellCarList(MySQLConnection sql) async {
       },
     );
   }
-  await sql.close();
   return cars;
 }
 

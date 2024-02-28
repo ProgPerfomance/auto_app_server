@@ -13,7 +13,6 @@ Future<Map> authUserFromSQL({
     print(email.rows.first);
     print(email.rows.first.assoc()['password_hast']);
     if (password_hash == email.rows.first.assoc()['password_hast']) {
-      await sql.close();
       return {
         'success': true,
         'uid':   int.parse(email.rows.first.assoc()['id'].toString()),
@@ -24,7 +23,6 @@ Future<Map> authUserFromSQL({
         'cid': email.rows.first.assoc()['cid'],
       };
     } else {
-      await sql.close();
       return {'success': false};
     }
   } catch (e) {
@@ -36,7 +34,6 @@ Future<Map> authUserFromSQL({
       );
       print(phone.rows.first.assoc()['password_hast']);
       if (password_hash == phone.rows.first.assoc()['password_hast']) {
-        await sql.close();
         return {
           'success': true,
           'uid':   int.parse(phone.rows.first.assoc()['id'].toString()),
@@ -47,12 +44,10 @@ Future<Map> authUserFromSQL({
           'cid': phone.rows.first.assoc()['cid'],
         };
       } else {
-        await sql.close();
         return {'success': false};
       }
     } catch (e) {
       print(e);
-      await sql.close();
       return {'success': false};
     }
   }

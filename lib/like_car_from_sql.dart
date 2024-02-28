@@ -15,7 +15,6 @@ void likeCarFromSql({
 
   var result = await sql.execute(
       "insert into likes (id, uid, pid) values (${id_int + 1}, $uid, $cid);");
-  await sql.close();
 }
 
 void dislikeCarFromSql({
@@ -25,5 +24,4 @@ void dislikeCarFromSql({
 
   var result = await sql.execute(
       "delete from likes where id =$id;");
-  await sql.close();
 }

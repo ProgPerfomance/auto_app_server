@@ -16,8 +16,5 @@ Future<Map> getUserInfo(String id, MySQLConnection sql) async {
       'cid': data['cid'],
       'rules': data['rules'],
     };
-
-
-  await sql.close();
   return user;
 }
