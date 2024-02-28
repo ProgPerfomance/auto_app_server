@@ -204,66 +204,10 @@ void main(List<String> arguments) async {
     deleteUserCarFromSql(id: data['id'], sql: sql);
     return Response.ok('');
   });
-  Map<String, List<WebSocket>> chatConnections = {};
-  router.mount('/ws', webSocketHandler((webSocket) async {
-    final chatId = webSocket.url.queryParameters['chatId'];
-    if (chatId != null) {
-      if (!chatConnections.containsKey(chatId)) {
-        chatConnections[chatId] = [];
-      }
-      chatConnections[chatId]!.add(webSocket);
-
-      // Добавьте обработчик закрытия соединения для удаления его из списка активных соединений
-      webSocket.done.then((_) {
-        chatConnections[chatId]!.remove(webSocket);
-      });
-    }
-    // Чтение сообщений от клиентов и отправка сообщений всем подключенным клиентам
-    await for (var message in webSocket) {
-      // Преобразование сообщения в формат JSON
-      var data = json.decode(message);
-
-      // Отправка сообщения всем клиентам в том же чате
-      // (в данном примере предполагается, что data содержит идентификатор чата)
-      await sendMessageToChatMembers(data['chatId'], message);
-    }
-  }));
-
 
   var server = await HttpServer.bind('63.251.122.116', 2308);
   print('Serving at http://${server.address.host}:${server.port}');
-  await server.forEach((httpRequest) async {
-    // Создание объекта Request из HttpRequest
-    var request = Request(httpRequest.method, httpRequest.requestedUri,
-        body: await httpRequest.cast<List<int>>().transform(utf8.decoder).join());
 
-
-    // Передача запроса на обработку роутеру
-    var response = await router(request);
-
-    // Отправка ответа клиенту
-    httpRequest.response
-      ..write(await response.readAsString())
-      ..close();
-  });
-}
-Future<void> sendMessageToChatMembers(String chatId, dynamic message) async {
-  if (chatConnections.containsKey(chatId)) {
-    final connections = chatConnections[chatId]!;
-    for (var connection in connections) {
-      connection.add(json.encode(message));
-    }
-  }
 }
 
-class Message {
-  String uid;
-  String cid;
-  String message;
-  Message({required this.uid, required this.message, required this.cid});
-  @override
-  String toString() {
-    // TODO: implement toString
-    return '$uid, $message, $cid';
-  }
-}
+
