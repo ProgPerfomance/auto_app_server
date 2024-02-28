@@ -16,7 +16,8 @@ import 'package:mysql_client/mysql_client.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf_web_socket/shelf_web_socket.dart';
-
+final Map<String, List<Map<String, dynamic>>> chatMessages = {};
+final Map<String, List<WebSocket>> chatConnections = {};
 void main(List<String> arguments) async {
   Router router = Router();
   var sql = await MySQLConnection.createConnection(
@@ -205,6 +206,18 @@ void main(List<String> arguments) async {
   });
   Map<String, List<WebSocket>> chatConnections = {};
   router.mount('/ws/', webSocketHandler((webSocket) async {
+    final chatId = webSocket.url.queryParameters['chatId'];
+    if (chatId != null) {
+      if (!chatConnections.containsKey(chatId)) {
+        chatConnections[chatId] = [];
+      }
+      chatConnections[chatId]!.add(webSocket);
+
+      // Добавьте обработчик закрытия соединения для удаления его из списка активных соединений
+      webSocket.done.then((_) {
+        chatConnections[chatId]!.remove(webSocket);
+      });
+    }
     // Чтение сообщений от клиентов и отправка сообщений всем подключенным клиентам
     await for (var message in webSocket) {
       // Преобразование сообщения в формат JSON
@@ -234,7 +247,12 @@ void main(List<String> arguments) async {
   });
 }
 Future<void> sendMessageToChatMembers(String chatId, dynamic message) async {
-  // TODO: Реализация отправки сообщения всем участникам чата
+  if (chatConnections.containsKey(chatId)) {
+    final connections = chatConnections[chatId]!;
+    for (var connection in connections) {
+      connection.add(json.encode(message));
+    }
+  }
 }
 
 class Message {
