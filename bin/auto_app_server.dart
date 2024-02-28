@@ -210,16 +210,18 @@ Map users = {};
   List<Message> messages = [];
   server.transform(WebSocketTransformer()).listen((webSocket) {
     var uid;
+    var cid;
     webSocket.listen((message) {
       var data = jsonDecode(message);
       uid = data['uid'];
+      cid = data['cid'];
       if(data['requestType'] == 'init') {
         users.addAll({'${data['uid']}': '${data['cid']}'});
       }
       else {
         messages.add(Message(uid: data['uid'], message: data['message'], cid: data['cid']));
       }
-      if(uid == messages.last.uid) {
+      if(cid == messages.last.cid) {
         print('Received message: $message');
         webSocket.add('Server: Message received - $messages');
       }
