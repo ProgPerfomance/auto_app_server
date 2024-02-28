@@ -15,6 +15,7 @@ import 'package:auto_app_server/user_sql.dart';
 import 'package:mysql_client/mysql_client.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
+import 'package:shelf_web_socket/shelf_web_socket.dart';
 
 void main(List<String> arguments) async {
   Router router = Router();
@@ -202,73 +203,30 @@ void main(List<String> arguments) async {
     deleteUserCarFromSql(id: data['id'], sql: sql);
     return Response.ok('');
   });
-  var handler = Pipeline().addMiddleware(logRequests()).addHandler(router);
-Map users = {};
-  // Start the server
+  Map<String, List<WebSocket>> chatConnections = {};
+  router.get('/ws/<chatId>', (Request request, String chatId) {
+    // Upgrade the HTTP request to a WebSocket connection
+    return webSocketHandler((webSocket) {
+      // Store the WebSocket connection based on the chat ID
+      chatConnections.putIfAbsent(chatId, () => []).add(webSocket);
+
+      // Listen for messages from this WebSocket
+      webSocket.listen((message) {
+        // Broadcast the message to all WebSocket connections in this chat
+        chatConnections[chatId]?.forEach((socket) {
+          if (socket != webSocket) {
+            socket.add(message);
+          }
+        });
+      }, onDone: () {
+        // When the WebSocket is closed, remove it from the connections list
+        chatConnections[chatId]?.remove(webSocket);
+      });
+    })(request);
+  });
+
   var server = await HttpServer.bind('63.251.122.116', 2308);
   print('Serving at http://${server.address.host}:${server.port}');
-  List<Message> messages = [];
-  server.transform(WebSocketTransformer()).listen((webSocket) {
-    var uid;
-    var cid;
-    webSocket.listen((message) async {
-      var data = jsonDecode(message);
-      uid = data['uid'];
-      cid = data['cid'];
-      if(data['requestType'] == 'init') {
-        users.addAll({'${data['uid']}': '${data['cid']}'});
-      }
-      else {
-        messages.add(Message(uid: data['uid'], message: data['message'], cid: data['cid']));
-      }
-      if(cid == messages.last.cid)  {
-        print('Received message: $message');
-        final response = await sql.execute(
-          "SELECT * FROM messages where cid = ${data['cid']}",
-        );
-        webSocket.add('Server: Message received - ${response.rows.toList()}');
-      }
-    }, onDone: () {
-      print('WebSocket connection closed');
-      print(uid);
-      users.remove(uid);
-    });
-  });
-  router.post('/startchat', (Request request) async {
-    server.transform(WebSocketTransformer()).listen((webSocket) {
-      var uid;
-      var cid;
-      webSocket.listen((message) async {
-        var data = jsonDecode(message);
-        uid = data['uid'];
-        cid = data['cid'];
-        if(data['requestType'] == 'init') {
-          users.addAll({'${data['uid']}': '${data['cid']}'});
-        }
-        else {
-          var resul = await sql.execute(
-            "SELECT * FROM usercars",
-            {},
-          );
-          String id = resul.rows.last.assoc()['id'] as String;
-          int id_int = int.parse(id);
-         await sql.execute(
-            "insert into messages (id, uid, cid, message) values (${id_int+1}, ${data['uid']}, ${data['cid']},  '${data['message']}')",
-          );
-        }
-        if(cid == messages.last.cid)  {
-          print('Received message: $message');
-          final response = await sql.execute(
-            "SELECT * FROM messages where cid = ${data['cid']}",
-          );
-          webSocket.add('Server: Message received - ${response.rows.toList()}');
-        }
-      }, onDone: () {
-        print('WebSocket connection closed');
-        print(uid);
-      });
-    });
-  });
 }
 
 class Message {
