@@ -1,6 +1,6 @@
 import 'package:mysql_client/mysql_client.dart';
 
-Future<Map> getUserInfo(String id, MySQLConnection sql) async {
+Future<Map> getUserInfo(var id, MySQLConnection sql) async {
 
 
   final response = await sql.execute(
