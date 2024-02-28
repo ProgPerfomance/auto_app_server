@@ -211,7 +211,7 @@ Map users = {};
   server.transform(WebSocketTransformer()).listen((webSocket) {
     var uid;
     var cid;
-    webSocket.listen((message) {
+    webSocket.listen((message) async {
       var data = jsonDecode(message);
       uid = data['uid'];
       cid = data['cid'];
@@ -221,14 +221,52 @@ Map users = {};
       else {
         messages.add(Message(uid: data['uid'], message: data['message'], cid: data['cid']));
       }
-      if(cid == messages.last.cid) {
+      if(cid == messages.last.cid)  {
         print('Received message: $message');
-        webSocket.add('Server: Message received - $messages');
+        final response = await sql.execute(
+          "SELECT * FROM messages where cid = ${data['cid']}",
+        );
+        webSocket.add('Server: Message received - ${response.rows.toList()}');
       }
     }, onDone: () {
       print('WebSocket connection closed');
       print(uid);
       users.remove(uid);
+    });
+  });
+  router.post('/startchat', (Request request) async {
+    server.transform(WebSocketTransformer()).listen((webSocket) {
+      var uid;
+      var cid;
+      webSocket.listen((message) async {
+        var data = jsonDecode(message);
+        uid = data['uid'];
+        cid = data['cid'];
+        if(data['requestType'] == 'init') {
+          users.addAll({'${data['uid']}': '${data['cid']}'});
+        }
+        else {
+          var resul = await sql.execute(
+            "SELECT * FROM usercars",
+            {},
+          );
+          String id = resul.rows.last.assoc()['id'] as String;
+          int id_int = int.parse(id);
+         await sql.execute(
+            "insert into messages (id, uid, cid, message) values (${id_int+1}, ${data['uid']}, ${data['cid']},  '${data['message']}')",
+          );
+        }
+        if(cid == messages.last.cid)  {
+          print('Received message: $message');
+          final response = await sql.execute(
+            "SELECT * FROM messages where cid = ${data['cid']}",
+          );
+          webSocket.add('Server: Message received - ${response.rows.toList()}');
+        }
+      }, onDone: () {
+        print('WebSocket connection closed');
+        print(uid);
+      });
     });
   });
 }
