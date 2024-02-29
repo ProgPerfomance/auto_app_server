@@ -16,7 +16,7 @@ Future<Map<String, dynamic>> createUserFromSQL({
   print(id_int);
 
   await sql.execute(
-      "insert into users (id, name, phone, email, password_hash, rules) values (?, ?, ?, ?, ?, ?);",
+      "insert into users (id, name, phone, email, password_hast, rules) values (?, ?, ?, ?, ?, ?);",
       // Передайте параметры запроса в виде Map<String, dynamic>
       {
         'id': id_int + 1,
