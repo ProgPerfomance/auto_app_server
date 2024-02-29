@@ -2,11 +2,11 @@ import 'package:mysql_client/mysql_client.dart';
 
 
 Future<void> createUserFromSQL({
-  required sql,
-  required name,
-  required phone,
-  required email,
-  required password_hash,
+  required MySQLConnection sql,
+  required String name,
+  required String phone,
+  required String email,
+  required String password_hash,
 }) async {
   var resul = await sql.execute(
     "SELECT * FROM users",
