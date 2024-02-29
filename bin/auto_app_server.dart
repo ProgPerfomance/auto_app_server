@@ -33,20 +33,13 @@ void main(List<String> arguments) async {
   router.post('/reguser', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-  int id = await  createUserFromSQL(
+  Map user = await  createUserFromSQL(
         sql: sql,
         name: data['name'],
         phone: data['phone'],
         email: data['email'],
         password_hash: data['password_hash']);
-    return Response.ok(jsonEncode({
-      'success': true,
-      'uid':   id,
-      'name': data['name'],
-      'phone': data['phone'],
-      'email': data['email'],
-      'rules': 1,
-    }));
+    return Response.ok(jsonEncode(user));
   });
   router.post('/getcarinfo', (Request request) async {
     var json = await request.readAsString();
