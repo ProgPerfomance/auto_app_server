@@ -13,7 +13,7 @@ import 'package:mysql_client/mysql_client.dart';
     var images = [];
     var like;
     var like_id;
-    Directory directory = Directory('images/${data['ccid']}');
+    Directory directory = Directory('images/${data['id']}');
     await for(var entity in directory.list()) {
       File file = entity as File;
       images.add(entity.readAsBytesSync());
@@ -66,7 +66,7 @@ Future<Map> getCarInfo(String id, MySQLConnection sql) async {
   for (final row in response.rows) {
     var data = row.assoc();
     var images = [];
-    Directory directory = Directory('images/${data['ccid']}');
+    Directory directory = Directory('images/${data['id']}');
     await for(var entity in directory.list()) {
       File file = entity as File;
       images.add(entity.readAsBytesSync());
