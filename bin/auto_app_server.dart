@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:auto_app_server/auth_user_from_sql.dart';
+import 'package:auto_app_server/chat/chat.dart';
 import 'package:auto_app_server/create_adverb_from_sql.dart';
 import 'package:auto_app_server/create_booking_from_sql.dart';
 import 'package:auto_app_server/create_user_car_from_sql.dart';
@@ -17,6 +18,7 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf_web_socket/shelf_web_socket.dart';
+
 final Map<String, List<Map<String, dynamic>>> chatMessages = {};
 final Map<String, List<WebSocket>> chatConnections = {};
 void main(List<String> arguments) async {
@@ -199,6 +201,7 @@ void main(List<String> arguments) async {
         date_time: data['date_time']);
     return Response.ok('');
   });
+
   router.post('/deleteusercar', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
@@ -206,8 +209,35 @@ void main(List<String> arguments) async {
     return Response.ok('');
   });
 
+  router.post('/createchat', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    createChat(
+        uid1: data['uid'],
+        uid2: data['uid2'],
+        chatSubject: data['cid'],
+        sql: sql);
+    return Response.ok('created');
+  });
+  router.post('/getchats', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    final response = await getUserChats(uid: data['uid'], sql: sql);
+    return response;
+  });
+  router.post('/getMessages', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    final response = await getMessagesFromSQL(data['cid'], sql: sql);
+    return response;
+  });
+  router.post('/sendMessage', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    await createMessageFromSQL(
+        cid: data['cid'], uid: data['uid'], msg: data['msg'], sql: sql);
+    Response.ok('created');
+  });
+
   var server = await serve(router, '63.251.122.116', 2308);
-
 }
-
-
