@@ -32,15 +32,16 @@ void main(List<String> arguments) async {
   await sql.connect();
   router.post('/reguser', (Request request) async {
     var json = await request.readAsString();
-    var data = await jsonDecode(json);
+    var data = jsonDecode(json); // jsonDecode возвращает Map
 
-  await  createUserFromSQL(
-        sql: sql,
-        name: data['name'],
-        phone: data['phone'],
-        email: data['email'],
-        password_hash: data['password_hash']);
-    return Response.ok('jsonEncode(user)');
+    var user = await createUserFromSQL(
+      sql: sql,
+      name: data['name'],
+      phone: data['phone'],
+      email: data['email'],
+      password_hash: data['password_hash'],
+    );
+    return Response.ok(jsonEncode(user)); // Передайте результат jsonEncode, а не строку 'jsonEncode(user)'
   });
   router.post('/getcarinfo', (Request request) async {
     var json = await request.readAsString();
