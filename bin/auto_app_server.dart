@@ -17,7 +17,6 @@ import 'package:mysql_client/mysql_client.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
-import 'package:shelf_web_socket/shelf_web_socket.dart';
 
 final Map<String, List<Map<String, dynamic>>> chatMessages = {};
 final Map<String, List<WebSocket>> chatConnections = {};
@@ -225,7 +224,7 @@ void main(List<String> arguments) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     final response = await getUserChats(uid: data['uid'], sql: sql);
-    return response;
+    return Response.ok(jsonEncode(response));
   });
   router.post('/getMessages', (Request request) async {
     var json = await request.readAsString();
