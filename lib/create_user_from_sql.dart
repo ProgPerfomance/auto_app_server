@@ -9,16 +9,23 @@ Future<Map<String, dynamic>> createUserFromSQL({
 }) async {
   var resul = await sql.execute(
     "SELECT * FROM users",
-    <String, dynamic>{}, // Укажите, что это Map<String, dynamic>, если это необходимо
+    <String, dynamic>{}, // Используйте Map<String, dynamic> для параметров запроса
   );
   String id = resul.rows.last.assoc()['id'] as String;
   int id_int = int.parse(id);
   print(id_int);
 
   await sql.execute(
-    // Убедитесь, что здесь нет опечаток, исправлено на 'password_hash'
       "insert into users (id, name, phone, email, password_hash, rules) values (?, ?, ?, ?, ?, ?);",
-      [id_int + 1, name, phone, email, password_hash, 0] as Map<String, dynamic>? // Используйте параметризированные запросы для безопасности
+      // Передайте параметры запроса в виде Map<String, dynamic>
+      {
+        'id': id_int + 1,
+        'name': name,
+        'phone': phone,
+        'email': email,
+        'password_hash': password_hash,
+        'rules': 0
+      }
   );
   return {
     'uid': id_int + 1,
