@@ -13,7 +13,7 @@ Future<void> createChat({
   String id = resul.rows.last.assoc()['id'] as String;
   int id_int = int.parse(id);
   var result = await sql.execute(
-      "insert into chats (id, uid1, uid2, sid) values (${id_int + 1}, $uid1, $uid2, $chatSubject')");
+      "insert into chats (id, uid1, uid2, sid) values (${id_int + 1}, $uid1, $uid2, $chatSubject)");
 }
 
 Future<List> getUserChats({

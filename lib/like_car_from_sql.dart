@@ -11,9 +11,8 @@ void likeCarFromSql({
   );
   String id = resul.rows.last.assoc()['id'] as String;
   int id_int = int.parse(id);
-  print(id_int);
 
-  var result = await sql.execute(
+await sql.execute(
       "insert into likes (id, uid, pid) values (${id_int + 1}, $uid, $cid);");
 }
 
@@ -22,6 +21,6 @@ void dislikeCarFromSql({
   required MySQLConnection sql,
 }) async {
 
-  var result = await sql.execute(
+  await sql.execute(
       "delete from likes where id =$id;");
 }

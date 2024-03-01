@@ -18,9 +18,7 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-final Map<String, List<Map<String, dynamic>>> chatMessages = {};
-final Map<String, List<WebSocket>> chatConnections = {};
-void main(List<String> arguments) async {
+void main() async {
   Router router = Router();
   var sql = await MySQLConnection.createConnection(
       host: 'localhost',

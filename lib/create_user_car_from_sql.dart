@@ -16,8 +16,6 @@ Future<int> createUserCarFromSQL({
   );
   String id = resul.rows.last.assoc()['id'] as String;
   int id_int = int.parse(id);
-  print(id_int);
-
   var result = await sql.execute(
       "insert into usercars (id, uid, name, brand, model, year, car_reg) values (${id_int + 1}, $uid, '$name', '$brand', '$model', $year, '$car_reg');");
   return id_int+1;

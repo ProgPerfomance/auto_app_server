@@ -28,7 +28,6 @@ Future<int> createUserCarFromSQL({
       databaseName: 'autoapp');
   await sql.connect();
   print(sql.connected);
-  // make query (notice third parameter, iterable=true)
   var resul = await sql.execute(
     "SELECT * FROM carlist",
     {},
@@ -36,8 +35,7 @@ Future<int> createUserCarFromSQL({
   String id = resul.rows.last.assoc()['id'] as String;
   int id_int = int.parse(id);
   print(id_int);
-
-  var result = await sql.execute(
+  await sql.execute(
         "insert into carlist (id, brand,model,price_usd,price_aed,color,killometers,regional_specs,transmission,steering_whell,motor_trim,body,guarantee,service_contact,description,year) values (${id_int + 1}, '$name', '$brand', '$model', $price_usd, $price_usd, '$color', $killometers, '$regional_specs', '$transmission', $steering_whell, '$motor_trim','$body', '$guarantee', '$service_contact',);");
       return id_int+1;
       //   "insert into usertable (id, name, password_hash, city, email, country, age, freelancer, last_login, date_of_burn, avatar, skills, education, experience, about_me, client_visiting, servises, rating, reviews, email_succes) values (${id_int + 1}, '$name', '$password_hash', '$city', '$email', '$country', $age, $freelancer, '$last_login', '$date_of_burn', '$avatar', '$skills', '$education', '$experience', '$about_me', '$client_visiting', '$servises', $rating, '$reviews', $email_succes);");
