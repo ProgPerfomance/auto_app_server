@@ -235,7 +235,7 @@ void main() async {
     var data = await jsonDecode(json);
     await createMessageFromSQL(
         cid: data['cid'], uid: data['uid'], msg: data['msg'], sql: sql);
-    Response.ok('created');
+   return Response.ok('created');
   });
 
   var server = await serve(router, '63.251.122.116', 2308);
