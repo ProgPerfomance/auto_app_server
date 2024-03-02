@@ -21,7 +21,7 @@ Future<List> getUserChats({
   required MySQLConnection sql,
 }) async {
   List chats = [];
-
+print('uid $uid');
   final response = await sql.execute(
     "SELECT * FROM chats where uid1 = $uid or uid2 = $uid",
     {},

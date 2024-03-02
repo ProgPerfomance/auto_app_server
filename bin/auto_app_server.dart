@@ -228,7 +228,7 @@ void main() async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     final response = await getMessagesFromSQL(data['cid'], sql: sql);
-    return response;
+    return Response.ok(jsonEncode(response));
   });
   router.post('/sendMessage', (Request request) async {
     var json = await request.readAsString();
