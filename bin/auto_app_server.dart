@@ -212,7 +212,7 @@ void main() async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     createChat(
-        uid1: data['uid'],
+        uid1: data['uid1'],
         uid2: data['uid2'],
         chatSubject: data['cid'],
         sql: sql);
