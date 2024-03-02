@@ -120,3 +120,39 @@ Future<List> getNewBookingListMaster(String id, MySQLConnection sql) async {
   }
   return booking;
 }
+
+Future<List> getManagerBookingList(String id, MySQLConnection sql) async {
+
+  List booking = [];
+
+  final response = await sql.execute(
+    "SELECT * FROM booking",
+    {},
+  );
+
+  for (final row in response.rows) {
+    var data = row.assoc();
+    final service = await sql.execute(
+      "SELECT * FROM servises where id = ${data['sid']}",
+      {},
+    );
+    booking.add(
+      {
+        'id': data['id'],
+        'sid': data['sid'],
+        'cid': data['cid'],
+        'uid': data['uid'],
+        'service_name': service.rows.first.assoc()['name'],
+        'owner_name': data['owner_name'],
+        'owner_email': data['owner_email'],
+        'owner_phone': data['owner_phone'],
+        'pickup': data['pickup'],
+        'delivery': data['delivery'],
+        'timestamp': data['timestamp'],
+        'date_time': data['date_time'],
+        'status': data['status'],
+      },
+    );
+  }
+  return booking;
+}
