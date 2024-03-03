@@ -121,7 +121,7 @@ Future<List> getNewBookingListMaster(String id, MySQLConnection sql) async {
   return booking;
 }
 
-Future<List> getManagerBookingList(String id, MySQLConnection sql) async {
+Future<List> getManagerBookingList(MySQLConnection sql) async {
 
   List booking = [];
 

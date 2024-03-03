@@ -24,6 +24,7 @@ Future<List> getSellCarList(MySQLConnection sql) async {
         'brand': car_bloc.rows.first.assoc()['brand'],
         'model': car_bloc.rows.first.assoc()['model'],
         'year': car_bloc.rows.first.assoc()['year'],
+        'car_reg': car_bloc.rows.first.assoc()['car_reg'],
         'any_car_accidents': data['any_car_accidents'],
         'servise_history': data['servise_history'],
       },

@@ -74,7 +74,7 @@ Future<List> getMessagesFromSQL(cid, {required MySQLConnection sql}) async {
         'id': data['id'],
         'chat_id': data['chat_id'],
         'uid': data['uid'],
-        'msg_text': data['msg_text'],
+        'msg_text': data['message'],
       },
     );
   }
