@@ -6,6 +6,7 @@ Future<Map<String, dynamic>> createUserFromSQL({
   required String phone,
   required String email,
   required String password_hash,
+  required rules,
 }) async {
   var resul = await sql.execute(
     "SELECT * FROM users",
@@ -16,7 +17,7 @@ Future<Map<String, dynamic>> createUserFromSQL({
   print(id_int);
 
   await sql.execute(
-      "insert into users (id, name, phone, email, password_hast, rules) values (${id_int+1}, '$name', '$phone', '$email', '$password_hash', 0);",
+      "insert into users (id, name, phone, email, password_hast, rules) values (${id_int+1}, '$name', '$phone', '$email', '$password_hash', $rules);",
       // Передайте параметры запроса в виде Map<String, dynamic>
 
   );
@@ -25,6 +26,6 @@ Future<Map<String, dynamic>> createUserFromSQL({
     'name': name,
     'email': email,
     'phone': phone,
-    'rules': 0,
+    'rules': rules,
   };
 }

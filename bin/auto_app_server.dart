@@ -37,6 +37,7 @@ void main() async {
       name: data['name'],
       phone: data['phone'],
       email: data['email'],
+      rules: data['rules'],
       password_hash: data['password_hash'],
     );
     return Response.ok(jsonEncode(user)); // Передайте результат jsonEncode, а не строку 'jsonEncode(user)'
