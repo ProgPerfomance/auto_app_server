@@ -42,6 +42,7 @@ print('uid $uid');
       },
     );
   }
+  print(chats);
   return chats;
 }
 
