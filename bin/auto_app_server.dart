@@ -168,6 +168,8 @@ void main() async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var rep = await getUserInfo(data['uid'], sql);
+    print('/getUserInfo');
+    print(data['uid']);
     return Response.ok(jsonEncode(rep));
   });
   router.post('/updatebooking', (Request request) async {
