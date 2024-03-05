@@ -30,7 +30,7 @@ Future<void> updateGarage(MySQLConnection sql, {
   required id,
 }) async {
 await sql.execute(
-    "update orders set name='$name', email='$email', phone='$phone',password_hast='$password' WHERE id = $id",
+    "update users set name='$name', email='$email', phone='$phone',password_hast='$password' WHERE id = $id",
   );
 }
 
