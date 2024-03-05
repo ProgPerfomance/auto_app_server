@@ -31,7 +31,7 @@ print('uid $uid');
     var data = row.assoc();
     print(data);
     final user = await sql.execute(
-      "SELECT * FROM users where id = ${data['uid1'] != uid ? data['uid1'] : data['uid2']}",
+      "SELECT * FROM users where id = ${data['uid1']}",
       {},
     );
     chats.add(
