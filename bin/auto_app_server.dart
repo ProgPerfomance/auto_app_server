@@ -231,10 +231,8 @@ void main() async {
     final response = await getUserChats(uid: data['uid'], sql: sql);
     return Response.ok(jsonEncode(response));
   });
-  router.post('/getGarages', (Request request) async {
-    var json = await request.readAsString();
-    var data = await jsonDecode(json);
-    final response = await getGaragesList(sql);
+  router.get('/getGarages', (Request request) async {
+    List response = await getGaragesList(sql);
     return Response.ok(jsonEncode(response));
   });
   router.post('/getMessages', (Request request) async {
