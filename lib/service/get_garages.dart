@@ -13,10 +13,23 @@ Future<List> getGaragesList(MySQLConnection sql) async {
       {
         'id': data['id'],
         'name': data['name'],
-        'phone': data['year'],
-        'email': data['model'],
+        'phone': data['phone'],
+        'email': data['email'],
+        'password': data['password_hast'],
       },
     );
   }
   return garages;
+}
+
+Future<void> updateGarage(MySQLConnection sql, {
+  required name,
+  required password,
+  required phone,
+  required email,
+  required id,
+}) async {
+await sql.execute(
+    "update orders set name='$name', email='$email', phone='$phone',password_hast='$password' WHERE id = $id",
+  );
 }
