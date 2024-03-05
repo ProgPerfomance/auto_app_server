@@ -48,6 +48,12 @@ void main() async {
     var resp = await getCarInfo(data['id'], sql);
     return Response.ok(jsonEncode(resp));
   });
+  router.post('/deleteGarage', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    await deleteGarage(sql, id: data['id']);
+    return Response.ok('deleted');
+  });
   router.post('/getsellrequests', (Request request) async {
     var resp = await getSellCarList(sql); //
     return Response.ok(jsonEncode(resp));

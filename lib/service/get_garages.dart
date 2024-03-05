@@ -33,3 +33,9 @@ await sql.execute(
     "update orders set name='$name', email='$email', phone='$phone',password_hast='$password' WHERE id = $id",
   );
 }
+
+Future<void> deleteGarage(MySQLConnection sql, {required id}) async {
+  await sql.execute(
+    "delete from users where id =$id;",
+  );
+}
