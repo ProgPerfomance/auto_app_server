@@ -13,7 +13,7 @@ void likeCarFromSql({
   int id_int = int.parse(id);
 
 await sql.execute(
-      "insert into likes (id, uid, pid) values (${id_int + 1}, $uid, $cid);");
+      "insert into likes (id, uid, pid) values (${id_int + 1}, $uid, $cid)");
 }
 
 void dislikeCarFromSql({

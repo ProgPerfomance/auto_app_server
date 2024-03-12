@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:auto_app_server/auth_user_from_sql.dart';
 import 'package:auto_app_server/chat/chat.dart';
 import 'package:auto_app_server/create_adverb_from_sql.dart';
@@ -8,6 +7,7 @@ import 'package:auto_app_server/create_user_car_from_sql.dart';
 import 'package:auto_app_server/create_user_from_sql.dart';
 import 'package:auto_app_server/get_booking_list_from_sql.dart';
 import 'package:auto_app_server/get_car_list.dart';
+import 'package:auto_app_server/profile/get_wishlist.dart';
 import 'package:auto_app_server/service/get_garages.dart';
 import 'package:auto_app_server/get_user_cars_form_sql.dart';
 import 'package:auto_app_server/like_car_from_sql.dart';
@@ -40,7 +40,7 @@ void main() async {
       rules: data['rules'],
       password_hash: data['password_hash'],
     );
-    return Response.ok(jsonEncode(user)); // Передайте результат jsonEncode, а не строку 'jsonEncode(user)'
+    return Response.ok(jsonEncode(user));
   });
   router.post('/getcarinfo', (Request request) async {
     var json = await request.readAsString();
@@ -54,9 +54,20 @@ void main() async {
     await deleteGarage(sql, id: data['id']);
     return Response.ok('deleted');
   });
+  router.post('/getWishlist', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+   final response = await getCarWishList(data['uid'],sql);
+    return Response.ok('deleted');
+  });
   router.post('/getsellrequests', (Request request) async {
     var resp = await getSellCarList(sql); //
     return Response.ok(jsonEncode(resp));
+  });
+  router.post('/editProfilePhoto', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    return Response.ok('200');
   });
   router.post('/auth', (Request request) async {
     var json = await request.readAsString();

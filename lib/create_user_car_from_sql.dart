@@ -32,10 +32,6 @@ Future<void> updateUserCarFromSQL({
   required  MySQLConnection sql,
 }) async {
   await sql.execute(
-    "SELECT * FROM usercars where id= $id",
-    {},
-  );
-  await sql.execute(
       "update usercars set name='$name', brand='$brand', model='$model', year=$year, car_reg='$car_reg' where id =$id;");
   //   "insert into usertable (id, name, password_hash, city, email, country, age, freelancer, last_login, date_of_burn, avatar, skills, education, experience, about_me, client_visiting, servises, rating, reviews, email_succes) values (${id_int + 1}, '$name', '$password_hash', '$city', '$email', '$country', $age, $freelancer, '$last_login', '$date_of_burn', '$avatar', '$skills', '$education', '$experience', '$about_me', '$client_visiting', '$servises', $rating, '$reviews', $email_succes);");
 }
