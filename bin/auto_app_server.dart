@@ -275,8 +275,9 @@ void main() async {
         cid: data['cid'], uid: data['uid'], msg: data['msg'], sql: sql);
    return Response.ok('created');
   });
-  router.get('/test_photo', (Request request){
-    return Response.ok(File('images/0/1.jpeg'));
+  router.get('/test_photo', (Request request) async {
+  var a = await  File('images/0/1.jpeg');
+    return Response.ok(a);
   });
   var server = await serve(router, '63.251.122.116', 2308);
 }
