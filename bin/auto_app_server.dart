@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:auto_app_server/auth_user_from_sql.dart';
 import 'package:auto_app_server/chat/chat.dart';
 import 'package:auto_app_server/create_adverb_from_sql.dart';
@@ -274,6 +275,8 @@ void main() async {
         cid: data['cid'], uid: data['uid'], msg: data['msg'], sql: sql);
    return Response.ok('created');
   });
-
+  router.get('/test_photo', (Request request){
+    return Response.ok(File('images/0/1.jpeg'));
+  });
   var server = await serve(router, '63.251.122.116', 2308);
 }
