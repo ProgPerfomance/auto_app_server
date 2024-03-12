@@ -131,7 +131,7 @@ void main() async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     likeCarFromSql(uid: data['uid'], cid: data['cid'], sql: sql);
-    return Response.ok('');
+    return Response.ok('ok');
   });
   router.post('/dislikecar', (Request request) async {
     var json = await request.readAsString();
