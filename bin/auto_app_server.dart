@@ -276,8 +276,19 @@ void main() async {
    return Response.ok('created');
   });
   router.get('/test_photo', (Request request) async {
-  var a = await  File('images/0/1.jpeg');
-    return Response.ok(a);
+    var imagePath = 'images/0/1.jpeg';
+
+    try {
+      var file = File(imagePath);
+      if (await file.exists()) {
+        var bytes = await file.readAsBytes();
+        return Response.ok(bytes, headers: {'Content-Type': 'image/jpeg'});
+      } else {
+        return Response.notFound('File not found');
+      }
+    } catch (e) {
+      return Response.internalServerError(body: 'Error: $e');
+    }
   });
   var server = await serve(router, '63.251.122.116', 2308);
 }
