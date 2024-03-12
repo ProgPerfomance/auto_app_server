@@ -1,9 +1,9 @@
 import 'package:mysql_client/mysql_client.dart';
 
 void likeCarFromSql({
-  required uid,
-  required cid,
-  required sql,
+  required String uid,
+  required String cid,
+  required MySQLConnection sql,
     }) async {
   var resul = await sql.execute(
     "SELECT * FROM likes",
