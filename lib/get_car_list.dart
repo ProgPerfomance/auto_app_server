@@ -13,10 +13,16 @@ import 'package:mysql_client/mysql_client.dart';
     var images = [];
     var like;
     var like_id;
-    Directory directory = Directory('images/${data['id']}');
-    await for(var entity in directory.list()) {
-      File file = entity as File;
-      images.add(entity.readAsBytesSync());
+    try {
+      var file = File('images/${data['ccid']}/0');
+
+      if (await file.exists()) {
+        var bytes = await file.readAsBytes();
+
+
+      } else {
+      }
+    } catch (e) {
     }
     final likeRaw = await sql.execute(
       "SELECT * FROM likes where uid = $id and pid = ${data['id']}",

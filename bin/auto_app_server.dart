@@ -82,31 +82,6 @@ void main() async {
     print(uid);
     return Response.ok(jsonEncode(uid));
   });
-  router.post('/createcar', (Request request) async {
-    var json = await request.readAsString();
-    var data = await jsonDecode(json);
-
-    createAdverbFromSql(
-        sql: sql,
-        year: 'year',
-        name: data['name'],
-        brand: data['brand'],
-        model: data['model'],
-        price_usd: data['price_usd'],
-        price_aed: data['price_aed'],
-        color: data['color'],
-        killometers: data['killometers'],
-        regional_specs: data['regional_specs'],
-        transmission: data['transmission'],
-        steering_whell: data['steering_whell'],
-        motor_trim: data['motor_trim'],
-        body: data['body'],
-        state: data['state'],
-        guarantee: data['guarantee'],
-        service_contact: data['service_contact']);
-
-    return Response.ok('created');
-  });
   router.post('/getcars', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
