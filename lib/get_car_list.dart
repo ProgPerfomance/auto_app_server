@@ -60,16 +60,12 @@ Future<Map> getCarInfo(String id, MySQLConnection sql) async {
   for (final row in response.rows) {
     var data = row.assoc();
     var images = [];
-    Directory directory = Directory('images/${data['id']}');
-    await for(var entity in directory.list()) {
-      File file = entity as File;
-      images.add(entity.readAsBytesSync());
-    }
+    Directory directory = Directory('images/${data['ccid']}');
 
     car =
       {
         'id': data['id'],
-        'images': images,
+        'images': directory.listSync().length,
       };
 
   }

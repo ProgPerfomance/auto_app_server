@@ -296,6 +296,26 @@ void main() async {
       return Response.internalServerError(body: 'Error: $e');
     }
   });
+  router.get('/get_photo', (Request request) async {
+    String? path = request.url.queryParameters['path'];
+    String? ind = request.url.queryParameters['ind'];
+    var imagePathJpeg = 'images/$path/$ind.jpeg';
+    var imagePathJpg ='images/$path/$ind.jpg';
+    try {
+      var file = File(imagePathJpeg).existsSync() ?File(imagePathJpeg): File(imagePathJpg);
+
+      if (await file.exists()) {
+        var bytes = await file.readAsBytes();
+
+        return Response.ok(bytes, headers: {'Content-Type': File(imagePathJpeg).existsSync() ?'image/jpeg' : 'image/jpg'});
+      } else {
+        return Response.notFound('File not found');
+      }
+    } catch (e) {
+      // В случае ошибки, возвращаем 500 ошибку
+      return Response.internalServerError(body: 'Error: $e');
+    }
+  });
   var server = await serve(router, '63.251.122.116', 2308);
 }
 // 'images': images,
