@@ -31,8 +31,7 @@ void main() async {
   await sql.connect(timeoutMs: 99999999999);
   router.post('/reguser', (Request request) async {
     var json = await request.readAsString();
-    var data = jsonDecode(json); // jsonDecode возвращает Map
-
+    var data = jsonDecode(json);
     var user = await createUserFromSQL(
       sql: sql,
       name: data['name'],
@@ -277,7 +276,6 @@ void main() async {
   });
   router.get('/test_photo', (Request request) async {
     var imagePath = 'images/0/1.jpeg';
-
     try {
       var file = File(imagePath);
       if (await file.exists()) {
@@ -294,7 +292,7 @@ void main() async {
     try {
       var requestBody = await request.readAsString();
       var data = jsonDecode(requestBody);
-      var images = data['images'];
+      var images = data;
       var folderName = request.headers['folder-name'];
       var newFolder = Directory('images/$folderName');
       if (!await newFolder.exists()) {
