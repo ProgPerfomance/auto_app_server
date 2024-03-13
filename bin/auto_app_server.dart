@@ -296,7 +296,7 @@ void main() async {
         var file = File(filePath);
         await file.writeAsBytes(imageBytes);
       }
-      createCarFromSQL(sql: sql, name: data['name'], brand: data['brand'], model: data['model'], price_usd: data['price_usd'], price_aed: data['price_aed'], color: data['color'], killometers: data['killometers'], regional_specs: data['regional_specs'], transmission: data['transmission'], steering_whell: data['steering_whell'], motor_trim: data['motor_trim'], body: data['body'], guarantee: data['guarantee'], service_contact: data['service_contact'], description:data['description'], year: data['year'],ccid: data['ccid']);
+      createCarFromSQL(sql: sql, name: data['name'], brand: data['brand'], model: data['model'], price_usd: data['price_usd'], price_aed: data['price_aed'], color: data['color'], killometers: data['killometers'], regional_specs: data['regional_specs'], transmission: data['transmission'], motor_trim: data['motor_trim'], body: data['body'], guarantee: data['guarantee'], service_contact: data['service_contact'], description:data['description'], year: data['year'],ccid: data['ccid']);
       return Response.ok('Images uploaded successfully');
     } catch (e) {
       return Response.internalServerError(body: 'Error: $e');
