@@ -15,7 +15,6 @@ required  var gcc,
 }
 ) async {
 
-  // make query (notice third parameter, iterable=true)
   var resul = await sql.execute(
     "SELECT * FROM sell_requests",
     {},

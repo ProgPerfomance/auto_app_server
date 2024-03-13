@@ -28,7 +28,7 @@ void main() async {
       userName: 'root',
       password: '1234567890',
       databaseName: 'autoapp');
-  await sql.connect();
+  await sql.connect(timeoutMs: 99999999999);
   router.post('/reguser', (Request request) async {
     var json = await request.readAsString();
     var data = jsonDecode(json); // jsonDecode возвращает Map
@@ -286,6 +286,30 @@ void main() async {
       } else {
         return Response.notFound('File not found');
       }
+    } catch (e) {
+      return Response.internalServerError(body: 'Error: $e');
+    }
+  });
+  router.post('/upload_images', (Request request) async {
+    try {
+      var requestBody = await request.readAsString();
+      var data = jsonDecode(requestBody);
+      var images = data['images'];
+      var folderName = request.headers['folder-name'];
+      var newFolder = Directory('images/$folderName');
+      if (!await newFolder.exists()) {
+        await newFolder.create(recursive: true);
+      }
+      for (var i = 0; i < images.length; i++) {
+        var imageData = images[i];
+        var imageBytes = base64Decode(imageData['data']);
+        var imageName = imageData['name'];
+        var filePath = 'images/$folderName/$imageName';
+
+        var file = File(filePath);
+        await file.writeAsBytes(imageBytes);
+      }
+      return Response.ok('Images uploaded successfully');
     } catch (e) {
       return Response.internalServerError(body: 'Error: $e');
     }

@@ -34,7 +34,6 @@ print('uid $uid');
       "SELECT * FROM users where id = ${data['uid1']}",
       {},
     );
-    print(user.rows.first);
     chats.add(
       {
         'cid': data['id'],
@@ -44,7 +43,6 @@ print('uid $uid');
       },
     );
   }
-  print(chats);
   return chats;
 }
 
