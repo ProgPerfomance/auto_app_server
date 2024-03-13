@@ -14,7 +14,7 @@ import 'package:mysql_client/mysql_client.dart';
     var like;
     var like_id;
     try {
-      var file = File('images/${data['ccid']}/0');
+      var file = File('images/${data['ccid']}/1');
 
       if (await file.exists()) {
         image = await file.readAsBytes();
