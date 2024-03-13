@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:auto_app_server/auth_user_from_sql.dart';
 import 'package:auto_app_server/chat/chat.dart';
-import 'package:auto_app_server/create_adverb_from_sql.dart';
 import 'package:auto_app_server/create_booking_from_sql.dart';
 import 'package:auto_app_server/create_manager_car.dart';
 import 'package:auto_app_server/create_user_car_from_sql.dart';
@@ -58,7 +57,7 @@ void main() async {
   router.post('/getWishlist', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-   final response = await getCarWishList(data['uid'],sql);
+   final response = await getWishlist(data['uid'],sql);
     return Response.ok('deleted');
   });
   router.post('/getsellrequests', (Request request) async {

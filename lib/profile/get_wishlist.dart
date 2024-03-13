@@ -1,8 +1,6 @@
-import 'dart:io';
-
 import 'package:mysql_client/mysql_client.dart';
 
-Future<List> getCarWishList(String uid,  MySQLConnection sql) async {
+Future<List> getWishlist(String id,  MySQLConnection sql) async {
   List cars = [];
   final response = await sql.execute(
     "SELECT * FROM carlist",
@@ -11,16 +9,10 @@ Future<List> getCarWishList(String uid,  MySQLConnection sql) async {
 
   for (final row in response.rows) {
     var data = row.assoc();
-    var images = [];
     var like;
     var like_id;
-    Directory directory = Directory('images/${data['id']}');
-    await for(var entity in directory.list()) {
-      File file = entity as File;
-      images.add(entity.readAsBytesSync());
-    }
     final likeRaw = await sql.execute(
-      "SELECT * FROM likes where uid = $uid and pid = ${data['id']}",
+      "SELECT * FROM likes where uid = $id and pid = ${data['id']}",
       {},
     );
     try {
@@ -30,7 +22,7 @@ Future<List> getCarWishList(String uid,  MySQLConnection sql) async {
       like_id = null;
       like = false;
     }
- like == true ?  cars.add(
+   like == true ? cars.add(
       {
         'like_id': like_id,
         'liked': like.toString(),
@@ -50,9 +42,9 @@ Future<List> getCarWishList(String uid,  MySQLConnection sql) async {
         'state': data['state'],
         'guarantee': data['guarantee'],
         'service_contact': data['service_contact'],
-        'images': images[0],
+        'ccid': data['ccid'],
       },
-    ): null;
+    ) : null;
   }
   return cars;
 }
