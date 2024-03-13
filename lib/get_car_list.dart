@@ -10,19 +10,8 @@ import 'package:mysql_client/mysql_client.dart';
 
    for (final row in response.rows) {
     var data = row.assoc();
-    var image;;
     var like;
     var like_id;
-    try {
-      var file = File('images/${data['ccid']}/1.jpg').existsSync() ? File('images/${data['ccid']}/1.jpg') : File('images/${data['ccid']}/1.jpeg');
-
-      if (await file.exists()) {
-
-        image = await file.readAsBytes();
-      } else {
-      }
-    } catch (e) {
-    }
     final likeRaw = await sql.execute(
       "SELECT * FROM likes where uid = $id and pid = ${data['id']}",
       {},
@@ -54,7 +43,7 @@ import 'package:mysql_client/mysql_client.dart';
         'state': data['state'],
         'guarantee': data['guarantee'],
         'service_contact': data['service_contact'],
-        'images': image,
+        'ccid': data['ccid'],
       },
     );
   }
