@@ -18,7 +18,6 @@ import 'package:mysql_client/mysql_client.dart';
 
       if (await file.exists()) {
         image = await file.readAsBytes();
-        print(image);
       } else {
       }
     } catch (e) {
