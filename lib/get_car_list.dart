@@ -10,16 +10,15 @@ import 'package:mysql_client/mysql_client.dart';
 
    for (final row in response.rows) {
     var data = row.assoc();
-    var images = [];
+    var image;;
     var like;
     var like_id;
     try {
       var file = File('images/${data['ccid']}/0');
 
       if (await file.exists()) {
-        var bytes = await file.readAsBytes();
-
-
+        image = await file.readAsBytes();
+        print(image);
       } else {
       }
     } catch (e) {
@@ -55,7 +54,7 @@ import 'package:mysql_client/mysql_client.dart';
         'state': data['state'],
         'guarantee': data['guarantee'],
         'service_contact': data['service_contact'],
-        'images': images[0],
+        'images': image,
       },
     );
   }
