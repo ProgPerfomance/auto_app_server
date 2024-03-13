@@ -4,6 +4,7 @@ import 'package:auto_app_server/auth_user_from_sql.dart';
 import 'package:auto_app_server/chat/chat.dart';
 import 'package:auto_app_server/create_adverb_from_sql.dart';
 import 'package:auto_app_server/create_booking_from_sql.dart';
+import 'package:auto_app_server/create_manager_car.dart';
 import 'package:auto_app_server/create_user_car_from_sql.dart';
 import 'package:auto_app_server/create_user_from_sql.dart';
 import 'package:auto_app_server/get_booking_list_from_sql.dart';
@@ -274,25 +275,13 @@ void main() async {
         cid: data['cid'], uid: data['uid'], msg: data['msg'], sql: sql);
    return Response.ok('created');
   });
-  router.get('/test_photo', (Request request) async {
-    var imagePath = 'images/0/1.jpeg';
-    try {
-      var file = File(imagePath);
-      if (await file.exists()) {
-        var bytes = await file.readAsBytes();
-        return Response.ok(bytes, headers: {'Content-Type': 'image/jpeg'});
-      } else {
-        return Response.notFound('File not found');
-      }
-    } catch (e) {
-      return Response.internalServerError(body: 'Error: $e');
-    }
-  });
-  router.post('/upload_images', (Request request) async {
+  //router.get('/test_photo', (Request request) async {
+
+  router.post('/create_car', (Request request) async {
     try {
       var requestBody = await request.readAsString();
       var data = jsonDecode(requestBody);
-      var images = data;
+      var images = data['images'];
       var folderName = request.headers['folder-name'];
       var newFolder = Directory('images/$folderName');
       if (!await newFolder.exists()) {
@@ -307,6 +296,7 @@ void main() async {
         var file = File(filePath);
         await file.writeAsBytes(imageBytes);
       }
+      createCarFromSQL(sql: sql, name: data['name'], brand: data['brand'], model: data['model'], price_usd: data['price_usd'], price_aed: data['price_aed'], color: data['color'], killometers: data['killometers'], regional_specs: data['regional_specs'], transmission: data['transmission'], steering_whell: data['steering_whell'], motor_trim: data['motor_trim'], body: data['body'], guarantee: data['guarantee'], service_contact: data['service_contact'], description:data['description'], year: data['year'],ccid: data['ccid']);
       return Response.ok('Images uploaded successfully');
     } catch (e) {
       return Response.internalServerError(body: 'Error: $e');
