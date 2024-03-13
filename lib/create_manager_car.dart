@@ -1,7 +1,7 @@
 import 'package:mysql_client/mysql_client.dart';
 
 Future<int> createCarFromSQL({
-  required sql,
+  required MySQLConnection sql,
   required String name,
   required String brand,
   required String model,
