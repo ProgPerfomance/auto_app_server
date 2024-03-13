@@ -296,7 +296,7 @@ void main() async {
         var file = File(filePath);
         await file.writeAsBytes(imageBytes);
       }
-    await  createCarFromSQL(sql: sql, name: data['name'], brand: data['brand'], model: data['model'], price_usd: data['price_usd'], price_aed: data['price_aed'], color: data['color'], killometers: data['killometers'], regional_specs: data['regional_specs'], transmission: data['transmission'], motor_trim: data['motor_trim'], body: data['body'], guarantee: data['guarantee'], service_contact: data['service_contact'], description:data['description'], year: data['year'],ccid: data['ccid']);
+    await createCarFromSQL(sql: sql, name: data['name'], brand: data['brand'], model: data['model'], price_usd: data['price_usd'], price_aed: data['price_aed'], color: data['color'], killometers: data['killometers'], regional_specs: data['regional_specs'], transmission: data['transmission'], motor_trim: data['motor_trim'], body: data['body'], guarantee: data['guarantee'], service_contact: data['service_contact'], description: data['description'], year: data['year'], ccid: data['ccid']);
       return Response.ok('Images uploaded successfully');
     } catch (e) {
       return Response.internalServerError(body: 'Error: $e');
@@ -304,3 +304,20 @@ void main() async {
   });
   var server = await serve(router, '63.251.122.116', 2308);
 }
+// 'images': images,
+//         'ccid': ccid.toString(),
+//         'brand': widget.brand.toString(),
+//         'body': widget.body.toString(),
+//         '': widget.price_AED.toString(),
+//         '': widget.price_USD.toString(),
+//         'model': widget.model.toString(),
+//         'killometers': widget.miliege.toString(),
+//         'color': widget.color.toString(),
+//         'regional_specs': widget.regionalSpecs.toString(),
+//         'steering_whell': false.toString(),
+//         '': widget.motorTrim.toString(),
+//         'guarantee': widget.gurantee.toString(),
+//         'service_contact': widget.serviceContact.toString(),
+//         'description': descriptionController.text.toString(),
+//         'name': widget.name.toString(),
+//         'year': widget.year.toString(),
