@@ -58,7 +58,7 @@ void main() async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
    final response = await getWishlist(data['uid'],sql);
-    return Response.ok('deleted');
+    return Response.ok(jsonEncode(response));
   });
   router.post('/getsellrequests', (Request request) async {
     var resp = await getSellCarList(sql); //
