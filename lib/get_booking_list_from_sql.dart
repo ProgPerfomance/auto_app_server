@@ -136,6 +136,10 @@ Future<List> getManagerBookingList(MySQLConnection sql) async {
       "SELECT * FROM servises where id = ${data['sid']}",
       {},
     );
+    final car = await sql.execute(
+      "SELECT * FROM usercars where id = ${data['cid']}",
+      {},
+    );
     booking.add(
       {
         'id': data['id'],
@@ -143,6 +147,7 @@ Future<List> getManagerBookingList(MySQLConnection sql) async {
         'cid': data['cid'],
         'uid': data['uid'],
         'garage': data['garage'],
+        'car_name': car.rows.first.assoc()['name'],
         'service_name': service.rows.first.assoc()['name'],
         'owner_name': data['owner_name'],
         'owner_email': data['owner_email'],
@@ -169,6 +174,10 @@ Future<List> getManagerNewBookingList(MySQLConnection sql) async {
 
   for (final row in response.rows) {
     var data = row.assoc();
+    final car = await sql.execute(
+      "SELECT * FROM usercars where id = ${data['cid']}",
+      {},
+    );
     final service = await sql.execute(
       "SELECT * FROM servises where id = ${data['sid']}",
       {},
@@ -180,6 +189,7 @@ Future<List> getManagerNewBookingList(MySQLConnection sql) async {
         'cid': data['cid'],
         'uid': data['uid'],
         'garage': data['garage'],
+        'car_name': car.rows.first.assoc()['name'],
         'service_name': service.rows.first.assoc()['name'],
         'owner_name': data['owner_name'],
         'owner_email': data['owner_email'],
