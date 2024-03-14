@@ -50,3 +50,8 @@ Future<void> deleteServiceBlock(MySQLConnection sql, {id}) async {
 Future<void> updateServiceBlock(MySQLConnection sql, {id, title}) async {
   await sql.execute("update service_blocs set title ='$title' where id =$id;");
 }
+
+
+Future<void> createOffer() async {
+
+}

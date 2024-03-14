@@ -189,6 +189,12 @@ void main() async {
     var rep = await getManagerBookingList(sql);
     return Response.ok(jsonEncode(rep));
   });
+  router.post('/getManagerNewBooking', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    var rep = await getManagerNewBookingList(sql);
+    return Response.ok(jsonEncode(rep));
+  });
   router.post('/getnewmasterbooking', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
