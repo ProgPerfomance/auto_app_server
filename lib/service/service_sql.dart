@@ -15,10 +15,10 @@ Future<Map> getServiceInfo(String id, MySQLConnection sql) async {
   List includedList =[];
   List notIncludedList =[];
   for(var inc in included.rows) {
-    includedList.add(inc.assoc()['title']);
+    includedList.add({'title': inc.assoc()['title'], 'id': inc.assoc()['id']});
   }
   for(var inc in notIncluded.rows) {
-    notIncludedList.add(inc.assoc()['title']);
+    notIncludedList.add({'title': inc.assoc()['title'], 'id': inc.assoc()['id']});
   }
 final dataService= response.rows.first.assoc();
   return {
