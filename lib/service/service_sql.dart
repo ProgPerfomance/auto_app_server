@@ -5,11 +5,11 @@ Future<Map> getServiceInfo(String id, MySQLConnection sql) async {
     {},
   );
   final included = await sql.execute(
-    "SELECT * FROM service_block where sid = $id and included = 1",
+    "SELECT * FROM service_blocs where sid = $id and included = 1",
     {},
   );
   final notIncluded = await sql.execute(
-    "SELECT * FROM service_block where sid = $id and included = 0",
+    "SELECT * FROM service_blocs where sid = $id and included = 0",
     {},
   );
   List includedList =[];
