@@ -164,14 +164,13 @@ Future<List> getManagerNewBookingList(MySQLConnection sql) async {
   List booking = [];
 
   final response = await sql.execute(
-    "SELECT * FROM booking",
-    {},
+    "SELECT * FROM booking where status ='Pending'",
   );
 
   for (final row in response.rows) {
     var data = row.assoc();
     final service = await sql.execute(
-      "SELECT * FROM servises where id = ${data['sid']} and status='Pending'",
+      "SELECT * FROM servises where id = ${data['sid']}",
       {},
     );
     booking.add(
