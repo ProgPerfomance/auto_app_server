@@ -15,6 +15,7 @@ import 'package:auto_app_server/get_user_cars_form_sql.dart';
 import 'package:auto_app_server/like_car_from_sql.dart';
 import 'package:auto_app_server/sell_car/sell_car_list.dart';
 import 'package:auto_app_server/sell_car/sell_car_request.dart';
+import 'package:auto_app_server/service/service_sql.dart';
 import 'package:auto_app_server/user_sql.dart';
 import 'package:mysql_client/mysql_client.dart';
 import 'package:shelf/shelf.dart';
@@ -48,6 +49,12 @@ void main() async {
     var data = await jsonDecode(json);
     var resp = await getCarInfo(data['id'], sql);
     return Response.ok(jsonEncode(resp));
+  });
+  router.post('/getServiceInfo', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    Map response = await getServiceInfo(data['cid'], sql);
+    return Response.ok(jsonEncode(response));
   });
   router.post('/deleteGarage', (Request request) async {
     var json = await request.readAsString();
