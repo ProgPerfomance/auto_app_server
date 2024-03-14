@@ -49,7 +49,7 @@ import 'package:mysql_client/mysql_client.dart';
       },
     );
   }
-  return cars;
+  return List.from(cars.reversed);
 }
 
 Future<Map> getCarInfo(String id, MySQLConnection sql) async {

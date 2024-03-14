@@ -48,5 +48,5 @@ Future<List> getWishlist(String id,  MySQLConnection sql) async {
       },
     ) : null;
   }
-  return cars;
+  return List.from(cars.reversed);
 }
