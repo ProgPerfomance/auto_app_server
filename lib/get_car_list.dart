@@ -44,6 +44,7 @@ import 'package:mysql_client/mysql_client.dart';
         'guarantee': data['guarantee'],
         'service_contact': data['service_contact'],
         'ccid': data['ccid'],
+        'year': data['year'],
         'description': data['description'],
       },
     );

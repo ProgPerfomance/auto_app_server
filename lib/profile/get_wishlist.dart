@@ -25,6 +25,7 @@ Future<List> getWishlist(String id,  MySQLConnection sql) async {
    like == true ? cars.add(
       {
         'like_id': like_id,
+        'year': data['year'],
         'liked': like.toString(),
         'id': data['id'],
         'name': data['name'],
