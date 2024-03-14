@@ -43,6 +43,7 @@ Future<List> getWishlist(String id,  MySQLConnection sql) async {
         'guarantee': data['guarantee'],
         'service_contact': data['service_contact'],
         'ccid': data['ccid'],
+        'description': data['description'],
       },
     ) : null;
   }
