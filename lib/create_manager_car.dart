@@ -25,8 +25,6 @@ Future<int> createCarFromSQL({
   );
   String id = resul.rows.last.assoc()['id'] as String;
   int id_int = int.parse(id);
-  print(id_int);
- // await sql.execute("insert into carlist (id,name) values(${id_int+1}, '$name')");
   await sql.execute(
       "insert into carlist (id, name, brand, model, price_usd, price_aed, color, killometers,regional_specs,transmission,motor_trim, body, guarantee,service_contact,description,year,ccid) values (${id_int + 1}, '$name', '$brand', '$model', $price_usd, $price_aed, '$color', $killometers, '$regional_specs','$transmission', '$motor_trim', '$body','$guarantee','$service_contact','$description',$year, '$ccid')");
   return id_int + 1;

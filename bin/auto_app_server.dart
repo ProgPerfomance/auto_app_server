@@ -56,6 +56,24 @@ void main() async {
     Map response = await getServiceInfo(data['cid'], sql);
     return Response.ok(jsonEncode(response));
   });
+  router.post('/createServiceBlock', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    await addServiceBlock(sql, sid: data['cid'], title: data['title'], included: data['included']);
+    return Response.ok('created');
+  });
+  router.post('/updateServiceBlock', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    await updateServiceBlock(sql, id: data['cid'], title: data['title']);
+    return Response.ok('updated');
+  });
+  router.post('/deleteServiceBlock', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    await deleteServiceBlock(sql, id: data['cid']);
+    return Response.ok('deleted');
+  });
   router.post('/deleteGarage', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
