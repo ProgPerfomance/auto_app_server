@@ -31,6 +31,8 @@ void deleteUserCarFromSql({
   required MySQLConnection sql,
 }) async {
 
-  var result = await sql.execute(
+  await sql.execute(
       "delete from usercars where id =$id;");
+  await sql.execute(
+      "delete from sell_requests where cid =$id;");
 }
