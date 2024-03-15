@@ -236,16 +236,16 @@ void main() async {
     var data = await jsonDecode(json);
     createBookingFromSQL(
         sql: sql,
-        sid: data['sid'],
-        cid: data['cid'],
-        uid: data['uid'],
-        owner_name: data['owner_name'],
-        owner_email: data['owner_email'],
-        owner_phone: data['owner_phone'],
+        sid: data['sid'].toString(),
+        cid: data['cid'].toString(),
+        uid: data['uid'].toString(),
+        owner_name: data['owner_name'].toString(),
+        owner_email: data['owner_email'].toString(),
+        owner_phone: data['owner_phone'].toString(),
         pickup: data['pickup'],
         delivery: data['delivery'],
-        timestamp: data['timestamp'],
-        date_time: data['date_time']);
+        timestamp: data['timestamp'].toString(),
+        date_time: data['date_time'].toString());
     return Response.ok('');
   });
 

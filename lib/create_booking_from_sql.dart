@@ -2,7 +2,7 @@
 import 'package:mysql_client/mysql_client.dart';
 
 Future<int> createBookingFromSQL({
-  required sql, required sid, required cid, required uid, required owner_name, required owner_email, required owner_phone, required pickup, required delivery, required timestamp, required date_time,
+  required MySQLConnection sql, required String sid, required String cid, required String uid, required String? owner_name, required String owner_email, required String? owner_phone, required String? pickup, required  String? delivery, required  String? timestamp, required String? date_time,
 }) async {
 
   var resul = await sql.execute(
@@ -13,7 +13,7 @@ Future<int> createBookingFromSQL({
   int id_int = int.parse(id);
   print(id_int);
 
-  var result = await sql.execute(
+  await sql.execute(
       "insert into booking (id, sid, cid, uid, owner_name,owner_email, owner_phone, pickup, delivery,timestamp, status, date_time) values (${id_int+1}, $sid, $cid, $uid, '$owner_name', '$owner_email', '$owner_phone', '$pickup', '$delivery', '$timestamp', 'Pending', '$date_time');");
   return id_int+1;
   //   "insert into usertable (id, name, password_hash, city, email, country, age, freelancer, last_login, date_of_burn, avatar, skills, education, experience, about_me, client_visiting, servises, rating, reviews, email_succes) values (${id_int + 1}, '$name', '$password_hash', '$city', '$email', '$country', $age, $freelancer, '$last_login', '$date_of_burn', '$avatar', '$skills', '$education', '$experience', '$about_me', '$client_visiting', '$servises', $rating, '$reviews', $email_succes);");
