@@ -1,7 +1,6 @@
 import 'package:mysql_client/mysql_client.dart';
 
 Future<List> getUserBookingList(String id, MySQLConnection sql) async {
-
   List booking = [];
 
   final response = await sql.execute(
@@ -35,8 +34,6 @@ Future<List> getUserBookingList(String id, MySQLConnection sql) async {
   }
   return booking;
 }
-
-
 
 Future<List> getUserBookingListMaster(String id, MySQLConnection sql) async {
   List booking = [];
@@ -75,7 +72,8 @@ Future<List> getUserBookingListMaster(String id, MySQLConnection sql) async {
   return booking;
 }
 
-Future<List> updateBookingStatus(String id, String status, MySQLConnection sql) async {
+Future<List> updateBookingStatus(
+    String id, String status, MySQLConnection sql) async {
   List booking = [];
 
   final response = await sql.execute(
@@ -122,7 +120,6 @@ Future<List> getNewBookingListMaster(String id, MySQLConnection sql) async {
 }
 
 Future<List> getManagerBookingList(MySQLConnection sql) async {
-
   List booking = [];
 
   final response = await sql.execute(
@@ -141,9 +138,9 @@ Future<List> getManagerBookingList(MySQLConnection sql) async {
       {},
     );
 
-     final  garage = await sql.execute(
-        "SELECT * FROM users where id = ${data['garage']}",
-      );
+    final garage = await sql.execute(
+      "SELECT * FROM users where id = ${data['garage']}",
+    );
     booking.add(
       {
         'id': data['id'],
@@ -169,9 +166,7 @@ Future<List> getManagerBookingList(MySQLConnection sql) async {
   return booking;
 }
 
-
 Future<List> getManagerNewBookingList(MySQLConnection sql) async {
-
   List booking = [];
 
   final response = await sql.execute(
@@ -188,6 +183,9 @@ Future<List> getManagerNewBookingList(MySQLConnection sql) async {
       "SELECT * FROM servises where id = ${data['sid']}",
       {},
     );
+    final garage = await sql.execute(
+      "SELECT * FROM users where id = ${data['garage']}",
+    );
     booking.add(
       {
         'id': data['id'],
@@ -195,6 +193,7 @@ Future<List> getManagerNewBookingList(MySQLConnection sql) async {
         'cid': data['cid'],
         'uid': data['uid'],
         'garage': data['garage'],
+        'garage_name': garage.rows.first.assoc()['name'],
         'car_name': car.rows.first.assoc()['name'],
         'service_name': service.rows.first.assoc()['name'],
         'owner_name': data['owner_name'],
