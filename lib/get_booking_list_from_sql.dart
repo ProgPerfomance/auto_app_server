@@ -39,7 +39,7 @@ Future<List> getUserBookingListMaster(String id, MySQLConnection sql) async {
   List booking = [];
 
   final response = await sql.execute(
-    "SELECT * FROM booking where sid = $id",
+    "SELECT * FROM booking where garage = $id",
     {},
   );
 
@@ -86,7 +86,7 @@ Future<List> updateBookingStatus(
 Future<List> getNewBookingListMaster(String id, MySQLConnection sql) async {
   List booking = [];
   final response = await sql.execute(
-    "SELECT * FROM booking where sid = $id and status = 'Pending'",
+    "SELECT * FROM booking where garage = $id and status = 'Pending'",
     {},
   );
 
