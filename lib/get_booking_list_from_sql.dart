@@ -148,7 +148,7 @@ Future<List> getManagerBookingList(MySQLConnection sql) async {
         'cid': data['cid'],
         'uid': data['uid'],
         'garage': data['garage'],
-        'garage_name': garage.rows.first.assoc()['name'],
+        'garage_name': garage.rows.first.assoc()['username'],
         'car_name': car.rows.first.assoc()['name'],
         'service_name': service.rows.first.assoc()['name'],
         'owner_name': data['owner_name'],
