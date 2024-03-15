@@ -175,17 +175,18 @@ Future<List> getManagerNewBookingList(MySQLConnection sql) async {
   List booking = [];
 
   final response = await sql.execute(
-    "SELECT * FROM booking where status ='Pending'",
+    "SELECT * FROM booking where status = 'Pending'",
+    {},
   );
 
   for (final row in response.rows) {
     var data = row.assoc();
-    final car = await sql.execute(
-      "SELECT * FROM usercars where id = ${data['cid']}",
-      {},
-    );
     final service = await sql.execute(
       "SELECT * FROM servises where id = ${data['sid']}",
+      {},
+    );
+    final car = await sql.execute(
+      "SELECT * FROM usercars where id = ${data['cid']}",
       {},
     );
     var garage_name;
@@ -215,6 +216,7 @@ Future<List> getManagerNewBookingList(MySQLConnection sql) async {
         'timestamp': data['timestamp'],
         'date_time': data['date_time'],
         'status': data['status'],
+        'description': data['description'],
       },
     );
   }
