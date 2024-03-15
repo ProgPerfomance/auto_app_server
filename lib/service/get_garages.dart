@@ -39,3 +39,9 @@ Future<void> deleteGarage(MySQLConnection sql, {required id}) async {
     "delete from users where id =$id;",
   );
 }
+
+Future<void> setGarage(MySQLConnection sql, {required id, required garage}) async {
+  await sql.execute(
+    "update booking set garage = $garage where id = $id;",
+  );
+}
