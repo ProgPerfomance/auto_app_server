@@ -140,6 +140,10 @@ Future<List> getManagerBookingList(MySQLConnection sql) async {
       "SELECT * FROM usercars where id = ${data['cid']}",
       {},
     );
+
+     final  garage = await sql.execute(
+        "SELECT * FROM users where id = ${data['garage']}",
+      );
     booking.add(
       {
         'id': data['id'],
@@ -147,6 +151,7 @@ Future<List> getManagerBookingList(MySQLConnection sql) async {
         'cid': data['cid'],
         'uid': data['uid'],
         'garage': data['garage'],
+        'garage_name': garage.rows.first.assoc()['name'],
         'car_name': car.rows.first.assoc()['name'],
         'service_name': service.rows.first.assoc()['name'],
         'owner_name': data['owner_name'],
