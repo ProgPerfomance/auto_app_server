@@ -168,7 +168,7 @@ Future<List> getManagerBookingList(MySQLConnection sql) async {
       },
     );
   }
-  return booking;
+  return List.from(booking.reversed);
 }
 
 Future<List> getManagerNewBookingList(MySQLConnection sql) async {
@@ -220,5 +220,5 @@ Future<List> getManagerNewBookingList(MySQLConnection sql) async {
       },
     );
   }
-  return booking;
+  return List.from(booking.reversed);
 }
