@@ -157,6 +157,7 @@ Future<List> getManagerBookingList(MySQLConnection sql) async {
         'timestamp': data['timestamp'],
         'date_time': data['date_time'],
         'status': data['status'],
+        'description': data['description'],
       },
     );
   }
