@@ -11,8 +11,6 @@ Future<int> createBookingFromSQL({
   );
   String id = resul.rows.last.assoc()['id'] as String;
   int id_int = int.parse(id);
-  print(id_int);
-
   await sql.execute(
       "insert into booking (id, sid, cid, uid, owner_name,owner_email, owner_phone, pickup, delivery,timestamp, status, date_time) values (${id_int+1}, $sid, $cid, $uid, '$owner_name', '$owner_email', '$owner_phone', '$pickup', '$delivery', '$timestamp', 'Pending', '$date_time');");
   return id_int+1;

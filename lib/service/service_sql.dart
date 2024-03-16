@@ -51,7 +51,31 @@ Future<void> updateServiceBlock(MySQLConnection sql, {id, title}) async {
   await sql.execute("update service_blocs set title ='$title' where id =$id;");
 }
 
+Future<void> createOffer(MySQLConnection sql,
+    {required name,
+    required price,
+    required low_price,
+    required description,
+    required garage}) async {
+  var resul = await sql.execute(
+    "SELECT * FROM servises",
+  );
+  String id = resul.rows.last.assoc()['id'] as String;
+  int id_int = int.parse(id);
+  await sql.execute(
+      "insert into servises (id, name, price, low_price, description, special_offer, garage) values (${id_int + 1},'$name', $price, $low_price, '$description, 1, $garage')");
+}
 
-Future<void> createOffer() async {
-
+Future<List> getAllOffers(
+  MySQLConnection sql,
+) async {
+ final response = await sql.execute("select * from servises where special_offer=1");
+  List data = [];
+  for(var item in response.rows) {
+    data.add({
+      'name': item.assoc()['name'],
+      's': 'a',
+    });
+  }
+  return  data;
 }

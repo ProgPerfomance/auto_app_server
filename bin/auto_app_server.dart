@@ -276,6 +276,12 @@ void main() async {
     List response = await getGaragesList(sql);
     return Response.ok(jsonEncode(response));
   });
+  router.post('/createOffer', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    await createOffer(sql, name: data['name'], price: data['price'], low_price: data['low_price'], description: data['description'], garage: data['garage']);
+    return Response.ok('created');
+  });
   router.post('/getMessages', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
