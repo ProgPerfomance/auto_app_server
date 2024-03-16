@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:mysql_client/mysql_client.dart';
 
 Future<void> createChat({
@@ -21,7 +23,7 @@ Future<List> getUserChats({
   required MySQLConnection sql,
 }) async {
   List chats = [];
-print('uid $uid');
+  print('uid $uid');
   final response = await sql.execute(
     "SELECT * FROM chats where uid1 = $uid or uid2 = $uid",
     {},
@@ -31,21 +33,29 @@ print('uid $uid');
     var data = row.assoc();
     print(data);
     final user = await sql.execute(
-      "SELECT * FROM users where id = ${uid != data['uid1'] ?data['uid1'] :data['uid2']}",
+      "SELECT * FROM users where id = ${uid != data['uid1'] ? data['uid1'] : data['uid2']}",
       {},
     );
-    final lastMessage = await sql.execute(
-      "SELECT * FROM messages where cid = ${data['cid']}",
-      {},
-    );
+    var timestamp;
+    var msgText;
+    try {
+      final lastMessage = await sql.execute(
+        "SELECT * FROM messages where cid = ${data['cid']}",
+      );
+      timestamp = lastMessage.rows.first.assoc()['timestamp'];
+      msgText = lastMessage.rows.first.assoc()['message'];
+    } catch (e) {
+      timestamp = null;
+      msgText = null;
+    }
     chats.add(
       {
         'cid': data['id'],
         'uid_opponent': data['uid1'] != uid ? data['uid1'] : data['uid2'],
         'opponent_name': user.rows.first.assoc()['name'],
         'sid': data['sid'],
-        'last_message': lastMessage.rows.first.assoc()['message'],
-        'timestamp':lastMessage.rows.first.assoc()['timestamp'],
+        'last_message': msgText,
+        'timestamp': timestamp,
       },
     );
   }
