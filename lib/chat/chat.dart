@@ -6,6 +6,7 @@ Future<void> createChat({
   required uid1,
   required uid2,
   required chatSubject,
+  required type,
   required MySQLConnection sql,
 }) async {
   var resul = await sql.execute(
@@ -15,7 +16,7 @@ Future<void> createChat({
   String id = resul.rows.last.assoc()['id'] as String;
   int id_int = int.parse(id);
   var result = await sql.execute(
-      "insert into chats (id, uid1, uid2, sid) values (${id_int + 1}, $uid1, $uid2, $chatSubject)");
+      "insert into chats (id, uid1, uid2, sid, type) values (${id_int + 1}, $uid1, $uid2, $chatSubject, '$type')");
 }
 
 Future<List> getUserChats({
