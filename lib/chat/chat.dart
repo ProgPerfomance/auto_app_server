@@ -40,10 +40,10 @@ Future<List> getUserChats({
     var msgText;
     try {
       final lastMessage = await sql.execute(
-        "SELECT * FROM messages where cid = ${data['cid']}",
+        "SELECT * FROM messages where cid = ${data['id']}",
       );
-      timestamp = lastMessage.rows.first.assoc()['timestamp'];
-      msgText = lastMessage.rows.first.assoc()['message'];
+      timestamp = lastMessage.rows.last.assoc()['timestamp'];
+      msgText = lastMessage.rows.last.assoc()['message'];
     } catch (e) {
       timestamp = null;
       msgText = null;
