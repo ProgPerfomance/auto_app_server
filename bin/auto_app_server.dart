@@ -259,13 +259,13 @@ void main() async {
   router.post('/createchat', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    createChat(
+   int response = await createChat(
       type: data['type'],
         uid1: data['uid1'],
         uid2: data['uid2'],
         chatSubject: data['cid'],
         sql: sql);
-    return Response.ok('created');
+    return Response.ok(jsonEncode(response));
   });
   router.post('/getchats', (Request request) async {
     var json = await request.readAsString();

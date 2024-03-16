@@ -2,7 +2,7 @@
 
 import 'package:mysql_client/mysql_client.dart';
 
-Future<void> createChat({
+Future<int> createChat({
   required uid1,
   required uid2,
   required chatSubject,
@@ -17,6 +17,7 @@ Future<void> createChat({
   int id_int = int.parse(id);
   var result = await sql.execute(
       "insert into chats (id, uid1, uid2, sid, type) values (${id_int + 1}, $uid1, $uid2, $chatSubject, '$type')");
+  return id_int+1;
 }
 
 Future<List> getUserChats({
