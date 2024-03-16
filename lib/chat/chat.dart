@@ -34,12 +34,18 @@ print('uid $uid');
       "SELECT * FROM users where id = ${uid != data['uid1'] ?data['uid1'] :data['uid2']}",
       {},
     );
+    final lastMessage = await sql.execute(
+      "SELECT * FROM messages where cid = ${data['cid']}",
+      {},
+    );
     chats.add(
       {
         'cid': data['id'],
         'uid_opponent': data['uid1'] != uid ? data['uid1'] : data['uid2'],
         'opponent_name': user.rows.first.assoc()['name'],
         'sid': data['sid'],
+        'last_message': lastMessage.rows.first.assoc()['message'],
+        'timestamp':lastMessage.rows.first.assoc()['timestamp'],
       },
     );
   }
