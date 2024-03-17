@@ -82,6 +82,7 @@ Future<List> getMyOffers(MySQLConnection sql, {required garage}) async {
     final data = row.assoc();
     offers.add(
       {
+        'id': data['id'],
         'name': data['name'],
         'price': data['price'],
         'low_price': data['low_price'],
@@ -106,6 +107,7 @@ Future<List> getLastOffers(MySQLConnection sql) async {
     final data = row.assoc();
     offers.add(
       {
+        'id': data['id'],
         'name': data['name'],
         'price': data['price'],
         'low_price': data['low_price'],
