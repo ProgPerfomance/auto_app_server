@@ -59,7 +59,8 @@ void main() async {
   router.post('/createServiceBlock', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    await addServiceBlock(sql, sid: data['cid'], title: data['title'], included: data['included']);
+    await addServiceBlock(sql,
+        sid: data['cid'], title: data['title'], included: data['included']);
     return Response.ok('created');
   });
   router.post('/updateServiceBlock', (Request request) async {
@@ -83,7 +84,7 @@ void main() async {
   router.post('/getWishlist', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-   final response = await getWishlist(data['uid'],sql);
+    final response = await getWishlist(data['uid'], sql);
     return Response.ok(jsonEncode(response));
   });
   router.post('/updateName', (Request request) async {
@@ -186,7 +187,12 @@ void main() async {
   router.post('/editGarage', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    updateGarage(sql, name: data['name'], password: data['password'], phone: data['phone'], email: data['email'], id: data['id']);
+    updateGarage(sql,
+        name: data['name'],
+        password: data['password'],
+        phone: data['phone'],
+        email: data['email'],
+        id: data['id']);
     return Response.ok('updated');
   });
   router.get('/getmanagerbooking', (Request request) async {
@@ -259,8 +265,8 @@ void main() async {
   router.post('/createchat', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-   int response = await createChat(
-      type: data['type'],
+    int response = await createChat(
+        type: data['type'],
         uid1: data['uid1'],
         uid2: data['uid2'],
         chatSubject: data['cid'],
@@ -280,7 +286,12 @@ void main() async {
   router.post('/createOffer', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    await createOffer(sql, name: data['name'], price: data['price'], low_price: data['low_price'], description: data['description'], garage: data['garage']);
+    await createOffer(sql,
+        name: data['name'],
+        price: data['price'],
+        low_price: data['low_price'],
+        description: data['description'],
+        garage: data['garage']);
     return Response.ok('created');
   });
   router.post('/getMessages', (Request request) async {
@@ -289,12 +300,24 @@ void main() async {
     final response = await getMessagesFromSQL(data['cid'], sql: sql);
     return Response.ok(jsonEncode(response));
   });
+  router.post('/getLastOffers', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    final response = await getLastOffers(sql);
+    return Response.ok(jsonEncode(response));
+  });
+  router.post('/getMyOffers', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    final response = await getMyOffers(sql, garage: data['garage']);
+    return Response.ok(jsonEncode(response));
+  });
   router.post('/sendMessage', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await createMessageFromSQL(
         cid: data['cid'], uid: data['uid'], msg: data['msg'], sql: sql);
-   return Response.ok('created');
+    return Response.ok('created');
   });
   //router.get('/test_photo', (Request request) async {
 
@@ -317,7 +340,24 @@ void main() async {
         var file = File(filePath);
         await file.writeAsBytes(imageBytes);
       }
-    await createCarFromSQL(sql: sql, name: data['name'].toString(), brand: data['brand'].toString(), model: data['model'].toString(), price_usd: data['price_usd'].toString(), price_aed: data['price_aed'].toString(), color: data['color'].toString(), killometers: data['killometers'].toString(), regional_specs: data['regional_specs'].toString(), transmission: data['transmission'].toString(), motor_trim: data['motor_trim'].toString(), body: data['body'].toString(), guarantee: data['guarantee'].toString(), service_contact: data['service_contact'].toString(), description: data['description'].toString(), year: data['year'].toString(), ccid: data['ccid'].toString());
+      await createCarFromSQL(
+          sql: sql,
+          name: data['name'].toString(),
+          brand: data['brand'].toString(),
+          model: data['model'].toString(),
+          price_usd: data['price_usd'].toString(),
+          price_aed: data['price_aed'].toString(),
+          color: data['color'].toString(),
+          killometers: data['killometers'].toString(),
+          regional_specs: data['regional_specs'].toString(),
+          transmission: data['transmission'].toString(),
+          motor_trim: data['motor_trim'].toString(),
+          body: data['body'].toString(),
+          guarantee: data['guarantee'].toString(),
+          service_contact: data['service_contact'].toString(),
+          description: data['description'].toString(),
+          year: data['year'].toString(),
+          ccid: data['ccid'].toString());
       return Response.ok('Images uploaded successfully');
     } catch (e) {
       return Response.internalServerError(body: 'Error: $e');
@@ -326,14 +366,19 @@ void main() async {
   router.get('/test_photo', (Request request) async {
     String? path = request.url.queryParameters['path'];
     var imagePathJpeg = 'images/$path/1.jpeg';
-    var imagePathJpg ='images/$path/1.jpg';
+    var imagePathJpg = 'images/$path/1.jpg';
     try {
-      var file = File(imagePathJpeg).existsSync() ?File(imagePathJpeg): File(imagePathJpg);
+      var file = File(imagePathJpeg).existsSync()
+          ? File(imagePathJpeg)
+          : File(imagePathJpg);
 
       if (await file.exists()) {
         var bytes = await file.readAsBytes();
 
-        return Response.ok(bytes, headers: {'Content-Type': File(imagePathJpeg).existsSync() ?'image/jpeg' : 'image/jpg'});
+        return Response.ok(bytes, headers: {
+          'Content-Type':
+              File(imagePathJpeg).existsSync() ? 'image/jpeg' : 'image/jpg'
+        });
       } else {
         return Response.notFound('File not found');
       }
@@ -346,14 +391,19 @@ void main() async {
     String? path = request.url.queryParameters['path'];
     String? ind = request.url.queryParameters['ind'];
     var imagePathJpeg = 'images/$path/$ind.jpeg';
-    var imagePathJpg ='images/$path/$ind.jpg';
+    var imagePathJpg = 'images/$path/$ind.jpg';
     try {
-      var file = File(imagePathJpeg).existsSync() ?File(imagePathJpeg): File(imagePathJpg);
+      var file = File(imagePathJpeg).existsSync()
+          ? File(imagePathJpeg)
+          : File(imagePathJpg);
 
       if (await file.exists()) {
         var bytes = await file.readAsBytes();
 
-        return Response.ok(bytes, headers: {'Content-Type': File(imagePathJpeg).existsSync() ?'image/jpeg' : 'image/jpg'});
+        return Response.ok(bytes, headers: {
+          'Content-Type':
+              File(imagePathJpeg).existsSync() ? 'image/jpeg' : 'image/jpg'
+        });
       } else {
         return Response.notFound('File not found');
       }
@@ -364,20 +414,3 @@ void main() async {
   });
   var server = await serve(router, '63.251.122.116', 2308);
 }
-// 'images': images,
-//         'ccid': ccid.toString(),
-//         'brand': widget.brand.toString(),
-//         'body': widget.body.toString(),
-//         '': widget.price_AED.toString(),
-//         '': widget.price_USD.toString(),
-//         'model': widget.model.toString(),
-//         'killometers': widget.miliege.toString(),
-//         'color': widget.color.toString(),
-//         'regional_specs': widget.regionalSpecs.toString(),
-//         'steering_whell': false.toString(),
-//         '': widget.motorTrim.toString(),
-//         'guarantee': widget.gurantee.toString(),
-//         'service_contact': widget.serviceContact.toString(),
-//         'description': descriptionController.text.toString(),
-//         'name': widget.name.toString(),
-//         'year': widget.year.toString(),

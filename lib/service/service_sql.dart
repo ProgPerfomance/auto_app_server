@@ -69,13 +69,61 @@ Future<void> createOffer(MySQLConnection sql,
 Future<List> getAllOffers(
   MySQLConnection sql,
 ) async {
- final response = await sql.execute("select * from servises where special_offer=1");
+  final response =
+      await sql.execute("select * from servises where special_offer=1");
   List data = [];
-  for(var item in response.rows) {
+  for (var item in response.rows) {
     data.add({
       'name': item.assoc()['name'],
       's': 'a',
     });
   }
-  return  data;
+  return data;
+}
+
+Future<List> getMyOffers(MySQLConnection sql, {required garage}) async {
+  List offers = [];
+
+  final response = await sql.execute(
+    "SELECT * FROM servises where garage =$garage and  special_offer = '1'",
+    {},
+  );
+
+  for (final row in response.rows) {
+    final data = row.assoc();
+    offers.add(
+      {
+        'name': data['name'],
+        'price': data['price'],
+        'low_price': data['low_price'],
+        'garage': data['garage'],
+        'description': data['description'],
+      },
+    );
+  }
+  return List.from(offers.reversed);
+}
+
+
+Future<List> getLastOffers(MySQLConnection sql) async {
+  List offers = [];
+
+  final response = await sql.execute(
+    "SELECT * FROM servises where special_offer = '1'",
+    {},
+  );
+
+  for (final row in response.rows) {
+    final data = row.assoc();
+    offers.add(
+      {
+        'name': data['name'],
+        'price': data['price'],
+        'low_price': data['low_price'],
+        'garage': data['garage'],
+        'description': data['description'],
+      },
+    );
+  }
+  return List.from(offers.reversed);
 }
