@@ -63,7 +63,6 @@ Future<void> createOffer(MySQLConnection sql,
   var resul = await sql.execute(
     "SELECT * FROM servises",
   );
-  final desc = base64Encode(description);
   String id = resul.rows.last.assoc()['id'] as String;
   int id_int = int.parse(id);
   await sql.execute(
