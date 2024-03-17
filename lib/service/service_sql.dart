@@ -26,6 +26,7 @@ Future<Map> getServiceInfo(String id, MySQLConnection sql) async {
   return {
     'name': dataService['name'],
     'price': dataService['price'],
+    'description': dataService['description'],
     'low_price': dataService['low_price'],
     'included': includedList,
     'not_included': notIncludedList,
@@ -63,22 +64,8 @@ Future<void> createOffer(MySQLConnection sql,
   String id = resul.rows.last.assoc()['id'] as String;
   int id_int = int.parse(id);
   await sql.execute(
-      "insert into servises (id, name, price, low_price, description, special_offer, garage) values (${id_int + 1},'$name', $price, $low_price, '$description, 1, $garage')");
-}
-
-Future<List> getAllOffers(
-  MySQLConnection sql,
-) async {
-  final response =
-      await sql.execute("select * from servises where special_offer=1");
-  List data = [];
-  for (var item in response.rows) {
-    data.add({
-      'name': item.assoc()['name'],
-      's': 'a',
-    });
-  }
-  return data;
+      "insert into servises (id, name, price, low_price, description, special_offer, garage) values (${id_int +
+          1},'$name', $price, $low_price, '$description, 1, $garage')");
 }
 
 Future<List> getMyOffers(MySQLConnection sql, {required garage}) async {
