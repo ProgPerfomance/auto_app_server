@@ -251,6 +251,25 @@ void main() async {
         date_time: data['date_time'].toString());
     return Response.ok('');
   });
+  router.post('/createBookingOffer', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    createBookingSpecialOffer(
+        sql: sql,
+        garage: data['garage'].toString(),
+        sid: data['sid'].toString(),
+        cid: data['cid'].toString(),
+        uid: data['uid'].toString(),
+        owner_name: data['owner_name'].toString(),
+        owner_email: data['owner_email'].toString(),
+        owner_phone: data['owner_phone'].toString(),
+        pickup: data['pickup'],
+        delivery: data['delivery'],
+        timestamp: data['timestamp'].toString(),
+        date_time: data['date_time'].toString());
+
+    return Response.ok('');
+  });
 
   router.post('/deleteusercar', (Request request) async {
     var json = await request.readAsString();
