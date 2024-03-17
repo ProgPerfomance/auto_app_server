@@ -67,7 +67,7 @@ Future<void> createOffer(MySQLConnection sql,
   int id_int = int.parse(id);
   await sql.execute(
       "insert into servises (id, name, price, low_price, description, special_offer, garage) values (${id_int +
-          1},'$name', $price, $low_price, '$desc', 1, $garage)");
+          1},'$name', $price, $low_price, '$description', 1, $garage)");
 }
 
 Future<List> getMyOffers(MySQLConnection sql, {required garage}) async {
