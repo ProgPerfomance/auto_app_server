@@ -98,8 +98,6 @@ void main() async {
     return Response.ok(jsonEncode(resp));
   });
   router.post('/editProfilePhoto', (Request request) async {
-    var json = await request.readAsString();
-    var data = await jsonDecode(json);
     return Response.ok('200');
   });
   router.post('/auth', (Request request) async {
@@ -111,7 +109,6 @@ void main() async {
         sql: sql,
         email_or_phone: data['email_or_phone'],
         password_hash: data['password_hash']);
-    print(uid);
     return Response.ok(jsonEncode(uid));
   });
   router.post('/getcars', (Request request) async {
@@ -175,7 +172,7 @@ void main() async {
   router.post('/setBookingGarage', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    var rep = await setGarage(sql, id: data['id'], garage: data['garage']);
+    await setGarage(sql, id: data['id'], garage: data['garage']);
     return Response.ok('updated');
   });
   router.post('/getmasterbooking', (Request request) async {
@@ -301,8 +298,6 @@ void main() async {
     return Response.ok(jsonEncode(response));
   });
   router.post('/getLastOffers', (Request request) async {
-    var json = await request.readAsString();
-    var data = await jsonDecode(json);
     final response = await getLastOffers(sql);
     return Response.ok(jsonEncode(response));
   });
@@ -319,8 +314,6 @@ void main() async {
         cid: data['cid'], uid: data['uid'], msg: data['msg'], sql: sql);
     return Response.ok('created');
   });
-  //router.get('/test_photo', (Request request) async {
-
   router.post('/create_car', (Request request) async {
     try {
       var requestBody = await request.readAsString();
@@ -383,7 +376,6 @@ void main() async {
         return Response.notFound('File not found');
       }
     } catch (e) {
-      // В случае ошибки, возвращаем 500 ошибку
       return Response.internalServerError(body: 'Error: $e');
     }
   });
@@ -408,9 +400,8 @@ void main() async {
         return Response.notFound('File not found');
       }
     } catch (e) {
-      // В случае ошибки, возвращаем 500 ошибку
       return Response.internalServerError(body: 'Error: $e');
     }
   });
-  var server = await serve(router, '63.251.122.116', 2308);
+  await serve(router, '63.251.122.116', 2308);
 }
