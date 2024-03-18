@@ -267,7 +267,6 @@ void main() async {
         delivery: data['delivery'],
         timestamp: data['timestamp'].toString(),
         date_time: data['date_time'].toString());
-
     return Response.ok('');
   });
 

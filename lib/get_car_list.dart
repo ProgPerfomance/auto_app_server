@@ -61,7 +61,6 @@ Future<Map> getCarInfo(String id, MySQLConnection sql) async {
 
   for (final row in response.rows) {
     var data = row.assoc();
-    var images = [];
     Directory directory = Directory('images/${data['ccid']}');
 print( directory.listSync().length);
     car =

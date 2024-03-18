@@ -17,7 +17,7 @@ Future<int> createChat({
   int id_int = int.parse(id);
   var result = await sql.execute(
       "insert into chats (id, uid1, uid2, sid, type) values (${id_int + 1}, $uid1, $uid2, $chatSubject, '$type')");
-  return id_int+1;
+  return id_int + 1;
 }
 
 Future<List> getUserChats({
@@ -41,17 +41,21 @@ Future<List> getUserChats({
     var timestamp;
     var msgText;
     var senderUid;
+    var messageId;
     try {
       final lastMessage = await sql.execute(
-        "SELECT * FROM messages where cid = ${data['id']}",
+        "SELECT * FROM messages where cid = ${data['id']} ORDER BY id DESC LIMIT 1",
       );
-      timestamp = lastMessage.rows.last.assoc()['timestamp'];
-      msgText = lastMessage.rows.last.assoc()['message'];
-      senderUid = lastMessage.rows.last.assoc()['uid'];
+      timestamp = lastMessage.rows.first.assoc()['timestamp'];
+      msgText = lastMessage.rows.first.assoc()['message'];
+      senderUid = lastMessage.rows.first.assoc()['uid'];
+      messageId = lastMessage.rows.first.assoc()['id'];
+
     } catch (e) {
       timestamp = null;
       msgText = null;
       senderUid = null;
+      messageId = null;
     }
     chats.add(
       {
@@ -62,9 +66,14 @@ Future<List> getUserChats({
         'last_message': msgText,
         'timestamp': timestamp,
         'sender_uid': senderUid,
+        'message_id': messageId,
       },
     );
   }
+
+  // Сортировка списка чатов по messageId от большего к меньшему
+  chats.sort((a, b) => (b['message_id'] ?? 0).compareTo(a['message_id'] ?? 0));
+
   return chats;
 }
 
