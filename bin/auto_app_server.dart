@@ -149,12 +149,12 @@ void main() async {
     var data = await jsonDecode(json);
     createUserCarFromSQL(
         sql: sql,
-        uid: data['uid'],
-        name: data['name'],
-        brand: data['brand'],
-        model: data['model'],
-        year: data['year'],
-        car_reg: data['car_reg']);
+        uid: data['uid'].toString(),
+        name: data['name'].toString(),
+        brand: data['brand'].toString(),
+        model: data['model'].toString(),
+        year: data['year'].toString(),
+        car_reg: data['car_reg'].toString());
     return Response.ok('');
   });
   router.post('/getusercars', (Request request) async {

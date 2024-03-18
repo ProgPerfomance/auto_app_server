@@ -2,13 +2,13 @@ import 'package:mysql_client/mysql_client.dart';
 
 
 Future<int> createUserCarFromSQL({
-  required sql,
- required uid,
-  required name,
-  required brand,
-  required model,
-  required year,
-  required car_reg,
+  required MySQLConnection sql,
+ required String? uid,
+  required String? name,
+  required String? brand,
+  required String? model,
+  required String? year,
+  required String? car_reg,
 }) async {
   var resul = await sql.execute(
     "SELECT * FROM usercars",
@@ -23,12 +23,12 @@ Future<int> createUserCarFromSQL({
 }
 
 Future<void> updateUserCarFromSQL({
-  required id,
-  required name,
-  required brand,
-  required model,
-  required year,
-  required car_reg,
+  required String id,
+  required String name,
+  required String? brand,
+  required String? model,
+  required String? year,
+  required String? car_reg,
   required  MySQLConnection sql,
 }) async {
   await sql.execute(
