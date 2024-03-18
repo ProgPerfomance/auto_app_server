@@ -49,29 +49,46 @@ Future<List> getUserChats({
       timestamp = lastMessage.rows.first.assoc()['timestamp'];
       msgText = lastMessage.rows.first.assoc()['message'];
       senderUid = lastMessage.rows.first.assoc()['uid'];
-      messageId = int.parse(lastMessage.rows.first.assoc()['id'] as  String);
-
+      messageId = int.parse(lastMessage.rows.first.assoc()['id'] as String);
     } catch (e) {
       timestamp = null;
       msgText = null;
       senderUid = null;
       messageId = null;
     }
-    chats.add(
-      {
-        'cid': data['id'],
-        'uid_opponent': data['uid1'] != uid ? data['uid1'] : data['uid2'],
-        'opponent_name': user.rows.first.assoc()['name'],
-        'sid': data['sid'],
-        'last_message': msgText,
-        'timestamp': timestamp,
-        'sender_uid': senderUid,
-        'message_id': messageId,
-      },
-    );
+    var car =
+        await sql.execute("select * from carlist where id =${data['sid']}");
+    data['type'] == 'car'
+        ? chats.add(
+            {
+              'cid': data['id'],
+              'uid_opponent': data['uid1'] != uid ? data['uid1'] : data['uid2'],
+              'opponent_name': user.rows.first.assoc()['name'],
+              'sid': data['sid'],
+              'type': data['type'],
+              'last_message': msgText,
+              'timestamp': timestamp,
+              'sender_uid': senderUid,
+              'message_id': messageId,
+              'car_name': car.rows.first.assoc()['name'],
+              'car_id': car.rows.first.assoc()['id'],
+              'car_ccid': car.rows.first.assoc()['ccid'],
+            },
+          )
+        : chats.add(
+            {
+              'cid': data['id'],
+              'uid_opponent': data['uid1'] != uid ? data['uid1'] : data['uid2'],
+              'opponent_name': user.rows.first.assoc()['name'],
+              'sid': data['sid'],
+              'type': data['type'],
+              'last_message': msgText,
+              'timestamp': timestamp,
+              'sender_uid': senderUid,
+              'message_id': messageId,
+            },
+          );
   }
-
-  // Сортировка списка чатов по messageId от большего к меньшему
   chats.sort((a, b) => (b['message_id'] ?? 0).compareTo(a['message_id'] ?? 0));
 
   return chats;
