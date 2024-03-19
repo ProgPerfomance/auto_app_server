@@ -28,5 +28,4 @@ Future<int> createCarFromSQL({
   await sql.execute(
       "insert into carlist (id, name, brand, model, price_usd, price_aed, color, killometers,regional_specs,transmission,motor_trim, body, guarantee,service_contact,description,year,ccid, status) values (${id_int + 1}, '$name', '$brand', '$model', $price_usd, $price_aed, '$color', $killometers, '$regional_specs','$transmission', '$motor_trim', '$body','$guarantee','$service_contact','$description',$year, '$ccid', 1)");
   return id_int + 1;
-  //   "insert into usertable (id, name, password_hash, city, email, country, age, freelancer, last_login, date_of_burn, avatar, skills, education, experience, about_me, client_visiting, servises, rating, reviews, email_succes) values (${id_int + 1}, '$name', '$password_hash', '$city', '$email', '$country', $age, $freelancer, '$last_login', '$date_of_burn', '$avatar', '$skills', '$education', '$experience', '$about_me', '$client_visiting', '$servises', $rating, '$reviews', $email_succes);");
 }

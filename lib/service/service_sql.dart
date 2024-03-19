@@ -66,8 +66,7 @@ Future<void> createOffer(MySQLConnection sql,
   String id = resul.rows.last.assoc()['id'] as String;
   int id_int = int.parse(id);
   await sql.execute(
-      "insert into servises (id, name, price, low_price, description, special_offer, garage) values (${id_int +
-          1},'$name', $price, $low_price, '$description', 1, $garage)");
+      "insert into servises (id, name, price, low_price, description, special_offer, garage) values (${id_int + 1},'$name', $price, $low_price, '$description', 1, $garage)");
 }
 
 Future<List> getMyOffers(MySQLConnection sql, {required garage}) async {
@@ -94,7 +93,6 @@ Future<List> getMyOffers(MySQLConnection sql, {required garage}) async {
   return List.from(offers.reversed);
 }
 
-
 Future<List> getLastOffers(MySQLConnection sql) async {
   List offers = [];
 
@@ -117,4 +115,10 @@ Future<List> getLastOffers(MySQLConnection sql) async {
     );
   }
   return List.from(offers.reversed);
+}
+
+Future<void> updateServiceInfo(MySQLConnection sql,
+    {required id,required price,required priceMin,required description}) async {
+  await sql.execute(
+      "update servises set price=$price, price_min=$priceMin, description='$description' where id=$id");
 }

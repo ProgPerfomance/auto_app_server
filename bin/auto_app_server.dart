@@ -181,6 +181,12 @@ void main() async {
     await setGarage(sql, id: data['id'], garage: data['garage']);
     return Response.ok('updated');
   });
+  router.post('/updateService', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    await updateServiceInfo(sql, id: data['id'], price: data['price'], priceMin: data['price_minn'], description: data['description']);
+    return Response.ok('updated');
+  });
   router.post('/getmasterbooking', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
