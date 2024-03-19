@@ -120,5 +120,5 @@ Future<List> getLastOffers(MySQLConnection sql) async {
 Future<void> updateServiceInfo(MySQLConnection sql,
     {required id,required price,required priceMin,required description}) async {
   await sql.execute(
-      "update servises set price=$price, price_min=$priceMin, description='$description' where id=$id");
+      "update servises set price=$price, low_price=$priceMin, description='$description' where id=$id");
 }
