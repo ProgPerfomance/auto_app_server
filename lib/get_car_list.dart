@@ -74,3 +74,8 @@ print( directory.listSync().length);
   return car;
 }
 
+
+
+Future<void> deleteCar(id, MySQLConnection sql)async {
+   sql.execute('update carlist set status=0 where id=$id');
+}

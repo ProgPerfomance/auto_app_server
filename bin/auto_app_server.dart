@@ -169,6 +169,12 @@ void main() async {
     var rep = await getUserBookingList(data['uid'], sql);
     return Response.ok(jsonEncode(rep));
   });
+  router.post('/deleteCar', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    await deleteCar(data['id'], sql);
+    return Response.ok('deleted');
+  });
   router.post('/setBookingGarage', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
