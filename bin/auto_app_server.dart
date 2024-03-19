@@ -184,7 +184,7 @@ void main() async {
   router.post('/updateService', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    await updateServiceInfo(sql, id: data['id'], price: data['price'], priceMin: data['price_minn'], description: data['description']);
+    await updateServiceInfo(sql, id: data['id'], price: data['price'], priceMin: data['price_min'], description: data['description']);
     return Response.ok('updated');
   });
   router.post('/getmasterbooking', (Request request) async {
