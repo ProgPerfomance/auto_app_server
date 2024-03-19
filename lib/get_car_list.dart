@@ -4,7 +4,7 @@ import 'package:mysql_client/mysql_client.dart';
  Future<List> getCarList(String id,  MySQLConnection sql) async {
   List cars = [];
   final response = await sql.execute(
-    "SELECT * FROM carlist",
+    "SELECT * FROM carlist where status = 1",
     {},
   );
 
