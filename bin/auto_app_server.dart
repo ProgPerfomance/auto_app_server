@@ -176,6 +176,7 @@ void main() async {
     await deleteCar(data['id'], sql);
     return Response.ok('deleted');
   });
+
   router.post('/setBookingGarage', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
@@ -433,6 +434,18 @@ void main() async {
     } catch (e) {
       return Response.internalServerError(body: 'Error: $e');
     }
+  });
+  router.post('/add_avatar', (Request request) async {
+  var requestBody = await request.readAsString();
+  var data = jsonDecode(requestBody);
+  var imageData = data['image'];
+  var imageBytes = base64Decode(imageData['data']);
+  var imageName = imageData['name'];
+  var filePath = 'images/$imageName';
+
+  var file = File(filePath);
+  await file.writeAsBytes(imageBytes);
+
   });
   await serve(router, '63.251.122.116', 2308);
 }
