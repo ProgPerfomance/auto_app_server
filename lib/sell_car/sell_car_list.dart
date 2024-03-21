@@ -14,6 +14,7 @@ Future<List> getSellCarList(MySQLConnection sql) async {
     );
     cars.add(
       {
+        'type': data['type'],
         'id': data['id'],
         'uid': data['uid'],
         'cid': data['cid'],

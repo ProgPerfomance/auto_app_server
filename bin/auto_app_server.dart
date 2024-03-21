@@ -122,6 +122,7 @@ void main() async {
     var data = await jsonDecode(json);
     await sellCarRequest(
         sql: sql,
+        type: data['type'].toString(),
         any_car_accidents: data['any_car_accidents'],
         uid: data['uid'],
         cid: data['cid'],
