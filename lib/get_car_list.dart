@@ -26,6 +26,7 @@ import 'package:mysql_client/mysql_client.dart';
     cars.add(
       {
         'like_id': like_id,
+        'cash': data['cash'],
         'liked': like.toString(),
         'id': data['id'],
         'name': data['name'],
