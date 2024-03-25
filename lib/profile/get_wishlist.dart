@@ -28,6 +28,7 @@ Future<List> getWishlist(String id,  MySQLConnection sql) async {
         'year': data['year'],
         'liked': like.toString(),
         'id': data['id'],
+        'cash': data['cash'],
         'name': data['name'],
         'brand': data['brand'],
         'model': data['model'],
