@@ -18,6 +18,7 @@ Future<int> createCarFromSQL({
   required String description,
   required String year,
   required String ccid,
+  required cash,
 }) async {
   var resul = await sql.execute(
     "SELECT * FROM carlist",
@@ -26,6 +27,6 @@ Future<int> createCarFromSQL({
   String id = resul.rows.last.assoc()['id'] as String;
   int id_int = int.parse(id);
   await sql.execute(
-      "insert into carlist (id, name, brand, model, price_usd, price_aed, color, killometers,regional_specs,transmission,motor_trim, body, guarantee,service_contact,description,year,ccid, status) values (${id_int + 1}, '$name', '$brand', '$model', $price_usd, $price_aed, '$color', $killometers, '$regional_specs','$transmission', '$motor_trim', '$body','$guarantee','$service_contact','$description',$year, '$ccid', 1)");
+      "insert into carlist (id, name, brand, model, price_usd, price_aed, color, killometers,regional_specs,transmission,motor_trim, body, guarantee,service_contact,description,year,ccid, status, cash) values (${id_int + 1}, '$name', '$brand', '$model', $price_usd, $price_aed, '$color', $killometers, '$regional_specs','$transmission', '$motor_trim', '$body','$guarantee','$service_contact','$description',$year, '$ccid', 1, $cash)");
   return id_int + 1;
 }

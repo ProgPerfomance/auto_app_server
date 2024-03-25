@@ -382,7 +382,7 @@ void main() async {
           service_contact: data['service_contact'].toString(),
           description: data['description'].toString(),
           year: data['year'].toString(),
-          ccid: data['ccid'].toString());
+          ccid: data['ccid'].toString(), cash: data['cash']);
       return Response.ok('Images uploaded successfully');
     } catch (e) {
       return Response.internalServerError(body: 'Error: $e');
