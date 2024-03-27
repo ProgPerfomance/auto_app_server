@@ -295,6 +295,31 @@ void main() async {
     deleteUserCarFromSql(id: data['id'], sql: sql);
     return Response.ok('');
   });
+  router.post('/updateManagerCar', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    await updateCarFromSQL(
+        sql: sql,
+        name: data['name'].toString(),
+        brand: data['brand'].toString(),
+        model: data['model'].toString(),
+        price_usd: data['price_usd'].toString(),
+        price_aed: data['price_aed'].toString(),
+        color: data['color'].toString(),
+        killometers: data['killometers'].toString(),
+        regional_specs: data['regional_specs'].toString(),
+        transmission: data['transmission'].toString(),
+        motor_trim: data['motor_trim'].toString(),
+        body: data['body'].toString(),
+        guarantee: data['guarantee'].toString(),
+        service_contact: data['service_contact'].toString(),
+        description: data['description'].toString(),
+        year: data['year'].toString(),
+        ccid: data['ccid'].toString(),
+        cash: data['cash']);
+    return Response.ok('');
+  });
+
 
   router.post('/createchat', (Request request) async {
     var json = await request.readAsString();
