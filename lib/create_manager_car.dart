@@ -57,5 +57,5 @@ Future updateCarFromSQL({
     {},
   );
   await sql.execute(
-      "update carlist set brand='$brand', model='$model', price_usd=$price_usd, price_aed=$price_aed, color='$color', killometers=$killometers, regional_specs='$regional_specs', transmission='$transmission' where id=$id");
+      "update carlist set brand='$brand', model='$model', price_usd=$price_usd, price_aed=$price_aed, color='$color', killometers=$killometers, regional_specs='$regional_specs', transmission='$transmission',motor_trim='$motor_trim',body='$body',guarantee='$guarantee', service_contact='$service_contact', description='$description', year='$year' where id=$id");
 }
