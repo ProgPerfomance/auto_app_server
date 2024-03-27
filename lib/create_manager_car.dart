@@ -33,6 +33,7 @@ Future<int> createCarFromSQL({
 
 Future updateCarFromSQL({
   required MySQLConnection sql,
+  required String id,
   required String name,
   required String brand,
   required String model,

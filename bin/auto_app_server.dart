@@ -300,6 +300,7 @@ void main() async {
     var data = await jsonDecode(json);
     await updateCarFromSQL(
         sql: sql,
+        id: data['id'],
         name: data['name'].toString(),
         brand: data['brand'].toString(),
         model: data['model'].toString(),
