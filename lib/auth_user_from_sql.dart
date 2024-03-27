@@ -13,6 +13,7 @@ Future<Map> authUserFromSQL({
     print(email.rows.first);
     print(email.rows.first.assoc()['password_hast']);
     if (password_hash == email.rows.first.assoc()['password_hast']) {
+      final managerPhone = await sql.execute("select * from appconfins where conf_key = 'manager_phone'");
       return {
         'success': true,
         'uid':   int.parse(email.rows.first.assoc()['id'].toString()),
@@ -21,6 +22,8 @@ Future<Map> authUserFromSQL({
         'email':email.rows.first.assoc()['email'],
         'rules': email.rows.first.assoc()['rules'],
         'cid': email.rows.first.assoc()['cid'],
+        'manager_phone': managerPhone.rows.first.assoc()['value'],
+
       };
     } else {
       return {'success': false};
@@ -34,6 +37,7 @@ Future<Map> authUserFromSQL({
       );
       print(phone.rows.first.assoc()['password_hast']);
       if (password_hash == phone.rows.first.assoc()['password_hast']) {
+        final managerPhone = await sql.execute("select * from appconfins where conf_key = 'manager_phone'");
         return {
           'success': true,
           'uid':   int.parse(phone.rows.first.assoc()['id'].toString()),
@@ -42,6 +46,7 @@ Future<Map> authUserFromSQL({
           'email':phone.rows.first.assoc()['email'],
           'rules': phone.rows.first.assoc()['rules'],
           'cid': phone.rows.first.assoc()['cid'],
+          'manager_phone': managerPhone.rows.first.assoc()['value'],
         };
       } else {
         return {'success': false};

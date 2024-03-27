@@ -15,17 +15,18 @@ Future<Map<String, dynamic>> createUserFromSQL({
   String id = resul.rows.last.assoc()['id'] as String;
   int id_int = int.parse(id);
   print(id_int);
-
   await sql.execute(
       "insert into users (id, name, phone, email, password_hast, rules) values (${id_int+1}, '$name', '$phone', '$email', '$password_hash', $rules);",
       // Передайте параметры запроса в виде Map<String, dynamic>
 
   );
+  final managerPhone = await sql.execute("select * from appconfins where conf_key = 'manager_phone'");
   return {
     'uid': id_int + 1,
     'name': name,
     'email': email,
     'phone': phone,
     'rules': rules,
+    'manager_phone': managerPhone.rows.first.assoc()['value'],
   };
 }
