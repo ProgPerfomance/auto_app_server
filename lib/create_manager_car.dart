@@ -56,7 +56,6 @@ Future updateCarFromSQL({
     "SELECT * FROM carlist",
     {},
   );
-  String id = resul.rows.last.assoc()['id'] as String;
   await sql.execute(
       "update carlist set brand='$brand', model='$model', price_usd=$price_usd, price_aed=$price_aed, color='$color', killometers=$killometers, regional_specs='$regional_specs', transmission='$transmission' where id=$id");
 }
