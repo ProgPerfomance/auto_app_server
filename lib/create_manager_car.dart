@@ -31,7 +31,7 @@ Future<int> createCarFromSQL({
   return id_int + 1;
 }
 
-Future<int> updateCarFromSQL({
+Future updateCarFromSQL({
   required MySQLConnection sql,
   required String name,
   required String brand,
@@ -56,8 +56,6 @@ Future<int> updateCarFromSQL({
     {},
   );
   String id = resul.rows.last.assoc()['id'] as String;
-  int id_int = int.parse(id);
   await sql.execute(
-      "insert into carlist set brand='$brand', model='$model', price_usd=$price_usd, price_aed=$price_aed, color='$color', killometers=$killometers, regional_specs='$regional_specs', transmission='$transmission'");
-  return id_int + 1;
+      "update carlist set brand='$brand', model='$model', price_usd=$price_usd, price_aed=$price_aed, color='$color', killometers=$killometers, regional_specs='$regional_specs', transmission='$transmission' where id=$id");
 }
