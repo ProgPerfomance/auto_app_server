@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:auto_app_server/app_config/main_config.dart';
 import 'package:auto_app_server/auth_user_from_sql.dart';
 import 'package:auto_app_server/chat/chat.dart';
 import 'package:auto_app_server/create_booking_from_sql.dart';
@@ -186,7 +187,11 @@ void main() async {
   router.post('/updateService', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    await updateServiceInfo(sql, id: data['id'], price: data['price'], priceMin: data['price_min'], description: data['description']);
+    await updateServiceInfo(sql,
+        id: data['id'],
+        price: data['price'],
+        priceMin: data['price_min'],
+        description: data['description']);
     return Response.ok('updated');
   });
   router.post('/getmasterbooking', (Request request) async {
@@ -308,6 +313,12 @@ void main() async {
     final response = await getUserChats(uid: data['uid'], sql: sql);
     return Response.ok(jsonEncode(response));
   });
+  router.post('/updateManagerNumber', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    await setManagerNumber(sql, data['phone']);
+    return Response.ok('updated');
+  });
   router.get('/getGarages', (Request request) async {
     List response = await getGaragesList(sql);
     return Response.ok(jsonEncode(response));
@@ -382,7 +393,8 @@ void main() async {
           service_contact: data['service_contact'].toString(),
           description: data['description'].toString(),
           year: data['year'].toString(),
-          ccid: data['ccid'].toString(), cash: data['cash']);
+          ccid: data['ccid'].toString(),
+          cash: data['cash']);
       return Response.ok('Images uploaded successfully');
     } catch (e) {
       return Response.internalServerError(body: 'Error: $e');
@@ -436,16 +448,15 @@ void main() async {
     }
   });
   router.post('/add_avatar', (Request request) async {
-  var requestBody = await request.readAsString();
-  var data = jsonDecode(requestBody);
-  var imageData = data['image'];
-  var imageBytes = base64Decode(imageData['data']);
-  var imageName = imageData['name'];
-  var filePath = 'images/$imageName';
+    var requestBody = await request.readAsString();
+    var data = jsonDecode(requestBody);
+    var imageData = data['image'];
+    var imageBytes = base64Decode(imageData['data']);
+    var imageName = imageData['name'];
+    var filePath = 'images/$imageName';
 
-  var file = File(filePath);
-  await file.writeAsBytes(imageBytes);
-
+    var file = File(filePath);
+    await file.writeAsBytes(imageBytes);
   });
   await serve(router, '63.251.122.116', 2308);
 }
