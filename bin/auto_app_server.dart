@@ -236,7 +236,7 @@ void main() async {
   router.post('/updatebooking', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    updateBookingStatus(data['id'], data['status'], sql);
+    updateBookingStatus(data['id'], data['status'], sql, data['reason']);
     return Response.ok('updated');
   });
 

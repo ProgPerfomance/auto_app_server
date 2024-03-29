@@ -58,7 +58,7 @@ Future<List> getUserBookingListMaster(String id, MySQLConnection sql) async {
         'sid': data['sid'],
         'cid': data['cid'],
         'uid': data['uid'],
-        'car_brand':car.rows.first.assoc()['brand'],
+        'car_brand': car.rows.first.assoc()['brand'],
         'car_reg': car.rows.first.assoc()['car_reg'],
         'car_model': car.rows.first.assoc()['model'],
         'car_year': car.rows.first.assoc()['year'],
@@ -76,15 +76,11 @@ Future<List> getUserBookingListMaster(String id, MySQLConnection sql) async {
   return List.from(booking.reversed);
 }
 
-Future<List> updateBookingStatus(
-    String id, String status, MySQLConnection sql) async {
-  List booking = [];
-
-  final response = await sql.execute(
-    "update booking set status = '$status' where id = $id",
-    {},
+Future<void> updateBookingStatus(
+    String id, String status, MySQLConnection sql, reason) async {
+  await sql.execute(
+    "update booking set status = '$status', reason = '$reason' where id = $id",
   );
-  return booking;
 }
 
 Future<List> getNewBookingListMaster(String id, MySQLConnection sql) async {
@@ -108,7 +104,7 @@ Future<List> getNewBookingListMaster(String id, MySQLConnection sql) async {
         'uid': data['uid'],
         'description': data['description'],
         'reason': data['reason'],
-        'car_brand':car.rows.first.assoc()['brand'],
+        'car_brand': car.rows.first.assoc()['brand'],
         'car_reg': car.rows.first.assoc()['car_reg'],
         'car_model': car.rows.first.assoc()['model'],
         'car_year': car.rows.first.assoc()['year'],
@@ -162,7 +158,7 @@ Future<List> getManagerBookingList(MySQLConnection sql) async {
         'uid': data['uid'],
         'garage': data['garage'],
         'garage_name': garage_name,
-        'car_brand':car.rows.first.assoc()['brand'],
+        'car_brand': car.rows.first.assoc()['brand'],
         'car_reg': car.rows.first.assoc()['car_reg'],
         'car_model': car.rows.first.assoc()['model'],
         'car_year': car.rows.first.assoc()['year'],
@@ -218,7 +214,7 @@ Future<List> getManagerNewBookingList(MySQLConnection sql) async {
         'uid': data['uid'],
         'garage': data['garage'],
         'garage_name': garage_name,
-        'car_brand':car.rows.first.assoc()['brand'],
+        'car_brand': car.rows.first.assoc()['brand'],
         'car_reg': car.rows.first.assoc()['car_reg'],
         'car_model': car.rows.first.assoc()['model'],
         'car_year': car.rows.first.assoc()['year'],
