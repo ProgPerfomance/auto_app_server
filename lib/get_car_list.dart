@@ -64,10 +64,25 @@ Future<Map> getCarInfo(String id, MySQLConnection sql) async {
     var data = row.assoc();
     Directory directory = Directory('images/${data['ccid']}');
 print( directory.listSync().length);
+    var like;
+    var like_id;
+    final likeRaw = await sql.execute(
+      "SELECT * FROM likes where uid = $id and pid = ${data['id']}",
+      {},
+    );
+    try {
+      like_id =likeRaw.rows.first.assoc()['id'];
+      like = true;
+    } catch(_) {
+      like_id = null;
+      like = false;
+    }
     car =
       {
         'id': data['id'],
         'images': directory.listSync().length,
+        'like_id': like_id,
+        'liked': like.toString(),
       };
 
   }
