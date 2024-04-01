@@ -22,7 +22,7 @@ import 'package:mysql_client/mysql_client.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
-
+import 'package:mime/mime.dart';
 void main() async {
   Router router = Router();
   var sql = await MySQLConnection.createConnection(
@@ -480,9 +480,10 @@ void main() async {
     var imageBytes = base64Decode(imageData['data']);
     var imageName = imageData['name'];
     var filePath = 'images/$imageName';
-
     var file = File(filePath);
     await file.writeAsBytes(imageBytes);
+    Response.ok('');
   });
   await serve(router, '63.251.122.116', 2308);
 }
+
