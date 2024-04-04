@@ -426,6 +426,22 @@ void main() async {
       return Response.internalServerError(body: 'Error: $e');
     }
   });
+  router.get('/html', (Request request) {
+    // HTML код страницы
+    String htmlContent = '''
+      <html>
+      <head>
+        <title>My HTML Page</title>
+      </head>
+      <body>
+        <h1>Welcome to my HTML Page</h1>
+        <p>This is a sample HTML page served by Dart server.</p>
+      </body>
+      </html>
+    ''';
+
+    return Response.ok(htmlContent, headers: {'Content-Type': 'text/html'});
+  });
   router.get('/test_photo', (Request request) async {
     String? path = request.url.queryParameters['path'];
     var imagePathJpeg = 'images/$path/1.jpeg';
