@@ -80,30 +80,35 @@ void main() async {
     return Response.ok('updated');
   });
   router.post('/deleteServiceBlock', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await deleteServiceBlock(sql, id: data['cid']);
     return Response.ok('deleted');
   });
   router.post('/deleteGarage', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await deleteGarage(sql, id: data['id']);
     return Response.ok('deleted');
   });
   router.post('/getWishlist', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     final response = await getWishlist(data['uid'], sql);
     return Response.ok(jsonEncode(response));
   });
   router.post('/updateName', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     changeProfileName(sql, uid: data['uid'], name: data['name']);
     return Response.ok('changed');
   });
   router.post('/getsellrequests', (Request request) async {
+    checkConnect();
     var resp = await getSellCarList(sql); //
     return Response.ok(jsonEncode(resp));
   });
@@ -111,6 +116,7 @@ void main() async {
     return Response.ok('200');
   });
   router.post('/auth', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     print(data['email_or_phone']);
@@ -122,12 +128,14 @@ void main() async {
     return Response.ok(jsonEncode(uid));
   });
   router.post('/getcars', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     List rep = await getCarList(data['id'], sql);
     return Response.ok(jsonEncode(rep));
   });
   router.post('/sellcarrequest', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await sellCarRequest(
@@ -144,18 +152,21 @@ void main() async {
     return Response.ok('ok');
   });
   router.post('/likecar', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     likeCarFromSql(uid: data['uid'], cid: data['cid'], sql: sql);
     return Response.ok('ok');
   });
   router.post('/dislikecar', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     dislikeCarFromSql(id: data['id'], sql: sql);
     return Response.ok('');
   });
   router.post('/createusercar', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     createUserCarFromSQL(
