@@ -36,9 +36,7 @@ void main() async {
     if(  sql.connected == false ) {
       sql.connect();
     }
-    else {
-      print('dfff');
-    }
+
   }
   router.post('/reguser', (Request request) async {
     var json = await request.readAsString();
