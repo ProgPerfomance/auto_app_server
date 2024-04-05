@@ -22,7 +22,8 @@ import 'package:mysql_client/mysql_client.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
-import 'package:mime/mime.dart';
+import 'package:mustache_template/mustache_template.dart' as m;
+
 void main() async {
   Router router = Router();
   var sql = await MySQLConnection.createConnection(
@@ -48,7 +49,7 @@ void main() async {
   router.post('/getcarinfo', (Request request) async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    var resp = await getCarInfo(data['id'], sql);
+    var resp = await getCarInfo(data['id'], data['uid'], sql);
     return Response.ok(jsonEncode(resp));
   });
   router.post('/getServiceInfo', (Request request) async {
@@ -425,22 +426,6 @@ void main() async {
     } catch (e) {
       return Response.internalServerError(body: 'Error: $e');
     }
-  });
-  router.get('/html', (Request request) {
-    // HTML код страницы
-    String htmlContent = '''
-      <html>
-      <head>
-        <title>My HTML Page</title>
-      </head>
-      <body>
-        <h1>Welcome to my HTML Page</h1>
-        <p>This is a sample HTML page served by Dart server.</p>
-      </body>
-      </html>
-    ''';
-
-    return Response.ok(htmlContent, headers: {'Content-Type': 'text/html'});
   });
   router.get('/test_photo', (Request request) async {
     String? path = request.url.queryParameters['path'];

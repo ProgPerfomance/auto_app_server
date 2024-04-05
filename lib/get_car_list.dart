@@ -53,7 +53,7 @@ import 'package:mysql_client/mysql_client.dart';
   return List.from(cars.reversed);
 }
 
-Future<Map> getCarInfo(String id, MySQLConnection sql) async {
+Future<Map> getCarInfo(String id, String uid, MySQLConnection sql) async {
   Map car = {};
   final response = await sql.execute(
     "SELECT * FROM carlist where id=$id",
@@ -67,7 +67,7 @@ print( directory.listSync().length);
     var like;
     var like_id;
     final likeRaw = await sql.execute(
-      "SELECT * FROM likes where uid = $id and pid = ${data['id']}",
+      "SELECT * FROM likes where uid = $uid and pid = $id",
       {},
     );
     try {
