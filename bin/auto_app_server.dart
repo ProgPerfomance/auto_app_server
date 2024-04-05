@@ -33,6 +33,14 @@ void main() async {
       password: '1234567890',
       databaseName: 'autoapp');
   await sql.connect(timeoutMs: 99999999999);
+  void checkConnect () {
+    if(  sql.connected == false ) {
+      sql.connect();
+    }
+    else {
+      print('dfff');
+    }
+  }
   router.post('/reguser', (Request request) async {
     var json = await request.readAsString();
     var data = jsonDecode(json);
@@ -47,18 +55,21 @@ void main() async {
     return Response.ok(jsonEncode(user));
   });
   router.post('/getcarinfo', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var resp = await getCarInfo(data['id'], data['uid'], sql);
     return Response.ok(jsonEncode(resp));
   });
   router.post('/getServiceInfo', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     Map response = await getServiceInfo(data['cid'], sql);
     return Response.ok(jsonEncode(response));
   });
   router.post('/createServiceBlock', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await addServiceBlock(sql,
@@ -66,6 +77,7 @@ void main() async {
     return Response.ok('created');
   });
   router.post('/updateServiceBlock', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await updateServiceBlock(sql, id: data['cid'], title: data['title']);
@@ -217,16 +229,19 @@ void main() async {
     return Response.ok(jsonEncode(rep));
   });
   router.get('/getManagerNewBooking', (Request request) async {
+    checkConnect();
     var rep = await getManagerNewBookingList(sql);
     return Response.ok(jsonEncode(rep));
   });
   router.post('/getnewmasterbooking', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var rep = await getNewBookingListMaster(data['cid'], sql);
     return Response.ok(jsonEncode(rep));
   });
   router.post('/getuserinfo', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var rep = await getUserInfo(data['uid'], sql);
@@ -235,6 +250,7 @@ void main() async {
     return Response.ok(jsonEncode(rep));
   });
   router.post('/updatebooking', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     updateBookingStatus(data['id'], data['status'], sql, data['reason']);
@@ -242,6 +258,7 @@ void main() async {
   });
 
   router.post('/updateusercars', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     updateUserCarFromSQL(
@@ -255,6 +272,7 @@ void main() async {
     return Response.ok('');
   });
   router.post('/createbooking', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     createBookingFromSQL(
@@ -272,6 +290,7 @@ void main() async {
     return Response.ok('');
   });
   router.post('/createBookingOffer', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     createBookingSpecialOffer(
@@ -291,12 +310,14 @@ void main() async {
   });
 
   router.post('/deleteusercar', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     deleteUserCarFromSql(id: data['id'], sql: sql);
     return Response.ok('');
   });
   router.post('/updateManagerCar', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await updateCarFromSQL(
@@ -324,6 +345,7 @@ void main() async {
 
 
   router.post('/createchat', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     int response = await createChat(
@@ -335,22 +357,26 @@ void main() async {
     return Response.ok(jsonEncode(response));
   });
   router.post('/getchats', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     final response = await getUserChats(uid: data['uid'], sql: sql);
     return Response.ok(jsonEncode(response));
   });
   router.post('/updateManagerNumber', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await setManagerNumber(sql, data['phone']);
     return Response.ok('updated');
   });
   router.get('/getGarages', (Request request) async {
+    checkConnect();
     List response = await getGaragesList(sql);
     return Response.ok(jsonEncode(response));
   });
   router.post('/createOffer', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await createOffer(sql,
@@ -362,12 +388,14 @@ void main() async {
     return Response.ok('created');
   });
   router.post('/getMessages', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     final response = await getMessagesFromSQL(data['cid'], sql: sql);
     return Response.ok(jsonEncode(response));
   });
   router.post('/getLastOffers', (Request request) async {
+    checkConnect();
     final response = await getLastOffers(sql);
     return Response.ok(jsonEncode(response));
   });
@@ -378,6 +406,7 @@ void main() async {
     return Response.ok(jsonEncode(response));
   });
   router.post('/sendMessage', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await createMessageFromSQL(
@@ -385,6 +414,7 @@ void main() async {
     return Response.ok('created');
   });
   router.post('/create_car', (Request request) async {
+    checkConnect();
     try {
       var requestBody = await request.readAsString();
       var data = jsonDecode(requestBody);
@@ -428,6 +458,7 @@ void main() async {
     }
   });
   router.get('/test_photo', (Request request) async {
+    checkConnect();
     String? path = request.url.queryParameters['path'];
     var imagePathJpeg = 'images/$path/1.jpeg';
     var imagePathJpg = 'images/$path/1.jpg';
@@ -451,6 +482,7 @@ void main() async {
     }
   });
   router.get('/avatar', (Request request) async {
+    checkConnect();
     String? path = request.url.queryParameters['path'];
     var imagePathJpeg = 'images/$path.jpeg';
     var imagePathJpg = 'images/$path.jpg';
@@ -474,6 +506,7 @@ void main() async {
     }
   });
   router.get('/get_photo', (Request request) async {
+    checkConnect();
     String? path = request.url.queryParameters['path'];
     String? ind = request.url.queryParameters['ind'];
     var imagePathJpeg = 'images/$path/$ind.jpeg';
@@ -498,6 +531,7 @@ void main() async {
     }
   });
   router.post('/add_avatar', (Request request) async {
+    checkConnect();
     var requestBody = await request.readAsString();
     var data = jsonDecode(requestBody);
     var imageData = data['image'];
@@ -509,5 +543,7 @@ void main() async {
    return Response.ok('');
   });
   await serve(router, '63.251.122.116', 2308);
+
 }
+
 
