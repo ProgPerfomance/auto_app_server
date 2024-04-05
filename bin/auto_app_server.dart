@@ -51,7 +51,6 @@ void main() async {
     return Response.ok(jsonEncode(user));
   });
   router.post('/getcarinfo', (Request request) async {
-    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var resp = await getCarInfo(data['id'], data['uid'], sql);
@@ -94,7 +93,6 @@ void main() async {
     return Response.ok('deleted');
   });
   router.post('/getWishlist', (Request request) async {
-    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     final response = await getWishlist(data['uid'], sql);
@@ -128,7 +126,6 @@ void main() async {
     return Response.ok(jsonEncode(uid));
   });
   router.post('/getcars', (Request request) async {
-    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     List rep = await getCarList(data['id'], sql);
