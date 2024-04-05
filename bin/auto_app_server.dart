@@ -36,7 +36,6 @@ void main() async {
     if(  sql.connected == false ) {
       sql.connect();
     }
-
   }
   router.post('/reguser', (Request request) async {
     var json = await request.readAsString();
@@ -535,7 +534,6 @@ void main() async {
     }
   });
   router.post('/add_avatar', (Request request) async {
-    checkConnect();
     var requestBody = await request.readAsString();
     var data = jsonDecode(requestBody);
     var imageData = data['image'];
@@ -543,6 +541,9 @@ void main() async {
     var imageName = imageData['name'];
     var filePath = 'images/$imageName';
     var file = File(filePath);
+    if(file.existsSync() == true) {
+     await file.delete();
+    }
     await file.writeAsBytes(imageBytes);
    return Response.ok('');
   });
