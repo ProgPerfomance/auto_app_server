@@ -22,7 +22,6 @@ import 'package:mysql_client/mysql_client.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
-import 'package:mustache_template/mustache_template.dart' as m;
 
 void main() async {
   Router router = Router();
@@ -173,12 +172,14 @@ void main() async {
     return Response.ok('');
   });
   router.post('/getusercars', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var rep = await getUserCarList(data['uid'], sql);
     return Response.ok(jsonEncode(rep));
   });
   router.post('/getuserbooking', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var rep = await getUserBookingList(data['uid'], sql);
@@ -192,12 +193,14 @@ void main() async {
   });
 
   router.post('/setBookingGarage', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await setGarage(sql, id: data['id'], garage: data['garage']);
     return Response.ok('updated');
   });
   router.post('/updateService', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await updateServiceInfo(sql,
@@ -208,12 +211,14 @@ void main() async {
     return Response.ok('updated');
   });
   router.post('/getmasterbooking', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var rep = await getUserBookingListMaster(data['cid'], sql);
     return Response.ok(jsonEncode(rep));
   });
   router.post('/editGarage', (Request request) async {
+    checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     updateGarage(sql,
@@ -225,6 +230,7 @@ void main() async {
     return Response.ok('updated');
   });
   router.get('/getmanagerbooking', (Request request) async {
+    checkConnect();
     var rep = await getManagerBookingList(sql);
     return Response.ok(jsonEncode(rep));
   });
