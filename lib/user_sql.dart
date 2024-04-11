@@ -8,6 +8,7 @@ Future<Map> getUserInfo(var id, MySQLConnection sql) async {
     {},
   );
   var data = response.rows.first.assoc();
+  final managerPhone = await sql.execute("select * from appconfins where conf_key = 'manager_phone'");
   Map user = {};
      user = await {
       'name': data['name'],
@@ -15,6 +16,7 @@ Future<Map> getUserInfo(var id, MySQLConnection sql) async {
       'email': data['email'],
       'cid': data['cid'],
       'rules': data['rules'],
+       'manager_phone': managerPhone.rows.first.assoc()['value'],
     };
   return user;
 }
