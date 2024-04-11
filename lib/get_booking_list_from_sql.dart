@@ -49,9 +49,19 @@ Future<List> getUserBookingListMaster(String id, MySQLConnection sql) async {
       "SELECT * FROM usercars where id = ${data['cid']}",
       {},
     );
+    var garage_name;
+    try {
+      final garage = await sql.execute(
+        "SELECT * FROM users where id = ${data['garage']}",
+      );
+      garage_name = await garage.rows.first.assoc()['name'];
+    } catch (e) {
+      garage_name = '';
+    }
    DateTime.parse(data['timestamp']!).millisecondsSinceEpoch > DateTime.now().subtract(Duration(days: 3)).millisecondsSinceEpoch ?
     booking.add(
       {
+        'garage_name': garage_name,
         'car_name': car.rows.first.assoc()['name'],
         'description': data['description'],
         'reason': data['reason'],
@@ -74,6 +84,7 @@ Future<List> getUserBookingListMaster(String id, MySQLConnection sql) async {
       },
     ) : {booking.add(
      {
+       'garage_name': garage_name,
        'car_name': car.rows.first.assoc()['name'],
        'description': data['description'],
        'reason': data['reason'],
