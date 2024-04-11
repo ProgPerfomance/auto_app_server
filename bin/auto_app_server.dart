@@ -197,6 +197,13 @@ void main() async {
     return Response.ok('deleted');
   });
 
+  router.post('/deleteOffer', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    await deleteSpeccialOffer(sql, data['id']);
+    return Response.ok('deleted');
+  });
+
   router.post('/setBookingGarage', (Request request) async {
     checkConnect();
     var json = await request.readAsString();

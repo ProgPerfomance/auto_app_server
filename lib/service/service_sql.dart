@@ -73,7 +73,7 @@ Future<List> getMyOffers(MySQLConnection sql, {required garage}) async {
   List offers = [];
 
   final response = await sql.execute(
-    "SELECT * FROM servises where garage =$garage and  special_offer = '1'",
+    "SELECT * FROM servises where garage =$garage and  special_offer = '1' and visible = 1",
     {},
   );
 
@@ -97,7 +97,7 @@ Future<List> getLastOffers(MySQLConnection sql) async {
   List offers = [];
 
   final response = await sql.execute(
-    "SELECT * FROM servises where special_offer = '1'",
+    "SELECT * FROM servises where special_offer = '1' and visible = 1",
     {},
   );
 
@@ -121,4 +121,9 @@ Future<void> updateServiceInfo(MySQLConnection sql,
     {required id,required price,required priceMin,required description}) async {
   await sql.execute(
       "update servises set price=$price, low_price=$priceMin, description='$description' where id=$id");
+}
+
+
+Future<void> deleteSpeccialOffer(MySQLConnection sql, id) async  {
+ await sql.execute('update servises set visible = 0 where id = $id');
 }
