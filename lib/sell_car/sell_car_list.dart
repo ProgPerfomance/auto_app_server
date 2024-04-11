@@ -32,6 +32,6 @@ Future<List> getSellCarList(MySQLConnection sql) async {
       },
     );
   }
-  return cars;
+  return List.from(cars.reversed);
 }
 
