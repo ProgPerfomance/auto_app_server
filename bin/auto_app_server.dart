@@ -288,6 +288,7 @@ void main() async {
     var data = await jsonDecode(json);
     createBookingFromSQL(
         sql: sql,
+        description: data['description'],
         sid: data['sid'].toString(),
         cid: data['cid'].toString(),
         uid: data['uid'].toString(),
@@ -305,6 +306,7 @@ void main() async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     createBookingSpecialOffer(
+        description: data['description'],
         sql: sql,
         garage: data['garage'].toString(),
         sid: data['sid'].toString(),
