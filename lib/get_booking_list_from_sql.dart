@@ -49,7 +49,7 @@ Future<List> getUserBookingListMaster(String id, MySQLConnection sql) async {
       "SELECT * FROM usercars where id = ${data['cid']}",
       {},
     );
-   DateTime.parse(data['timestamp']!).millisecondsSinceEpoch < DateTime.now().subtract(Duration(days: 3)).millisecondsSinceEpoch ?
+   DateTime.parse(data['timestamp']!).millisecondsSinceEpoch > DateTime.now().subtract(Duration(days: 3)).millisecondsSinceEpoch ?
     booking.add(
       {
         'car_name': car.rows.first.assoc()['name'],
@@ -121,7 +121,7 @@ Future<List> getNewBookingListMaster(String id, MySQLConnection sql) async {
       "SELECT * FROM usercars where id = ${data['cid']}",
       {},
     );
-    DateTime.parse(data['timestamp']!).millisecondsSinceEpoch < DateTime.now().subtract(Duration(days: 3)).millisecondsSinceEpoch ?
+    DateTime.parse(data['timestamp']!).millisecondsSinceEpoch > DateTime.now().subtract(Duration(days: 3)).millisecondsSinceEpoch ?
     booking.add(
       {
         'car_name': car.rows.first.assoc()['name'],
@@ -200,7 +200,7 @@ Future<List> getManagerBookingList(MySQLConnection sql) async {
     } catch (e) {
       garage_name = '';
     }
-    DateTime.parse(data['timestamp']!).millisecondsSinceEpoch < DateTime.now().subtract(Duration(days: 3)).millisecondsSinceEpoch ?
+    DateTime.parse(data['timestamp']!).millisecondsSinceEpoch > DateTime.now().subtract(Duration(days: 3)).millisecondsSinceEpoch ?
     booking.add(
       {
         'car_name': car.rows.first.assoc()['name'],
@@ -279,7 +279,7 @@ Future<List> getManagerNewBookingList(MySQLConnection sql) async {
     } catch (e) {
       garage_name = '';
     }
-    DateTime.parse(data['timestamp']!).millisecondsSinceEpoch < DateTime.now().subtract(Duration(days: 3)).millisecondsSinceEpoch ?
+    DateTime.parse(data['timestamp']!).millisecondsSinceEpoch > DateTime.now().subtract(Duration(days: 3)).millisecondsSinceEpoch ?
     booking.add(
       {
         'car_name': car.rows.first.assoc()['name'],
