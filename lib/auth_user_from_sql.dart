@@ -22,7 +22,7 @@ Future<Map> authUserFromSQL({
         'email':email.rows.first.assoc()['email'],
         'rules': email.rows.first.assoc()['rules'],
         'cid': email.rows.first.assoc()['cid'],
-        'manager_phone': managerPhone.rows.first.assoc()['value'],
+        'manager_phone': managerPhone.rows.first.assoc()['conf_value'],
 
       };
     } else {
@@ -46,7 +46,7 @@ Future<Map> authUserFromSQL({
           'email':phone.rows.first.assoc()['email'],
           'rules': phone.rows.first.assoc()['rules'],
           'cid': phone.rows.first.assoc()['cid'],
-          'manager_phone': managerPhone.rows.first.assoc()['value'],
+          'manager_phone': managerPhone.rows.first.assoc()['conf_value'],
         };
       } else {
         return {'success': false};

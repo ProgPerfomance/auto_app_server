@@ -283,7 +283,7 @@ Future<List> getManagerNewBookingList(MySQLConnection sql) async {
     } catch (e) {
       garage_name = '';
     }
-    DateTime.parse(data['timestamp']!).millisecondsSinceEpoch > DateTime.now().subtract(Duration(days: 3)).millisecondsSinceEpoch ?
+    DateTime.parse(data['timestamp']!).millisecondsSinceEpoch > DateTime.now().subtract(Duration(days: 3)).millisecondsSinceEpoch || data['status'] != 'Pending' ?
     booking.add(
       {
         'id': data['id'],

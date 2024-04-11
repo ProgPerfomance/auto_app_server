@@ -16,7 +16,7 @@ Future<Map> getUserInfo(var id, MySQLConnection sql) async {
       'email': data['email'],
       'cid': data['cid'],
       'rules': data['rules'],
-       'manager_phone': managerPhone.rows.first.assoc()['value'],
+       'manager_phone': managerPhone.rows.first.assoc()['conf_value'],
     };
   return user;
 }
