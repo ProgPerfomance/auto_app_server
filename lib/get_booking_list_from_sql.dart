@@ -49,6 +49,7 @@ Future<List> getUserBookingListMaster(String id, MySQLConnection sql) async {
       "SELECT * FROM usercars where id = ${data['cid']}",
       {},
     );
+   DateTime.parse(data['status']!).millisecondsSinceEpoch < DateTime.now().subtract(Duration(days: 3)).millisecondsSinceEpoch ?
     booking.add(
       {
         'car_name': car.rows.first.assoc()['name'],
@@ -71,7 +72,31 @@ Future<List> getUserBookingListMaster(String id, MySQLConnection sql) async {
         'date_time': data['date_time'],
         'status': data['status'],
       },
-    );
+    ) : {booking.add(
+     {
+       'car_name': car.rows.first.assoc()['name'],
+       'description': data['description'],
+       'reason': data['reason'],
+       'id': data['id'],
+       'sid': data['sid'],
+       'cid': data['cid'],
+       'uid': data['uid'],
+       'car_brand': car.rows.first.assoc()['brand'],
+       'car_reg': car.rows.first.assoc()['car_reg'],
+       'car_model': car.rows.first.assoc()['model'],
+       'car_year': car.rows.first.assoc()['year'],
+       'owner_name': data['owner_name'],
+       'owner_email': data['owner_email'],
+       'owner_phone': data['owner_phone'],
+       'pickup': data['pickup'],
+       'delivery': data['delivery'],
+       'timestamp': data['timestamp'],
+       'date_time': data['date_time'],
+       'status': data['time is up'],
+     },
+   ),
+   await  sql.execute("update booking set status = 'time is up' where id = ${data['id']}"),
+   };
   }
   return List.from(booking.reversed);
 }
