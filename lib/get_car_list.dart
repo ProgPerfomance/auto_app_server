@@ -98,10 +98,10 @@ print( directory.listSync().length);
         'service_contact': data['service_contact'],
         'ccid': data['ccid'],
         'year': data['year'],
-        'description': data['description'],
         'images': directory.listSync().length,
         'like_id': like_id,
         'liked': like.toString(),
+        'description': data['description'],
       };
 
   }
