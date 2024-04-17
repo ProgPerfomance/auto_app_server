@@ -10,6 +10,7 @@ import 'package:mysql_client/mysql_client.dart';
 
    for (final row in response.rows) {
     var data = row.assoc();
+    Directory directory = Directory('images/${data['ccid']}');
     var like;
     var like_id;
     final likeRaw = await sql.execute(
@@ -47,6 +48,7 @@ import 'package:mysql_client/mysql_client.dart';
         'ccid': data['ccid'],
         'year': data['year'],
         'description': data['description'],
+        'images': directory.listSync().length,
       },
     );
   }
