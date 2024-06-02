@@ -32,9 +32,9 @@ void main() async {
       password: '1234567890',
       databaseName: 'autoapp');
   await sql.connect(timeoutMs: 99999999999);
-  void checkConnect () {
+  void checkConnect ()async {
     if(  sql.connected == false ) {
-      sql.connect();
+    await  sql.connect();
     }
   }
   router.post('/reguser', (Request request) async {
@@ -278,7 +278,7 @@ void main() async {
     checkConnect();
     var json = await request.readAsString();
     var data = await jsonDecode(json);
-    updateBookingStatus(data['id'], data['status'], sql, data['reason']);
+    updateBookingStatus(data['id'], data['status'], sql, data['reason'],data['garage']);
     return Response.ok('updated');
   });
 
