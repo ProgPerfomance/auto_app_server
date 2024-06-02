@@ -123,9 +123,9 @@ Future<List> getUserBookingListMaster(String id, MySQLConnection sql) async {
 }
 
 Future<void> updateBookingStatus(
-    String id, String status, MySQLConnection sql, reason) async {
+    String id, String status, MySQLConnection sql, reason,garage) async {
   await sql.execute(
-    "update booking set status = '$status', reason = '$reason' where id = $id",
+    "update booking set status = '$status', reason = '$reason', garage=$garage where id = $id",
   );
 }
 
