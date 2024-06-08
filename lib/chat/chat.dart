@@ -46,10 +46,10 @@ Future<List> getUserChats({
       final lastMessage = await sql.execute(
         "SELECT * FROM messages where cid = ${data['id']}",
       );
-      timestamp = lastMessage.rows.first.assoc()['timestamp'];
-      msgText = lastMessage.rows.first.assoc()['message'];
-      senderUid = lastMessage.rows.first.assoc()['uid'];
-      messageId = int.parse(lastMessage.rows.first.assoc()['id'] as String);
+      timestamp = lastMessage.rows.last.assoc()['timestamp'];
+      msgText = lastMessage.rows.last.assoc()['message'];
+      senderUid = lastMessage.rows.last.assoc()['uid'];
+      messageId = int.parse(lastMessage.rows.last.assoc()['id'] as String);
     } catch (e) {
       timestamp = null;
       msgText = null;
