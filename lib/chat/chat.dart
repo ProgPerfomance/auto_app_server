@@ -56,7 +56,7 @@ Future<List> getUserChats({
         print('iii');
         messageRead =  readMessage.rows.last.assoc()['reading'].toString();
         print(messageRead);
-      }catch(e){print('erroe');
+      }catch(e){print(e);
       }
       timestamp = lastMessage.rows.last.assoc()['timestamp'];
       msgText = lastMessage.rows.last.assoc()['message'];
