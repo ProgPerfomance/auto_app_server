@@ -54,6 +54,7 @@ Future<List> getUserChats({
           "SELECT * FROM messages where cid = ${data['id']} and ${uid !=
               data['uid1'] ? data['uid1'] : data['uid2']}",
         );
+        print('iii');
         messageRead =  readMessage.rows.last.assoc()['reading'].toString();
       }catch(e){
 
