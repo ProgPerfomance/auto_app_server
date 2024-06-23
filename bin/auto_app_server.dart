@@ -440,6 +440,12 @@ void main() async {
     final response = await getMyOffers(sql, garage: data['garage']);
     return Response.ok(jsonEncode(response));
   });
+  router.post('/readMessages', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    final response = await readMessages(data['cid'], data['uid'], sql);
+    return Response.ok('reading');
+  });
   router.post('/sendMessage', (Request request) async {
     checkConnect();
     var json = await request.readAsString();
@@ -579,6 +585,7 @@ void main() async {
     await file.writeAsBytes(imageBytes);
    return Response.ok('');
   });
+
   await serve(router, '63.251.122.116', 2308);
 
 }
