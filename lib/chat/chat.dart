@@ -55,6 +55,7 @@ Future<List> getUserChats({
         );
         print('iii');
         messageRead =  readMessage.rows.last.assoc()['reading'].toString();
+        print(messageRead);
       }catch(e){
 
       }
