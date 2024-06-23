@@ -145,5 +145,5 @@ Future<List> getMessagesFromSQL(cid, {required MySQLConnection sql}) async {
 
 
 Future<void> readMessages(id, uid, MySQLConnection sql) async {
-  await sql.execute('update messages set reading = 1 where id =$id and uid = $uid');
+  await sql.execute('update messages set reading = 1 where cid =$id and uid = $uid');
 }
