@@ -116,7 +116,7 @@ Future<void> createMessageFromSQL(
   int id_int = int.parse(id);
   await sql.execute(
       "insert into messages (id, cid, uid, message, timestamp) values (${id_int + 1}, $cid, $uid, '$msg', '${DateTime.now()}')");
- final tokenRow = await sql.execute('select token from users where id = $opponentId');
+ final tokenRow = await sql.execute('select * from users where id = $opponentId');
   localPush(tokenRow.rows.first.assoc()['token'],  opponentName, msg);
 }
 
@@ -141,6 +141,6 @@ Future<List> getMessagesFromSQL(cid, {required MySQLConnection sql}) async {
 }
 
 
-// Future<void> readMessages(id, uid, MySQLConnection sql) async {
-//   await sql.execute('')
-// }
+Future<void> readMessages(id, uid, MySQLConnection sql) async {
+  await sql.execute('update messages set reading = 1 where id =$id and uid = $uid');
+}
