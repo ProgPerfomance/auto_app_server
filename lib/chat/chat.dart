@@ -2,6 +2,8 @@
 
 import 'package:mysql_client/mysql_client.dart';
 
+import '../push_service.dart';
+
 Future<int> createChat({
   required uid1,
   required uid2,
@@ -102,6 +104,8 @@ Future<void> createMessageFromSQL(
     {required cid,
     required uid,
     required msg,
+      required opponentId,
+      required opponentName,
     required MySQLConnection sql}) async {
   var resul = await sql.execute(
     "SELECT * FROM messages",
@@ -112,6 +116,8 @@ Future<void> createMessageFromSQL(
   int id_int = int.parse(id);
   await sql.execute(
       "insert into messages (id, cid, uid, message, timestamp) values (${id_int + 1}, $cid, $uid, '$msg', '${DateTime.now()}')");
+ final tokenRow = await sql.execute('select token from users where id = $opponentId');
+  localPush(tokenRow.rows.first.assoc()['token'],  opponentName, msg);
 }
 
 Future<List> getMessagesFromSQL(cid, {required MySQLConnection sql}) async {
