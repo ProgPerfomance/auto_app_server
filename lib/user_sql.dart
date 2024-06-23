@@ -30,7 +30,7 @@ Future<void> updateUserToken(uid, token, MySQLConnection sql) async {
 Future<bool> forgotPassword(email, MySQLConnection sql) async {
   try {
     final response = await sql.execute(
-        'select * from users where email = $email');
+        "select * from users where email = '$email'");
     final newPassword = Uuid().v1();
     sendMail(newPassword);
     return true;
