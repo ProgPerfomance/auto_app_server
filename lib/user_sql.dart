@@ -20,3 +20,7 @@ Future<Map> getUserInfo(var id, MySQLConnection sql) async {
     };
   return user;
 }
+
+Future<void> updateUserToken(uid, token, MySQLConnection sql) async {
+  await sql.execute("update users set token = '$token' where id =$uid");
+}

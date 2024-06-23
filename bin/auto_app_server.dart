@@ -183,6 +183,13 @@ void main() async {
     var rep = await getUserCarList(data['uid'], sql);
     return Response.ok(jsonEncode(rep));
   });
+  router.post('/getusercars', (Request request) async {
+    checkConnect();
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    var rep = await updateUserToken(data['uid'], data['token'], sql);
+    return Response.ok('ok');
+  });
   router.post('/getBookingInfo', (Request request) async {
     checkConnect();
     var json = await request.readAsString();
