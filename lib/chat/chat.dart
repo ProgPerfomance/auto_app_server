@@ -51,7 +51,7 @@ Future<List> getUserChats({
       );
       try {
         final readMessage = await sql.execute(
-          "SELECT reading FROM messages where cid = ${data['id']} and ${uid !=
+          "SELECT * FROM messages where cid = ${data['id']} and ${uid !=
               data['uid1'] ? data['uid1'] : data['uid2']}",
         );
         messageRead =  readMessage.rows.last.assoc()['reading'].toString();
