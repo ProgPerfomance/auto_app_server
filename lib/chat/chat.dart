@@ -44,7 +44,7 @@ Future<List> getUserChats({
     var msgText;
     var senderUid;
     var messageId;
-    var messageRead = '1';
+    var messageRead;
     try {
       final lastMessage = await sql.execute(
         "SELECT * FROM messages where cid = ${data['id']}",
