@@ -450,7 +450,7 @@ void main() async {
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     bool response = await forgotPassword(data['email'], sql);
-    return Response.ok(response);
+    return Response.ok(jsonEncode(response));
   });
   router.post('/sendMessage', (Request request) async {
     checkConnect();
