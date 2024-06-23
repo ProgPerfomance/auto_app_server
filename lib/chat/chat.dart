@@ -133,3 +133,8 @@ Future<List> getMessagesFromSQL(cid, {required MySQLConnection sql}) async {
   }
   return messages;
 }
+
+
+// Future<void> readMessages(id, uid, MySQLConnection sql) async {
+//   await sql.execute('')
+// }

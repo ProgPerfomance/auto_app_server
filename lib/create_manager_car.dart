@@ -1,3 +1,4 @@
+import 'package:auto_app_server/push_service.dart';
 import 'package:mysql_client/mysql_client.dart';
 
 Future<int> createCarFromSQL({
@@ -28,6 +29,7 @@ Future<int> createCarFromSQL({
   int id_int = int.parse(id);
   await sql.execute(
       "insert into carlist (id, name, brand, model, price_usd, price_aed, color, killometers,regional_specs,transmission,motor_trim, body, guarantee,service_contact,description,year,ccid, status, cash) values (${id_int + 1}, '$name', '$brand', '$model', $price_usd, $price_aed, '$color', $killometers, '$regional_specs','$transmission', '$motor_trim', '$body','$guarantee','$service_contact','$description',$year, '$ccid', 1, $cash)");
+   globalPush('New car in catalog!', '$brand $model, price - $price_usd\$');
   return id_int + 1;
 }
 
