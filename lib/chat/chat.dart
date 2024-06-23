@@ -42,6 +42,7 @@ Future<List> getUserChats({
     var msgText;
     var senderUid;
     var messageId;
+    var messageRead;
     try {
       final lastMessage = await sql.execute(
         "SELECT * FROM messages where cid = ${data['id']}",
@@ -49,6 +50,7 @@ Future<List> getUserChats({
       timestamp = lastMessage.rows.last.assoc()['timestamp'];
       msgText = lastMessage.rows.last.assoc()['message'];
       senderUid = lastMessage.rows.last.assoc()['uid'];
+      messageRead = lastMessage.rows.last.assoc()['reading'];
       messageId = int.parse(lastMessage.rows.last.assoc()['id'] as String);
     } catch (e) {
       timestamp = null;
@@ -73,6 +75,7 @@ Future<List> getUserChats({
               'car_name': car.rows.first.assoc()['name'],
               'car_id': car.rows.first.assoc()['id'],
               'car_ccid': car.rows.first.assoc()['ccid'],
+              'read': messageRead,
             },
           )
         : chats.add(
@@ -86,6 +89,7 @@ Future<List> getUserChats({
               'timestamp': timestamp,
               'sender_uid': senderUid,
               'message_id': messageId,
+              'read': messageRead,
             },
           );
   }
