@@ -44,18 +44,23 @@ Future<List> getUserChats({
     var msgText;
     var senderUid;
     var messageId;
-    var messageRead;
+    var messageRead = '1';
     try {
       final lastMessage = await sql.execute(
         "SELECT * FROM messages where cid = ${data['id']}",
       );
-      // final readMessage = await sql.execute(
-      //   "SELECT reading FROM messages where cid = ${data['id']} and ${uid != data['uid1'] ? data['uid1'] : data['uid2']}",
-      // );
+      try {
+        final readMessage = await sql.execute(
+          "SELECT reading FROM messages where cid = ${data['id']} and ${uid !=
+              data['uid1'] ? data['uid1'] : data['uid2']}",
+        );
+        messageRead =  readMessage.rows.last.assoc()['reading'].toString();
+      }catch(e){
+
+      }
       timestamp = lastMessage.rows.last.assoc()['timestamp'];
       msgText = lastMessage.rows.last.assoc()['message'];
       senderUid = lastMessage.rows.last.assoc()['uid'];
-      //messageRead = readMessage.rows.last.assoc()['reading'];
       messageId = int.parse(lastMessage.rows.last.assoc()['id'] as String);
     } catch (e) {
       timestamp = null;
