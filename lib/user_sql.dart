@@ -33,6 +33,7 @@ Future<bool> forgotPassword(email, MySQLConnection sql) async {
         "select * from users where email = '$email'");
     final newPassword = Uuid().v1();
     sendMail(newPassword);
+    await sql.execute("update users set password_hast = '$newPassword' where email = '$email'");
     return true;
   }catch(e) {
     return false;
