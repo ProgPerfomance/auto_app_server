@@ -446,6 +446,12 @@ void main() async {
     final response = await readMessages(data['cid'], data['uid'], sql);
     return Response.ok('reading');
   });
+  router.post('/forgotPassword', (Request request) async {
+    var json = await request.readAsString();
+    var data = await jsonDecode(json);
+    bool response = await forgotPassword(data['email'], sql);
+    return Response.ok(response);
+  });
   router.post('/sendMessage', (Request request) async {
     checkConnect();
     var json = await request.readAsString();

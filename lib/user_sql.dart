@@ -1,4 +1,6 @@
+import 'package:auto_app_server/mail_service.dart';
 import 'package:mysql_client/mysql_client.dart';
+import 'package:uuid/uuid.dart';
 
 Future<Map> getUserInfo(var id, MySQLConnection sql) async {
 
@@ -23,4 +25,16 @@ Future<Map> getUserInfo(var id, MySQLConnection sql) async {
 
 Future<void> updateUserToken(uid, token, MySQLConnection sql) async {
   await sql.execute("update users set token = '$token' where id =$uid");
+}
+
+Future<bool> forgotPassword(email, MySQLConnection sql) async {
+  try {
+    final response = await sql.execute(
+        'select * from users where email = $email');
+    final newPassword = Uuid().v1();
+    sendMail(newPassword);
+    return true;
+  }catch(e) {
+    return false;
+  }
 }
