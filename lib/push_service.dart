@@ -1,7 +1,34 @@
 import 'package:dio/dio.dart';
 
+void getToken () async {
+  Dio dio = Dio();
+
+  final url = 'https://oauth2.googleapis.com/token';
+  final headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'User-Agent': 'google-oauth-playground'
+  };
+  final data = {
+    'code': '4%2F0ATx3LY623Hyl_l9uPhg2AfQCK8z3FYtdTsF1LPjCjLw-Z3oB4o2psw3yMcZ7kOgxHdzvLw',
+    'redirect_uri': 'https://developers.google.com/oauthplayground',
+    'client_id': '407408718192.apps.googleusercontent.com',
+    'client_secret': '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',
+    'scope': '',
+    'grant_type': 'authorization_code'
+  };
+
+  try {
+    final response = await dio.post(url, data: data, options: Options(headers: headers));
+    print('Response status: ${response.statusCode}');
+    print('Response data: ${response.data}');
+  } catch (e) {
+    print('Error: $e');
+  }
+ }
+
 void globalPush(title, body) async {
   Dio dio = Dio();
+  getToken();
   await dio.post(
       'https://fcm.googleapis.com/v1/projects/dwd-app-3e56e/messages:send',
       options: Options(headers: {
@@ -22,6 +49,7 @@ void globalPush(title, body) async {
 }
 
 void localPush(token, title, body) async {
+  getToken();
   Dio dio = Dio();
   await dio.post(
       'https://fcm.googleapis.com/v1/projects/dwd-app-3e56e/messages:send',
