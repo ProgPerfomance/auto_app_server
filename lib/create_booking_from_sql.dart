@@ -52,6 +52,8 @@ Future<int> createBookingSpecialOffer({
   int id_int = int.parse(id);
   await sql.execute(
       "insert into booking (id, sid, cid, uid, owner_name,owner_email, owner_phone, pickup, delivery,timestamp, status, date_time, garage, description) values (${id_int + 1}, $sid, $cid, $uid, '$owner_name', '$owner_email', '$owner_phone', '$pickup', '$delivery', '$timestamp', 'Pending', '$date_time', $garage, '$description');");
+  final tokenRow = await sql.execute('select * from users where id = $garage');
+  localPush(tokenRow.rows.first.assoc()['token'], 'New sell car request!', '$owner_name, E-mail: $owner_email');
   return id_int + 1;
   //   "insert into usertable (id, name, password_hash, city, email, country, age, freelancer, last_login, date_of_burn, avatar, skills, education, experience, about_me, client_visiting, servises, rating, reviews, email_succes) values (${id_int + 1}, '$name', '$password_hash', '$city', '$email', '$country', $age, $freelancer, '$last_login', '$date_of_burn', '$avatar', '$skills', '$education', '$experience', '$about_me', '$client_visiting', '$servises', $rating, '$reviews', $email_succes);");
 }
