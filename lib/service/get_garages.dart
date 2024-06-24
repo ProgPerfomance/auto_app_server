@@ -1,4 +1,6 @@
 import 'package:mysql_client/mysql_client.dart';
+
+import '../push_service.dart';
 Future<List> getGaragesList(MySQLConnection sql) async {
   List garages = [];
   final response = await sql.execute(
@@ -42,6 +44,8 @@ Future<void> deleteGarage(MySQLConnection sql, {required id}) async {
 
 Future<void> setGarage(MySQLConnection sql, {required id, required garage}) async {
   await sql.execute(
-    "update booking set garage = $garage where id = $id;",
+    "update booking set garage = $garage where id = $id",
   );
+  final tokenRow = await sql.execute('select * from users where id = $garage');
+  localPush(tokenRow.rows.first.assoc()['token'], 'New booking', 'Check your booking!');
 }

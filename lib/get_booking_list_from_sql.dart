@@ -1,5 +1,6 @@
 // ignore_for_file: empty_catches
 
+import 'package:auto_app_server/push_service.dart';
 import 'package:mysql_client/mysql_client.dart';
 
 Future<List> getUserBookingList(String id, MySQLConnection sql) async {
@@ -127,6 +128,9 @@ Future<void> updateBookingStatus(
   await sql.execute(
     "update booking set status = '$status', reason = '$reason', garage=$garage where id = $id",
   );
+  final bookingRow = await sql.execute('select * from booking where id = $id');
+  final tokenRow = await sql.execute('select * from users where id = ${bookingRow.rows.first.assoc()['uid']}');
+  localPush(tokenRow.rows.first.assoc()['token'], 'Your booking changed!', 'Status: $status');
 }
 
 Future<List> getNewBookingListMaster(String id, MySQLConnection sql) async {
