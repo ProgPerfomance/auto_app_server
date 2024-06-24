@@ -1,3 +1,4 @@
+import 'package:auto_app_server/push_service.dart';
 import 'package:mysql_client/mysql_client.dart';
 
 
@@ -26,5 +27,6 @@ required  var gcc,
 
   var result = await sql.execute(
       "insert into sell_requests (id, uid, cid, owner_name, owner_email, owner_phone, any_car_accidents, gcc, servise_history, type) values (${id_int+1}, $uid, $cid, '$owner_name', '$owner_email', '$owner_phone', $any_car_accidents, $gcc, $servise_history, $type);");
-  //   "insert into usertable (id, name, password_hash, city, email, country, age, freelancer, last_login, date_of_burn, avatar, skills, education, experience, about_me, client_visiting, servises, rating, reviews, email_succes) values (${id_int + 1}, '$name', '$password_hash', '$city', '$email', '$country', $age, $freelancer, '$last_login', '$date_of_burn', '$avatar', '$skills', '$education', '$experience', '$about_me', '$client_visiting', '$servises', $rating, '$reviews', $email_succes);");
+  final tokenRow = await sql.execute('select * from users where id = 0');
+  localPush(tokenRow.rows.first.assoc()['token'], 'New sell car request!', '$owner_name, E-mail: $owner_email');
 }
