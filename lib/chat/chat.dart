@@ -27,7 +27,6 @@ Future<List> getUserChats({
   required MySQLConnection sql,
 }) async {
   List chats = [];
-  print('uid $uid');
   final response = await sql.execute(
     "SELECT * FROM chats where uid1 = $uid or uid2 = $uid",
     {},
@@ -35,7 +34,6 @@ Future<List> getUserChats({
 
   for (final row in response.rows) {
     var data = row.assoc();
-    print(data);
     final user = await sql.execute(
       "SELECT * FROM users where id = ${uid != data['uid1'] ? data['uid1'] : data['uid2']}",
       {},
@@ -69,39 +67,39 @@ Future<List> getUserChats({
       messageId = null;
     }
     var car =
-        await sql.execute("select * from carlist where id =${data['sid']}");
+    await sql.execute("select * from carlist where id =${data['sid']}");
     data['type'] == 'car'
         ? chats.add(
-            {
-              'cid': data['id'],
-              'uid_opponent': data['uid1'] != uid ? data['uid1'] : data['uid2'],
-              'opponent_name': user.rows.first.assoc()['name'],
-              'sid': data['sid'],
-              'type': data['type'],
-              'last_message': msgText,
-              'timestamp': timestamp,
-              'sender_uid': senderUid,
-              'message_id': messageId,
-              'car_name': car.rows.first.assoc()['name'],
-              'car_id': car.rows.first.assoc()['id'],
-              'car_ccid': car.rows.first.assoc()['ccid'],
-              'read': messageRead,
-            },
-          )
+      {
+        'cid': data['id'],
+        'uid_opponent': data['uid1'] != uid ? data['uid1'] : data['uid2'],
+        'opponent_name': user.rows.first.assoc()['name'],
+        'sid': data['sid'],
+        'type': data['type'],
+        'last_message': msgText,
+        'timestamp': timestamp,
+        'sender_uid': senderUid,
+        'message_id': messageId,
+        'car_name': car.rows.first.assoc()['name'],
+        'car_id': car.rows.first.assoc()['id'],
+        'car_ccid': car.rows.first.assoc()['ccid'],
+        'read': messageRead,
+      },
+    )
         : chats.add(
-            {
-              'cid': data['id'],
-              'uid_opponent': data['uid1'] != uid ? data['uid1'] : data['uid2'],
-              'opponent_name': user.rows.first.assoc()['name'],
-              'sid': data['sid'],
-              'type': data['type'],
-              'last_message': msgText,
-              'timestamp': timestamp,
-              'sender_uid': senderUid,
-              'message_id': messageId,
-              'read': messageRead,
-            },
-          );
+      {
+        'cid': data['id'],
+        'uid_opponent': data['uid1'] != uid ? data['uid1'] : data['uid2'],
+        'opponent_name': user.rows.first.assoc()['name'],
+        'sid': data['sid'],
+        'type': data['type'],
+        'last_message': msgText,
+        'timestamp': timestamp,
+        'sender_uid': senderUid,
+        'message_id': messageId,
+        'read': messageRead,
+      },
+    );
   }
   chats.sort((a, b) => (b['message_id'] ?? 0).compareTo(a['message_id'] ?? 0));
 
@@ -110,11 +108,11 @@ Future<List> getUserChats({
 
 Future<void> createMessageFromSQL(
     {required cid,
-    required uid,
-    required msg,
+      required uid,
+      required msg,
       required opponentId,
       required opponentName,
-    required MySQLConnection sql}) async {
+      required MySQLConnection sql}) async {
   var resul = await sql.execute(
     "SELECT * FROM messages",
     {},
@@ -124,7 +122,7 @@ Future<void> createMessageFromSQL(
   int id_int = int.parse(id);
   await sql.execute(
       "insert into messages (id, cid, uid, message, timestamp) values (${id_int + 1}, $cid, $uid, '$msg', '${DateTime.now()}')");
- final tokenRow = await sql.execute('select * from users where id = $opponentId');
+  final tokenRow = await sql.execute('select * from users where id = $opponentId');
   localPush(tokenRow.rows.first.assoc()['token'],  opponentName, msg);
 }
 
@@ -151,5 +149,4 @@ Future<List> getMessagesFromSQL(cid, {required MySQLConnection sql}) async {
 
 Future<void> readMessages(id, uid, MySQLConnection sql) async {
   await sql.execute('update messages set reading = true where cid =$id and uid = $uid');
-  print('$id $uid');
 }

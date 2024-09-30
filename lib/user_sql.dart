@@ -4,22 +4,23 @@ import 'package:uuid/uuid.dart';
 
 Future<Map> getUserInfo(var id, MySQLConnection sql) async {
 
-
+  print('uid $id');
   final response = await sql.execute(
     "SELECT * FROM users where id = $id",
     {},
   );
   var data = response.rows.first.assoc();
+  print('uid $id');
   final managerPhone = await sql.execute("select * from appconfins where conf_key = 'manager_phone'");
   Map user = {};
-     user = await {
-      'name': data['name'],
-      'phone': data['phone'],
-      'email': data['email'],
-      'cid': data['cid'],
-      'rules': data['rules'],
-       'manager_phone': managerPhone.rows.first.assoc()['conf_value'],
-    };
+  user = await {
+    'name': data['name'],
+    'phone': data['phone'],
+    'email': data['email'],
+    'cid': data['cid'],
+    'rules': data['rules'],
+    'manager_phone': managerPhone.rows.first.assoc()['conf_value'],
+  };
   return user;
 }
 
@@ -32,7 +33,7 @@ Future<bool> forgotPassword(email, MySQLConnection sql) async {
     final response = await sql.execute(
         "select * from users where email = '$email'");
     final newPassword = Uuid().v1();
-    sendMail(newPassword);
+    sendMail(email,newPassword);
     await sql.execute("update users set password_hast = '$newPassword' where email = '$email'");
     return true;
   }catch(e) {

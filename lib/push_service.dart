@@ -1,5 +1,5 @@
-import 'package:dio/dio.dart';
-
+/*import 'package:dio/dio.dart';
+final tokenn = 'ya29.a0AXooCgvhsAALX_klBMnZeIxZhutGgxvz1y-YsGan0xaHqGZ0ccZGXsxENvxq31hOygT0eQZRNcdTNfDnI8mMTJZeDIah_Ziua1nysbgx5RQ-i7fjPrXREaTQ3_QiwXE_6FVR19XH2p8BWoNerS99jiI2Jj2JoYV_TAP6aCgYKAV0SARISFQHGX2Mi5UwYp_CrUfHJvd299OF8Lg0171';
 void getToken () async {
   Dio dio = Dio();
 
@@ -24,17 +24,16 @@ void getToken () async {
   } catch (e) {
     print('Error: $e');
   }
- }
+}
 
 void globalPush(title, body) async {
   Dio dio = Dio();
-  getToken();
   await dio.post(
       'https://fcm.googleapis.com/v1/projects/dwd-app-3e56e/messages:send',
       options: Options(headers: {
         'Content-Type': 'application/json',
         'Authorization':
-            "Bearer ya29.a0AXooCgsDu6VmQ3AwKehG0iDRG4QbBv4LIrH4BrPgSaZO7yAoG9j3AKAYKGTMxJjAo2FOar5eewvwaXjZcUR6fspmqkGpY3kj1JDaBXHPSQmUvx8jCwDbiXOMNe0kditIlN-VGx0VqiCHYcX4qRswdKZYDCOZa6EZVA_TaCgYKAbASARISFQHGX2MixJNexXG5gbweDXaIIAcDfg0171",
+        "Bearer $tokenn",
       }),
       data: {
         "message": {
@@ -49,14 +48,13 @@ void globalPush(title, body) async {
 }
 
 void localPush(token, title, body) async {
-  getToken();
   Dio dio = Dio();
   await dio.post(
       'https://fcm.googleapis.com/v1/projects/dwd-app-3e56e/messages:send',
       options: Options(headers: {
         'Content-Type': 'application/json',
         'Authorization':
-            "Bearer ya29.a0AXooCgsDu6VmQ3AwKehG0iDRG4QbBv4LIrH4BrPgSaZO7yAoG9j3AKAYKGTMxJjAo2FOar5eewvwaXjZcUR6fspmqkGpY3kj1JDaBXHPSQmUvx8jCwDbiXOMNe0kditIlN-VGx0VqiCHYcX4qRswdKZYDCOZa6EZVA_TaCgYKAbASARISFQHGX2MixJNexXG5gbweDXaIIAcDfg0171",
+        "Bearer $tokenn",
       }),
       data: {
         "message": {
@@ -67,4 +65,141 @@ void localPush(token, title, body) async {
           }
         }
       });
+}*/
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:googleapis_auth/auth_io.dart';
+final serviceAccountJson = File('private.json').readAsStringSync();
+
+const String firebaseMessagingUrl = 'https://fcm.googleapis.com/v1/projects/dwd-app-3e56e/messages:send';
+
+
+
+void main() async {
+
+  const title = 'Hello';
+  const body = 'This is a test notification';
+
 }
+
+Future<void> globalPush(title, body) async {
+  // Load the service account credentials
+  final serviceAccountCredentials = ServiceAccountCredentials.fromJson(serviceAccountJson);
+
+  // Get an authenticated HTTP client
+  final client = await clientViaServiceAccount(
+    serviceAccountCredentials,
+    [ 'https://www.googleapis.com/auth/firebase.messaging' ],
+  );
+
+  // Create the message payload
+
+
+  final response = await client.post(
+    Uri.parse(firebaseMessagingUrl),
+    headers: { 'Content-Type': 'application/json' },
+    body: jsonEncode({
+      "message": {
+        "topic": "main",
+        "notification": {
+          "title": title,
+          "body": body,
+        },
+        "data": {"story_id": "story_12345"}
+      }
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    print('Message sent successfully');
+  } else {
+    print('Failed to send message: ${response.statusCode}');
+    print('Response body: ${response.body}');
+  }
+
+  client.close();
+}
+
+
+
+Future<void> localPush(token, title, body) async {
+  // Load the service account credentials
+  final serviceAccountCredentials = ServiceAccountCredentials.fromJson(serviceAccountJson);
+
+  // Get an authenticated HTTP client
+  final client = await clientViaServiceAccount(
+    serviceAccountCredentials,
+    [ 'https://www.googleapis.com/auth/firebase.messaging' ],
+  );
+
+  // Create the message payload
+
+
+  final response = await client.post(
+    Uri.parse(firebaseMessagingUrl),
+    headers: { 'Content-Type': 'application/json' },
+    body: jsonEncode( {
+      "message": {
+        "token": token,
+        "notification": {
+          "body": body,
+          "title": title,
+        }
+      }}),
+  );
+
+  if (response.statusCode == 200) {
+    print('Message sent successfully');
+  } else {
+    print('Failed to send message: ${response.statusCode}');
+    print('Response body: ${response.body}');
+  }
+
+  client.close();
+}
+
+
+// void globalPush(title, body) async {
+//   Dio dio = Dio();
+//   // getToken();
+//   await dio.post(
+//       'https://fcm.googleapis.com/v1/projects/dwd-app-3e56e/messages:send',
+//       options: Options(headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization':
+//         "Bearer $tokenn",
+//       }),
+//       data: {
+//         "message": {
+//           "topic": "main",
+//           "notification": {
+//             "title": title,
+//             "body": body,
+//           },
+//           "data": {"story_id": "story_12345"}
+//         }
+//       });
+// }
+//
+// void localPush(token, title, body) async {
+// //  getToken();
+//   Dio dio = Dio();
+//   await dio.post(
+//       'https://fcm.googleapis.com/v1/projects/dwd-app-3e56e/messages:send',
+//       options: Options(headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization':
+//         "Bearer $tokenn",
+//       }),
+//       data: {
+//         "message": {
+//           "token": token,
+//           "notification": {
+//             "body": body,
+//             "title": title,
+//           }
+//         }
+//       });
+// }
+

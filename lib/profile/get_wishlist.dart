@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:mysql_client/mysql_client.dart';
 
 Future<List> getWishlist(String id,  MySQLConnection sql) async {
@@ -11,6 +13,7 @@ Future<List> getWishlist(String id,  MySQLConnection sql) async {
     var data = row.assoc();
     var like;
     var like_id;
+    Directory directory = Directory('images/${data['ccid']}');
     final likeRaw = await sql.execute(
       "SELECT * FROM likes where uid = $id and pid = ${data['id']}",
       {},
@@ -25,10 +28,9 @@ Future<List> getWishlist(String id,  MySQLConnection sql) async {
    like == true ? cars.add(
       {
         'like_id': like_id,
-        'year': data['year'],
+        'cash': data['cash'],
         'liked': like.toString(),
         'id': data['id'],
-        'cash': data['cash'],
         'name': data['name'],
         'brand': data['brand'],
         'model': data['model'],
@@ -45,7 +47,9 @@ Future<List> getWishlist(String id,  MySQLConnection sql) async {
         'guarantee': data['guarantee'],
         'service_contact': data['service_contact'],
         'ccid': data['ccid'],
+        'year': data['year'],
         'description': data['description'],
+        'images': directory.listSync().length,
       },
     ) : null;
   }

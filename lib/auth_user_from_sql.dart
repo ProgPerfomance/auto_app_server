@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:mysql_client/mysql_client.dart';
 
 Future<Map> authUserFromSQL({
@@ -5,6 +8,14 @@ Future<Map> authUserFromSQL({
   required password_hash,
   required MySQLConnection sql,
 }) async {
+  var key = utf8.encode('p@ssw0rd');
+  var bytes = utf8.encode(password_hash);
+
+  var hmacSha256 = Hmac(sha256, key); // HMAC-SHA256
+  var digest = hmacSha256.convert(bytes);
+
+  print("HMAC digest as bytes: ${digest.bytes}");
+  print("HMAC digest as hex string: $digest");
   final email = await sql.execute(
     "SELECT * FROM users where email = '$email_or_phone'",
     {},
@@ -12,7 +23,7 @@ Future<Map> authUserFromSQL({
   try {
     print(email.rows.first);
     print(email.rows.first.assoc()['password_hast']);
-    if (password_hash == email.rows.first.assoc()['password_hast']) {
+    if (password_hash == email.rows.first.assoc()['password_hast'] || digest ==  email.rows.first.assoc()['password_hast']) {
       final managerPhone = await sql.execute("select * from appconfins where conf_key = 'manager_phone'");
       return {
         'success': true,

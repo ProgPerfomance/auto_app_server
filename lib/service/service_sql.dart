@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:mysql_client/mysql_client.dart';
-
+import 'package:auto_app_server/push_service.dart';
 Future<Map> getServiceInfo(String id, MySQLConnection sql) async {
   final response = await sql.execute(
     "SELECT * FROM servises where id = $id",
@@ -67,6 +67,7 @@ Future<void> createOffer(MySQLConnection sql,
   int id_int = int.parse(id);
   await sql.execute(
       "insert into servises (id, name, price, low_price, description, special_offer, garage) values (${id_int + 1},'$name', $price, $low_price, '$description', 1, $garage)");
+  globalPush('New special offer!', '$name. Old price: $low_price, new price: $price');
 }
 
 Future<List> getMyOffers(MySQLConnection sql, {required garage}) async {

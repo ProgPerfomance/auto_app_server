@@ -1,13 +1,12 @@
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
-import 'package:uuid/uuid.dart';
 
-void sendMail(mail) async {
+void sendMail(email,mail) async {
   final smtpServer = gmail('jekcatpopov@gmail.com', 'favq gose ivmu qwvi');
 
   final message = Message()
     ..from = Address('jekcatpopov@gmail.com', 'DWD')
-    ..recipients.add('jekcatpopov@mail.ru')
+    ..recipients.add(email)
     ..subject = 'Forgot password'
     ..text = ''
     ..html = "<h1>New password</h1>\n<p>$mail</p>";
