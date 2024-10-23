@@ -26,21 +26,17 @@ import 'package:shelf_router/shelf_router.dart';
 
 void main() async {
   Router router = Router();
-  var sql = await MySQLConnection.createConnection(
-    host: 'localhost',
-    port: 3306,
-    userName: 'root',
-    password: '1234567890',
-    databaseName: 'autoapp',);
-  await sql.connect(timeoutMs: 1000000000000000000);
-  Future checkConnect ()async {
-    if(  sql.connected == false ) {
-      await  sql.connect(timeoutMs: 7000000000000000000);
-      print('ddd');
-    }
-  }
+
+
+
   router.post('/reguser', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = jsonDecode(json);
     var user = await createUserFromSQL(
@@ -51,75 +47,145 @@ void main() async {
       rules: data['rules'],
       password_hash: data['password_hash'],
     );
+    await sql.close();
     return Response.ok(jsonEncode(user));
   });
   router.post('/getcarinfo', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var resp = await getCarInfo(data['id'], data['uid'], sql);
+    await sql.close();
     return Response.ok(jsonEncode(resp));
   });
   router.post('/getServiceInfo', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     Map response = await getServiceInfo(data['cid'], sql);
+    await sql.close();
     return Response.ok(jsonEncode(response));
   });
   router.post('/createServiceBlock', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await addServiceBlock(sql,
         sid: data['cid'], title: data['title'], included: data['included']);
+    await sql.close();
     return Response.ok('created');
   });
   router.post('/updateServiceBlock', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await updateServiceBlock(sql, id: data['cid'], title: data['title']);
+    await sql.close();
     return Response.ok('updated');
   });
   router.post('/deleteServiceBlock', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await deleteServiceBlock(sql, id: data['cid']);
+    await sql.close();
     return Response.ok('deleted');
   });
   router.post('/deleteGarage', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await deleteGarage(sql, id: data['id']);
+    await sql.close();
     return Response.ok('deleted');
   });
   router.post('/getWishlist', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     final response = await getWishlist(data['uid'], sql);
+    await sql.close();
     return Response.ok(jsonEncode(response));
   });
   router.post('/updateName', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     changeProfileName(sql, uid: data['uid'], name: data['name']);
+    await sql.close();
     return Response.ok('changed');
   });
   router.post('/getsellrequests', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var resp = await getSellCarList(sql); //
+    await sql.close();
     return Response.ok(jsonEncode(resp));
   });
   router.post('/editProfilePhoto', (Request request) async {
     return Response.ok('200');
   });
   router.post('/auth', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     print(data['email_or_phone']);
@@ -128,17 +194,31 @@ void main() async {
         sql: sql,
         email_or_phone: data['email_or_phone'],
         password_hash: data['password_hash']);
+    await sql.close();
     return Response.ok(jsonEncode(uid));
   });
   router.post('/getcars', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     List rep = await getCarList(data['id'], sql);
+    await sql.close();
     return Response.ok(jsonEncode(rep));
   });
   router.post('/sellcarrequest', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await sellCarRequest(
@@ -152,24 +232,45 @@ void main() async {
         owner_name: data['owner_name'],
         owner_phone: data['owner_phone'],
         servise_history: data['servise_history']);
+    await sql.close();
     return Response.ok('ok');
   });
   router.post('/likecar', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     likeCarFromSql(uid: data['uid'], cid: data['cid'], sql: sql);
+    await sql.close();
     return Response.ok('ok');
   });
   router.post('/dislikecar', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     dislikeCarFromSql(id: data['id'], sql: sql);
+    await sql.close();
     return Response.ok('');
   });
   router.post('/createusercar', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     createUserCarFromSQL(
@@ -180,61 +281,117 @@ void main() async {
         model: data['model'].toString(),
         year: data['year'].toString(),
         car_reg: data['car_reg'].toString());
+    await sql.close();
     return Response.ok('');
   });
   router.post('/getusercars', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var rep = await getUserCarList(data['uid'], sql);
+    await sql.close();
     return Response.ok(jsonEncode(rep));
   });
   router.post('/updateToken', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var rep = await updateUserToken(data['uid'], data['token'], sql);
+    await sql.close();
     return Response.ok('ok');
   });
   router.post('/getBookingInfo', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var info = await getBookingInfo(sql, data['id']);
+    await sql.close();
     return Response.ok(jsonEncode(info));
   });
   router.post('/getuserbooking', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var rep = await getUserBookingList(data['uid'], sql);
+    await sql.close();
     return Response.ok(jsonEncode(rep));
   });
   router.post('/deleteCar', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await deleteCar(data['id'], sql);
+    await sql.close();
     return Response.ok('deleted');
   });
 
   router.post('/deleteOffer', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await deleteSpeccialOffer(sql, data['id']);
+    await sql.close();
     return Response.ok('deleted');
   });
 
   router.post('/setBookingGarage', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await setGarage(sql, id: data['id'], garage: data['garage']);
+    await sql.close();
     return Response.ok('updated');
   });
   router.post('/updateService', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await updateServiceInfo(sql,
@@ -242,17 +399,31 @@ void main() async {
         price: data['price'],
         priceMin: data['price_min'],
         description: data['description']);
+    await sql.close();
     return Response.ok('updated');
   });
   router.post('/getmasterbooking', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var rep = await getUserBookingListMaster(data['cid'], sql);
+    await sql.close();
     return Response.ok(jsonEncode(rep));
   });
   router.post('/editGarage', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     updateGarage(sql,
@@ -261,44 +432,86 @@ void main() async {
         phone: data['phone'],
         email: data['email'],
         id: data['id']);
+    await sql.close();
     return Response.ok('updated');
   });
   router.get('/getmanagerbooking', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var rep = await getManagerBookingList(sql);
+    await sql.close();
     return Response.ok(jsonEncode(rep));
   });
   router.get('/getManagerNewBooking', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var rep = await getManagerNewBookingList(sql);
+    sql.close();
     return Response.ok(jsonEncode(rep));
   });
   router.post('/getnewmasterbooking', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var rep = await getNewBookingListMaster(data['cid'], sql);
+    await sql.close();
     return Response.ok(jsonEncode(rep));
   });
   router.post('/getuserinfo', (Request request) async {
-    await   checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     var rep = await getUserInfo(data['uid'], sql);
     print('/getUserInfo');
     print(data['uid']);
+    await sql.close();
     return Response.ok(jsonEncode(rep));
   });
   router.post('/updatebooking', (Request request) async {
-    await checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     updateBookingStatus(data['id'], data['status'], sql, data['reason'],data['garage']);
+    await sql.close();
     return Response.ok('updated');
   });
 
   router.post('/updateusercars', (Request request) async {
-    await checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     updateUserCarFromSQL(
@@ -309,10 +522,17 @@ void main() async {
         model: data['model'],
         year: data['year'],
         car_reg: data['car_reg']);
+    await sql.close();
     return Response.ok('');
   });
   router.post('/createbooking', (Request request) async {
-    await  checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     createBookingFromSQL(
@@ -328,10 +548,17 @@ void main() async {
         delivery: data['delivery'],
         timestamp: data['timestamp'].toString(),
         date_time: data['date_time'].toString());
+    await sql.close();
     return Response.ok('');
   });
   router.post('/createBookingOffer', (Request request) async {
-    await  checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     createBookingSpecialOffer(
@@ -348,18 +575,32 @@ void main() async {
         delivery: data['delivery'],
         timestamp: data['timestamp'].toString(),
         date_time: data['date_time'].toString());
+    await sql.close();
     return Response.ok('');
   });
 
   router.post('/deleteusercar', (Request request) async {
-    await  checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     deleteUserCarFromSql(id: data['id'], sql: sql);
+    await sql.close();
     return Response.ok('');
   });
   router.post('/updateManagerCar', (Request request) async {
-    await  checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await updateCarFromSQL(
@@ -382,12 +623,19 @@ void main() async {
         year: data['year'].toString(),
         ccid: data['ccid'].toString(),
         cash: data['cash']);
+    await sql.close();
     return Response.ok('');
   });
 
 
   router.post('/createchat', (Request request) async {
-    await checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     int response = await createChat(
@@ -396,36 +644,71 @@ void main() async {
         uid2: data['uid2'],
         chatSubject: data['cid'],
         sql: sql);
+    await sql.close();
     return Response.ok(jsonEncode(response));
   });
   router.post('/getchats', (Request request) async {
-    await checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     final response = await getUserChats(uid: data['uid'], sql: sql);
+    await sql.close();
     return Response.ok(jsonEncode(response));
   });
   router.post('/updateManagerNumber', (Request request) async {
-    await checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await setManagerNumber(sql, data['phone']);
+    await sql.close();
     return Response.ok('updated');
   });
   router.post('/editBooking', (Request request) async {
-    await checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await editBooking(sql, id: data['id'], dateTime: data['dateTime'], ownerName: data['ownerName'], ownerEmail: data['ownerEmail'], ownerPhone: data['ownerPhone'], delivery: data['delivery'], pickUp: data['pickUp']);
+    await sql.close();
     return Response.ok('updated');
   });
   router.get('/getGarages', (Request request) async {
-    checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     List response = await getGaragesList(sql);
+    await sql.close();
     return Response.ok(jsonEncode(response));
   });
   router.post('/createOffer', (Request request) async {
-    await  checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await createOffer(sql,
@@ -434,51 +717,100 @@ void main() async {
         low_price: data['low_price'],
         description: data['description'],
         garage: data['garage']);
+    await sql.close();
     return Response.ok('created');
   });
   router.post('/getMessages', (Request request) async {
-    await checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     final response = await getMessagesFromSQL(data['cid'], sql: sql);
+    await sql.close();
     return Response.ok(jsonEncode(response));
   });
   router.post('/getLastOffers', (Request request) async {
-    await  checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     final response = await getLastOffers(sql);
+    await sql.close();
     return Response.ok(jsonEncode(response));
   });
   router.post('/getMyOffers', (Request request) async {
-    await  checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     final response = await getMyOffers(sql, garage: data['garage']);
+    await sql.close();
     return Response.ok(jsonEncode(response));
   });
   router.post('/readMessages', (Request request) async {
-    await  checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     final response = await readMessages(data['cid'], data['uid'], sql);
+    await sql.close();
     return Response.ok('reading');
   });
   router.post('/forgotPassword', (Request request) async {
-    await  checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     bool response = await forgotPassword(data['email'], sql);
+    await sql.close();
     return Response.ok(jsonEncode(response));
   });
   router.post('/sendMessage', (Request request) async {
-    await checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     var json = await request.readAsString();
     var data = await jsonDecode(json);
     await createMessageFromSQL(
         cid: data['cid'], uid: data['uid'], msg: data['msg'], sql: sql,opponentId: data['opponent_id'], opponentName: data['opponent_name']);
+    await sql.close();
     return Response.ok('created');
   });
   router.post('/create_car', (Request request) async {
-    await checkConnect();
+    var sql = await MySQLConnection.createConnection(
+      host: 'localhost',
+      port: 3306,
+      userName: 'root',
+      password: '1234567890',
+      databaseName: 'autoapp',);
+    await sql.connect(timeoutMs: 1000000000000000000);
     try {
       var requestBody = await request.readAsString();
       var data = jsonDecode(requestBody);
@@ -516,13 +848,14 @@ void main() async {
           year: data['year'].toString(),
           ccid: data['ccid'].toString(),
           cash: data['cash']);
+      await sql.close();
       return Response.ok('Images uploaded successfully');
     } catch (e) {
+      await sql.close();
       return Response.internalServerError(body: 'Error: $e');
     }
   });
   router.get('/test_photo', (Request request) async {
-    await checkConnect();
     String? path = request.url.queryParameters['path'];
     var imagePathJpeg = 'images/$path/1.jpeg';
     var imagePathJpg = 'images/$path/1.jpg';
@@ -546,7 +879,6 @@ void main() async {
     }
   });
   router.get('/avatar', (Request request) async {
-    await checkConnect();
     String? path = request.url.queryParameters['path'];
     var imagePathJpeg = 'images/$path.jpeg';
     var imagePathJpg = 'images/$path.jpg';
@@ -570,7 +902,6 @@ void main() async {
     }
   });
   router.get('/get_photo', (Request request) async {
-    await checkConnect();
     String? path = request.url.queryParameters['path'];
     String? ind = request.url.queryParameters['ind'];
     var imagePathJpeg = 'images/$path/$ind.jpeg';
@@ -594,7 +925,6 @@ void main() async {
     }
   });
   router.post('/add_avatar', (Request request) async {
-    await checkConnect();
     var requestBody = await request.readAsString();
     var data = jsonDecode(requestBody);
     var imageData = data['image'];
