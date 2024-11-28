@@ -939,7 +939,7 @@ void main() async {
     return Response.ok('');
   });
 
-  await serve(router, '63.251.122.116', 2314);
+  await serve(router, '0.0.0.0', 2314);
 
 }
 
