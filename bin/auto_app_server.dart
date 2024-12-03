@@ -904,8 +904,8 @@ void main() async {
   router.get('/get_photo', (Request request) async {
     String? path = request.url.queryParameters['path'];
     String? ind = request.url.queryParameters['ind'];
-    var imagePathJpeg = 'auto_app_server/images/$path/$ind.jpeg';
-    var imagePathJpg = 'auto_app_server/images/$path/$ind.jpg';
+    var imagePathJpeg = 'images/$path/$ind.jpeg';
+    var imagePathJpg = 'images/$path/$ind.jpg';
 
     try {
       var file = File(imagePathJpeg).existsSync() ? File(imagePathJpeg) : File(imagePathJpg);
